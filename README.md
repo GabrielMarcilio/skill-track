@@ -1,4 +1,4 @@
 # skill-track
 Display a network of skills within a team
 
-I created this project as an excuse to start learning java script
+I created this project as an excuse to start learning java script. Let see where this will end...
