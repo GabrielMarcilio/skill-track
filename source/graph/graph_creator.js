@@ -8,7 +8,8 @@ function createNodes(skill_network){
 		node_data.push(
 			{
 				id:person.id,
-				label: person.name
+				label: person.name,
+				group: 'person'
 			}
 		);
 	}
@@ -19,7 +20,8 @@ function createNodes(skill_network){
 		node_data.push(
 			{
 				id:skill.name,
-				label: skill.name
+				label: skill.name,
+				group: 'skill'
 			}
 		);
 	}
@@ -54,11 +56,40 @@ function createGraph(skill_network, container){
 	    edges: edges
 	};
 	var options = {
-	layout: {
-	    randomSeed: 1,
-	    improvedLayout:true,
-	  }
+		layout: {
+		    randomSeed: 1,
+		    improvedLayout:true,
+		 },
+		 groups: {
+	         person: {
+	             color: {background:'rgb(102,255,102)',border:'rgb(102,255,102)'},
+	             shape: 'elipse',
+	             size: 40
+	         },
+	         skill: {
+	        	 color: {background:'rgb(255,255,102)', border:'rgb(255,255,102)'},
+	        	 shape: 'big diamond',
+	        	 size: 40
+	         },
+		 },
+		 edges:{
+			 width:2,
+		 }
 	}
 	return new vis.Network(container, data, options);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
