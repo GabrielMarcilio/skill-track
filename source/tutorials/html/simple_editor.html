@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<form id='add-person'>
+    First name:<br>
+    <input type="text" id="firstname" value="Mickey">
+    <br>
+    Last name:<br>
+    <input type="text" id="lastname" value="Mouse">
+    <br><br>
+    <button id="person-add" onclick="editorCallback();">Add</button>
+</form>
+
+<button id='show-btn' onclick='showEditor(true);'>Show</button>
+
+</body>
+<script type="text/javascript">
+
+showEditor(false);
+function showEditor(visibility){
+	console.log('Changing editor visibility: ' + visibility);
+	if (visibility == true){
+		console.log('true visibility')
+		document.getElementById('show-btn').style.visibility="hidden"; 
+		document.getElementById("add-person").style.display="block";
+	}
+	else{
+		console.log('false visibility')
+		document.getElementById('show-btn').style.visibility="visible"; 
+        document.getElementById("add-person").style.display="none";
+    }
+	
+}
+function editorCallback(){
+	console.log('entering callback');
+	var first_name = document.getElementById('firstname').value
+	var last_name = document.getElementById('lastname').value
+	console.log('Editor callback called:' + first_name + ' ' + last_name)
+	
+	document.getElementById('add-person').style.display="none"; 
+	console.log('Editor Closed')
+	showEditor(false);
+}
+</script>
+</html>

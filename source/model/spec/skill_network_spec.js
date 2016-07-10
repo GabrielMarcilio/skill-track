@@ -19,10 +19,9 @@ describe("Testing Skill Network", function() {
 		person = this.network.getPersonByID('koopa');
 		expect(person).toBe(undefined);
 		
-		
 		// Adding a person with an id already in use. Expecting an error
 		var addClone = function() {
-			mario_clone = new Person('Mario', 45, 'mario@plumber.com', 'mario_id');
+			mario_clone = new Person('Mario', 'mario@plumber.com', 'mario_id');
 			network.addPerson(mario_clone);
 	    };
 		expect(addClone).toThrow("There is already a person with id: mario_id");

@@ -9,7 +9,7 @@
    
   <script src="source/model/skill_network.js"></script>
   <script src="source/graph/graph_creator.js"></script>
-  <script src="examples/rede_da_ka.js"></script>
+  <script src="source/utils.js"></script>
   
   <style type="text/css">
     #mynetwork {
@@ -25,18 +25,37 @@
   Esta é a rede da Ka.
 </p>
 
+<form id='add-person-form'>
+    Nome:<br>
+    <input type="text" id="name"><br>
+    Email:<br>
+    <input type="text" id="email"><br>
+    Id:<br>
+    <input type="text" id="id"><br>
+    Interesses (separados por virgula):<br>
+    <input type="text" id="skills"><br>
+    <button type='button' id="confirm-add-person-btn" onclick="addPerson();">Adicionar</button>
+    <button type='button' id="cancel-add-person-btn" onclick="showEditor(false);">Cancelar</button>
+</form>
+
+<button id='show-add-person' onclick='showEditor(true);'>Adicionar Pessoa</button>
 <div id="mynetwork"></div>
 
 <script type="text/javascript">
-  var container = document.getElementById('mynetwork');
-  network = network = new SkillNetwork('Rede da Ka');
-  karine = new Person('Karine', 39, 'ka@gmail.com', 'Karine');
-  gabriel = new Person('Gabriel', 33, 'gabriel@gmail.com', 'gabriel');
-  hiroshi = new Person('Hiroshi', 27, 'hiroshi@gmail.com', 'hiroshi');
-  hidemi = new Person('Hidemi', 27, 'hidemi@gmail.com', 'hidemi');
-  goma = new Person('Goma', 37, 'goma@gmail.com', 'goma');
-  paula = new Person('Paula', 33, 'paula@gmail.com', 'paula');
-  lipi = new Person('Lipi', 8, 'lipi@gmail.com', 'lipi');
+showEditor(false);
+var network;
+var graph; 
+
+function createNetwork(){
+  console.log('Initializing network');
+  network = new SkillNetwork('Rede da Ka');
+  karine = new Person('Karine', 'ka@gmail.com', 'Karine');
+  gabriel = new Person('Gabriel', 'gabriel@gmail.com', 'gabriel');
+  hiroshi = new Person('Hiroshi', 'hiroshi@gmail.com', 'hiroshi');
+  hidemi = new Person('Hidemi', 'hidemi@gmail.com', 'hidemi');
+  goma = new Person('Goma', 'goma@gmail.com', 'goma');
+  paula = new Person('Paula', 'paula@gmail.com', 'paula');
+  lipi = new Person('Lipi', 'lipi@gmail.com', 'lipi');
   
   karine.skills = ['Viagem', 'Culinaria', 'Educação', 'Disney', 'Chocolate'];
   gabriel.skills = ['NFL', 'Ficção', 'Game of Thrones', 'Board Games', 'Video Game', 'Disney']; 
@@ -46,8 +65,6 @@
   paula.skills = ['Viagem', 'Trocar Fralda', 'Tenis', 'Farmacia', 'Disney'];
   lipi.skills = ['Passear', 'Subir o Sofá', 'Chocolate'];
 
-  
-  
   network.addPerson(karine);
   network.addPerson(gabriel);
   network.addPerson(hiroshi)
@@ -55,10 +72,10 @@
   network.addPerson(goma)
   network.addPerson(paula)
   network.addPerson(lipi)
-
+}
   
-  //network = createTestNetwork()
-  var graph = createGraph(network, container)
+ createNetwork()
+ drawGraph()
 </script>
 
 </body>

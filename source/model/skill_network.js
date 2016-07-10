@@ -1,5 +1,5 @@
 
-function Person(name, age, email, id, skills){
+function Person(name, email, id, skills){
 	/**
 	 * Represents a person within the network.
 	 * 
@@ -10,7 +10,6 @@ function Person(name, age, email, id, skills){
 	 * @param{string} id - Uniquely identifies a person.
 	 */
 	this.name = name;
-	this.age = age;
 	this.email = email;
 	this.id = id;
 	
@@ -18,7 +17,7 @@ function Person(name, age, email, id, skills){
 		this.skills = []; 
 	}
 	else{
-		this.skills = skills;W
+		this.skills = skills;
 	}
 }
 
@@ -127,13 +126,13 @@ function createTestNetwork(){
 	 */
 	network = network = new SkillNetwork('Mushroom Kingdom');
 
-	mario = new Person('Mario', 45, 'mario@plumber.com', 'mario_id');
-	luigi = new Person('Luigi', 38, 'luigi@plumber.com', 'luigi_id');
-	peach = new Person('Peach', 28, 'peach@princess.com', 'princess_peach_id');
-	bowser = new Person('Bowser', 28, 'bowser@overlord.com', 'bowser_id');
-	toad = new Person('Toad', 28, 'toad@mushroom.com', 'toad_id');
-	yoshi = new Person('Yoshi', 28, 'yoshi@dino.com', 'yoshi_id');
-	koopa = new Person('Koopa', 28, 'koopa@henchmen.com', 'koopa_id');
+	mario = new Person('Mario', 'mario@plumber.com', 'mario_id');
+	luigi = new Person('Luigi', 'luigi@plumber.com', 'luigi_id');
+	peach = new Person('Peach', 'peach@princess.com', 'princess_peach_id');
+	bowser = new Person('Bowser', 'bowser@overlord.com', 'bowser_id');
+	toad = new Person('Toad', 'toad@mushroom.com', 'toad_id');
+	yoshi = new Person('Yoshi', 'yoshi@dino.com', 'yoshi_id');
+	koopa = new Person('Koopa', 'koopa@henchmen.com', 'koopa_id');
 	
 	mario.skills = ['Jump', 'Shooting', 'Dino Ridding'];
 	luigi.skills = ['Running'];
