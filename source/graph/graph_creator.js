@@ -19,8 +19,8 @@ function createNodes(skill_network){
 		skill = skill_network.skills[skill_id];
 		node_data.push(
 			{
-				id:skill.name,
-				label: skill.name,
+				id:skill,
+				label: skill,
 				group: 'skill'
 			}
 		);
@@ -31,16 +31,18 @@ function createNodes(skill_network){
 function createEdges(skill_network){
 	edge_data = [];
 	
-	interactions = skill_network.interactions;
-	for(var i=0; i<interactions.length; i++ ){
-		interaction = interactions[i];
+	for(person_id in skill_network.persons) {
+		person = skill_network.persons[person_id];
 		
-		edge_data.push(
-			{
-				from: interaction.person, to: interaction.skill_name
-			}
-				
-		)
+		for(var i=0; i<person.skills.length; i++){
+			skill = person.skills[i];
+			edge_data.push(
+				{
+					from: person_id, to: skill
+				}
+						
+			)
+		}
 	}
 	
 	return new vis.DataSet(edge_data);
@@ -48,7 +50,6 @@ function createEdges(skill_network){
 }
 function createGraph(skill_network, container){
 	var edges = createEdges(skill_network);
-	
 	var nodes = createNodes(skill_network);
 	
 	var data = {

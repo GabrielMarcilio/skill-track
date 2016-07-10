@@ -20,11 +20,6 @@ describe("Testing Skill Network", function() {
     	expected_nodes['yoshi_id'] = 'Yoshi';
     	expected_nodes['koopa_id'] = 'Koopa';
 
-    	planning = new Skill('Planing', "Now all i want is one paper clip, two bananas and a fork...");
-    	running = new Skill('Running', "Out of my way!");
-    	dino_riding = new Skill('Dino Riding', "yeeeeeeeeeeeha!");
-    	march = new Skill('March', "1, 2, 1, 2, 1, 2!");
-    	
     	expected_nodes['Jump'] = 'Jump';
     	expected_nodes['Shooting'] = 'Shooting';
     	expected_nodes['Charisma'] = 'Charisma';
@@ -50,12 +45,12 @@ describe("Testing Skill Network", function() {
     it("Testing Create Edges", function(){
     	
     	edges = createEdges(this.network);
+    	console.log('Edges returned from method:' + edges.length);
     	expect(edges.length).toBe(9);
     	
     	mario_edges = []
     	edge_ids = edges.getIds();
-    	console.log('Edge Ids:' + edge_ids)
-    	for (var i = 0; edge_ids.length; i++) {
+    	for (var i = 0; i < edge_ids.length; i++) {
     		var edge_id = edge_ids[i];
     		var edge = edges.get(edge_id);
     		if (edge.from == 'mario_id'){
@@ -68,6 +63,4 @@ describe("Testing Skill Network", function() {
     	expect(mario_edges.indexOf('Shooting')).not.toBe(-1);
     	expect(mario_edges.indexOf('March')).toBe(-1);
     });
-    
-    
 });

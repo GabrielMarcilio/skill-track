@@ -1,5 +1,5 @@
 
-function Person(name, age, email, id){
+function Person(name, age, email, id, skills){
 	/**
 	 * Represents a person within the network.
 	 * 
@@ -13,20 +13,13 @@ function Person(name, age, email, id){
 	this.age = age;
 	this.email = email;
 	this.id = id;
-}
-
-
-function Skill(name, description){
-	/**
-	 * Represent a skill within the network.
-	 * 
-	 * @constructor.
-	 * @param{string} name - The skill name.
-	 * @oaram{string} description - The skill description.
-	 */
-	this.name=name;
-	this.description = description;
 	
+	if (skills == undefined){
+		this.skills = []; 
+	}
+	else{
+		this.skills = skills;W
+	}
 }
 
 
@@ -74,6 +67,11 @@ SkillNetwork.prototype = {
     	}
     	else{
     		this.persons[person.id] = person;
+    		
+    		for (var i=0; i<person.skills.length; i++){
+    			skill = person.skills[i];
+    			this.skills[skill] = skill
+    		}
     	}
     },
 
@@ -83,7 +81,7 @@ SkillNetwork.prototype = {
 		 * 
 		 * @param{Skill} skill - The skill to add.
 		 */
-		this.skills[skill.name] = skill;
+		this.skills[skill] = skill;
 	},
     
     addInteraction:function(interaction){
@@ -107,15 +105,6 @@ SkillNetwork.prototype = {
     	return this.persons[person_id];
     },
     
-    getSkillByName:function(skill_name){
-    	/**
-    	 * Retrieve the skill associated with a given name.
-    	 * 
-    	 * @param{string} skill_name - The skill name.
-    	 * @returns{Skill} The registered skill (or undefined if no such skill was found.
-    	 */
-    	return this.skills[skill_name];
-    },
     
     getPersonInteractions:function(person_id){
     	/**
@@ -146,6 +135,14 @@ function createTestNetwork(){
 	yoshi = new Person('Yoshi', 28, 'yoshi@dino.com', 'yoshi_id');
 	koopa = new Person('Koopa', 28, 'koopa@henchmen.com', 'koopa_id');
 	
+	mario.skills = ['Jump', 'Shooting', 'Dino Ridding'];
+	luigi.skills = ['Running'];
+	peach.skills = ['Charisma'];
+	bowser.skills = ['Planning'];
+	toad.skills = ['Running'];
+	yoshi.skills = ['Running'];
+	koopa.skills = ['March'];
+
 	network.addPerson(mario);
 	network.addPerson(luigi);
 	network.addPerson(peach)
@@ -154,91 +151,5 @@ function createTestNetwork(){
 	network.addPerson(yoshi)
 	network.addPerson(koopa)
 
-	// Skills
-	jump_skill = new Skill('Jump', 'Very usefull to cross over holes') ;
-	fire_flower_shot = new Skill('Shooting', 'Fires small fireballs over enemies');
-	charisma = new Skill('Charisma', "Some have, others don't");
-	planning = new Skill('Planning', "Now all i want is one paper clip, two bananas and a fork...");
-	running = new Skill('Running', "Out of my way!");
-	dino_riding = new Skill('Dino Ridding', "yeeeeeeeeeeeha!");
-	march = new Skill('March', "1, 2, 1, 2, 1, 2!");
-	
-	network.addSkill(jump_skill);
-	network.addSkill(fire_flower_shot);
-	network.addSkill(charisma);
-	network.addSkill(planning);
-	network.addSkill(running);
-	network.addSkill(dino_riding);
-	network.addSkill(march);
-	
-	// Interactions 
-	jump_lessons = new Interaction(
-		mario.id, 
-		jump_skill.name, 
-		new Date(1981, 30, 10), 
-		'Mario have jump lessons to Luigi'
-	);
-	dino_ridding = new Interaction(
-			mario.id, 
-			dino_riding.name, 
-			new Date(1981, 30, 10), 
-			'Mario and yoshi are as one'
-	);
-
-	princess_save = new Interaction(
-		mario.id, 
-		fire_flower_shot.name, 
-		new Date(1981, 30, 11),
-		'Mario saved peach using the fire flower.'
-	);
-	princess_charisma = new Interaction(
-		peach.id, 
-		charisma.name, 
-		new Date(1981, 30, 11),
-		'Peach was like a sunshine that day.'
-	);
-	kidnap_planning = new Interaction(
-			bowser.id, 
-			planning.name, 
-			new Date(1981, 30, 11),
-			'Peach was like a sunshine that day.'
-	);
-	running_luigi = new Interaction(
-			luigi.id, 
-			running.name, 
-			new Date(1981, 30, 11),
-			'Faster than a Usain Bolt.'
-	);
-	running_toad = new Interaction(
-			toad.id, 
-			running.name, 
-			new Date(1981, 30, 11),
-			'Just a little slower than luigi.'
-	);
-	koopa_march = new Interaction(
-			koopa.id, 
-			march.name, 
-			new Date(1981, 30, 11),
-			'Foward.'
-	);
-
-	yoshi_run = new Interaction(
-			yoshi.id, 
-			running.name, 
-			new Date(1981, 30, 11),
-			'vushhhhhh.'
-	);
-	
-	
-	network.addInteraction(jump_lessons);
-	network.addInteraction(princess_save);
-	network.addInteraction(princess_charisma);
-	network.addInteraction(kidnap_planning);
-	network.addInteraction(running_luigi);
-	network.addInteraction(running_toad);
-	network.addInteraction(koopa_march);
-	network.addInteraction(dino_ridding);
-	network.addInteraction(yoshi_run);
-	
 	return network;
 }

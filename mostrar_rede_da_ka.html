@@ -1,0 +1,67 @@
+
+<!doctype html>
+<html>
+<head>
+  <title>Network | Basic usage</title>
+   
+  <script type="text/javascript" src="lib/vis-4.16.1/vis.js"></script>
+  <link href="lib/vis-4.16.1/vis.css" rel="stylesheet" type="text/css" />
+   
+  <script src="source/model/skill_network.js"></script>
+  <script src="source/graph/graph_creator.js"></script>
+  <script src="examples/rede_da_ka.js"></script>
+  
+  <style type="text/css">
+    #mynetwork {
+      width: 800px;
+      height: 800px;
+      border: 1px solid lightgray;
+    }
+  </style>
+</head>
+<body>
+
+<p>
+  Esta é a rede da Ka.
+</p>
+
+<div id="mynetwork"></div>
+
+<script type="text/javascript">
+  var container = document.getElementById('mynetwork');
+  network = network = new SkillNetwork('Rede da Ka');
+  karine = new Person('Karine', 39, 'ka@gmail.com', 'Karine');
+  gabriel = new Person('Gabriel', 33, 'gabriel@gmail.com', 'gabriel');
+  hiroshi = new Person('Hiroshi', 27, 'hiroshi@gmail.com', 'hiroshi');
+  hidemi = new Person('Hidemi', 27, 'hidemi@gmail.com', 'hidemi');
+  goma = new Person('Goma', 37, 'goma@gmail.com', 'goma');
+  paula = new Person('Paula', 33, 'paula@gmail.com', 'paula');
+  lipi = new Person('Lipi', 8, 'lipi@gmail.com', 'lipi');
+  
+  karine.skills = ['Viagem', 'Culinaria', 'Educação', 'Disney', 'Chocolate'];
+  gabriel.skills = ['NFL', 'Ficção', 'Game of Thrones', 'Board Games', 'Video Game', 'Disney']; 
+  hiroshi.skills = ['Board Games', 'Arquitetura', 'Kanjis', 'Video Game', 'Culinaria'];
+  hidemi.skills = ['Culinaria', 'Viagem', 'Pipoca', 'Chocolate'];
+  goma.skills = ['NFL', 'Board Games', 'Trocar Fralda', 'RPG', 'Viagem', 'Disney'];
+  paula.skills = ['Viagem', 'Trocar Fralda', 'Tenis', 'Farmacia', 'Disney'];
+  lipi.skills = ['Passear', 'Subir o Sofá', 'Chocolate'];
+
+  
+  
+  network.addPerson(karine);
+  network.addPerson(gabriel);
+  network.addPerson(hiroshi)
+  network.addPerson(hidemi)
+  network.addPerson(goma)
+  network.addPerson(paula)
+  network.addPerson(lipi)
+
+  
+  //network = createTestNetwork()
+  var graph = createGraph(network, container)
+</script>
+
+</body>
+</html>
+
+

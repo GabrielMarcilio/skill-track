@@ -28,13 +28,7 @@ describe("Testing Skill Network", function() {
 		expect(addClone).toThrow("There is already a person with id: mario_id");
 	});
 	
-	it("Testing Skills Add/Get methods", function(){
-		skill = this.network.getSkillByName("Jump");
-		expect(skill.description).toBe('Very usefull to cross over holes');
-	});
-	
-	
-	it("Testing get interaction method", function(){
+	xit("Testing get interaction method", function(){
 		
 		mario_interactions = this.network.getPersonInteractions('mario_id');
 		expect(mario_interactions.length).toBe(3);
