@@ -24,7 +24,7 @@ describe("Testing Skill Network", function() {
 			mario_clone = new Person('Mario', 'mario@plumber.com', 'mario_id');
 			network.addPerson(mario_clone);
 	    };
-		expect(addClone).toThrow("There is already a person with id: mario_id");
+		expect(addClone).toThrow("Id mario_id já cadastrado.");
 	});
 	
 	xit("Testing get interaction method", function(){

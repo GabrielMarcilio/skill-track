@@ -62,16 +62,21 @@ SkillNetwork.prototype = {
     	 * @param{Person} person - The prson to add.
     	 */
     	if (this.persons[person.id] !== undefined){
-    		throw "There is already a person with id: " + person.id
+    		throw "Id " + person.id + " já cadastrado. Para o nome:" + this.persons[person.id].name
     	}
     	else{
-    		this.persons[person.id] = person;
-    		
-    		for (var i=0; i<person.skills.length; i++){
-    			skill = person.skills[i];
-    			this.skills[skill] = skill
-    		}
+    		this.updatePerson(person);
     	}
+    },
+    
+    updatePerson:function(person){
+    	this.persons[person.id] = person;
+    	
+    	for (var i=0; i<person.skills.length; i++){
+    		skill = person.skills[i];
+    		this.skills[skill] = skill
+    	}
+
     },
 
 	addSkill:function(skill){

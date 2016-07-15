@@ -4,6 +4,44 @@
 <head>
   <title>Network | Basic usage</title>
    
+  <style type="text/css">
+        html, body {
+            font: 11pt arial;
+        }
+
+        table.view {
+            width: 100%;
+        }
+
+        table td {
+            vertical-align: top;
+        }
+
+        table table {
+            background-color: #f5f5f5;
+            border: 1px solid #e5e5e5;
+        }
+
+        table table td {
+            vertical-align: middle;
+        }
+
+        input[type=text], pre {
+            border: 1px solid lightgray;
+        }
+
+        pre {
+            margin: 0;
+            padding: 5px;
+            font-size: 10pt;
+        }
+
+        #network {
+            width: 100%;
+            height: 400px;
+            border: 1px solid lightgray;
+        }
+    </style>
   <script type="text/javascript" src="lib/vis-4.16.1/vis.js"></script>
   <link href="lib/vis-4.16.1/vis.css" rel="stylesheet" type="text/css" />
    
@@ -25,29 +63,96 @@
   Esta é a rede da Ka.
 </p>
 
-<form id='add-person-form'>
-    Nome:<br>
-    <input type="text" id="name"><br>
-    Email:<br>
-    <input type="text" id="email"><br>
-    Id:<br>
-    <input type="text" id="id"><br>
-    Interesses (separados por virgula):<br>
-    <input type="text" id="skills"><br>
-    <button type='button' id="confirm-add-person-btn" onclick="addPerson();">Adicionar</button>
-    <button type='button' id="cancel-add-person-btn" onclick="showEditor(false);">Cancelar</button>
-</form>
 
-<button id='show-add-person' onclick='showEditor(true);'>Adicionar Pessoa</button>
+<h1></h1>
+<table>
+    <tr>
+        <td>
+          
+            <table id='add-table-form'>
+                <tr>
+                    <td colspan=3, align='center'>Adicionar Pessoa</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><label for="add-name-id">Nome</label></td>
+                    <td><input id="add-name-id" type="text" value=""></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><label for="add-email-id">Email</label></td>
+                    <td><input id="add-email-id" type="text" value=""></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><label for="add-id-id">ID</label></td>
+                    <td><input id="add-id-id" type="text" value=""></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><label for="add-skills-id">Interesses</label></td>
+                    <td><input id="add-skills-id" type="text" value=""></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <button id="person-add-confirm" onclick="addPerson();">Adicionar</button>
+                        <button id="person-add-cancel" onclick="showAddPerson(false);">Cancelar</button>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td>
+            
+            <table id='edit-table-form'>
+                <tr>
+                    <td colspan=3, align='center'>Editar Pessoa</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><label for="edit-name-id">Nome</label></td>
+                    <td><input id="edit-name-id" type="text" value=""></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><label for="edit-email-id">Email</label></td>
+                    <td><input id="edit-email-id" type="text" value=""></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><label for="edit-id-id">ID</label></td>
+                    <td><input id="edit-id-id" type="text" value="" readonly></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><label for="edit-skills-id">Interesses</label></td>
+                    <td><input id="edit-skills-id" type="text" value=""></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>Action</td>
+                    <td>
+                        <button id="confirm changes-id" onclick="confirmNodeEdit(network);">Confirma</button>
+                        <button id="cancel changes"mostrar_rede_da_ka.html"-id" onclick="showEditPersonForm(false);">Cancela</button>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+ 
+<button id='show-add-person' onclick='showAddPerson(true);'>Adicionar Pessoa</button>
+  
 <div id="mynetwork"></div>
 
 <script type="text/javascript">
-showEditor(false);
+showAddPerson(false);
+showEditPersonForm(false)
 var network;
 var graph; 
 
 function createNetwork(){
-  console.log('Initializing network');
   network = new SkillNetwork('Rede da Ka');
   karine = new Person('Karine', 'ka@gmail.com', 'Karine');
   gabriel = new Person('Gabriel', 'gabriel@gmail.com', 'gabriel');
@@ -56,7 +161,6 @@ function createNetwork(){
   goma = new Person('Goma', 'goma@gmail.com', 'goma');
   paula = new Person('Paula', 'paula@gmail.com', 'paula');
   lipi = new Person('Lipi', 'lipi@gmail.com', 'lipi');
-  
   karine.skills = ['Viagem', 'Culinaria', 'Educação', 'Disney', 'Chocolate'];
   gabriel.skills = ['NFL', 'Ficção', 'Game of Thrones', 'Board Games', 'Video Game', 'Disney']; 
   hiroshi.skills = ['Board Games', 'Arquitetura', 'Kanjis', 'Video Game', 'Culinaria'];
@@ -72,6 +176,7 @@ function createNetwork(){
   network.addPerson(goma)
   network.addPerson(paula)
   network.addPerson(lipi)
+  
 }
   
  createNetwork()

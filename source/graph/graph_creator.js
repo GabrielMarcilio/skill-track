@@ -25,6 +25,7 @@ function createNodes(skill_network){
 			}
 		);
 	}
+	
 	return new vis.DataSet(node_data);
 }
 
