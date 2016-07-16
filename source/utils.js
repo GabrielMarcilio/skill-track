@@ -76,7 +76,8 @@ function addPerson(){
     
     try{
     	network.addPerson(person);
-    	drawGraph()
+    	drawGraph();
+    	showAddPerson(false);
     }
 	catch(err){
 		window.alert(err);
@@ -100,5 +101,9 @@ function drawGraph(){
 		  if (clicked_person){
 			  showNodeToEdit(clicked_node, network);
 		  }
+		  else{
+			  showEditPersonForm(false);
+		  }
+			  
 	  });
 }

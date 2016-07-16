@@ -48,7 +48,6 @@ function SkillNetwork(name){
 	 */
 	this.name = name;
 	this.persons = [];
-	this.skills =[];
 	this.interactions = [];
 }
 
@@ -62,7 +61,7 @@ SkillNetwork.prototype = {
     	 * @param{Person} person - The prson to add.
     	 */
     	if (this.persons[person.id] !== undefined){
-    		throw "Id " + person.id + " já cadastrado. Para o nome:" + this.persons[person.id].name
+    		throw "Id " + person.id + " já cadastrado. Para o nome: " + this.persons[person.id].name
     	}
     	else{
     		this.updatePerson(person);
@@ -72,30 +71,9 @@ SkillNetwork.prototype = {
     updatePerson:function(person){
     	this.persons[person.id] = person;
     	
-    	for (var i=0; i<person.skills.length; i++){
-    		skill = person.skills[i];
-    		this.skills[skill] = skill
-    	}
-
     },
 
-	addSkill:function(skill){
-		/**
-		 * Add a skill in the network.
-		 * 
-		 * @param{Skill} skill - The skill to add.
-		 */
-		this.skills[skill] = skill;
-	},
-    
-    addInteraction:function(interaction){
-    	/**
-    	 * Add an interacion between a people and a skill.
-    	 * 
-    	 * @param{Interaction} interaction - the interaction to add.
-    	 */
-    	this.interactions.push(interaction);
-    },
+	    
 
     getPersonByID:function(person_id){
     	/**
@@ -110,15 +88,49 @@ SkillNetwork.prototype = {
     },
     
     
-    getPersonInteractions:function(person_id){
-    	/**
-    	 * Retrieve all interactions registered for a given person.
-    	 * 
-    	 * @param{string} person_id - The id of the person to obtain the interactions
-    	 */
-    	result = this.interactions.filter(inter => inter.person == person_id);
-    	return result;
+    getSkills:function(){
+    	// An associative array to avoid repetitions
+    	var  skills_set = []
+    	
+    	// Iterating over all persons
+    	for(person_id in this.persons) {
+    		person = this.persons[person_id];
+    		
+    		//Iterating over all person skills
+    		for (var i=0; i<person.skills.length; i++){
+    			skill = person.skills[i];
+    			skills_set[skill] = skill;
+    		}
+    	}
+    	
+    	var skill_array =[]
+    	// Creating an array from the associative array
+    	for(skill_name in skills_set){
+    		skill_array.push(skill_name);
+    	}
+    	
+    	return skill_array;
     }
+    
+    
+//    addInteraction:function(interaction){
+//    	/**
+//    	 * Add an interacion between a people and a skill.
+//    	 * 
+//    	 * @param{Interaction} interaction - the interaction to add.
+//    	 */
+//    	this.interactions.push(interaction);
+//    },
+//
+//    getPersonInteractions:function(person_id){
+//    	/**
+//    	 * Retrieve all interactions registered for a given person.
+//    	 * 
+//    	 * @param{string} person_id - The id of the person to obtain the interactions
+//    	 */
+//    	result = this.interactions.filter(inter => inter.person == person_id);
+//    	return result;
+//    }
 }
 
 

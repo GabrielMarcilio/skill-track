@@ -15,8 +15,9 @@ function createNodes(skill_network){
 	}
 	
 	//Creating the nodes associated with skills
-	for(skill_id in skill_network.skills) {
-		skill = skill_network.skills[skill_id];
+	network_skills = skill_network.getSkills()
+	for(var i=0; i<network_skills.length; i++){
+		skill = network_skills[i];
 		node_data.push(
 			{
 				id:skill,
