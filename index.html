@@ -2,6 +2,7 @@
 <!doctype html>
 <html>
 <head>
+<meta charset="UTF-8">
   <title>Network | Basic usage</title>
    
   <style type="text/css">
@@ -49,12 +50,11 @@
   <script src="source/graph/graph_creator.js"></script>
   <script src="source/utils.js"></script>
   
-  </style>
 </head>
 <body>
 
 <p>
-  Esta È a rede da Ka.
+  Esta √© a rede da Ka.
 </p>
 
 
@@ -128,7 +128,7 @@
                     <td></td>
                     <td>
                         <button id="confirm changes-id" onclick="confirmNodeEdit(network);">Confirma</button>
-                        <button id="cancel changes"mostrar_rede_da_ka.html"-id" onclick="showEditPersonForm(false);">Cancela</button>
+                        <button id="cancel changes-id" onclick="showEditPersonForm(false);">Cancela</button>
                     </td>
                 </tr>
             </table>
@@ -140,7 +140,9 @@
   
 <div id="mynetwork"></div>
 
-<script type="text/javascript">
+<script type="text/javascript" charset='utf-8'>
+console.log('Starting Javascrit Section');
+
 showAddPerson(false);
 showEditPersonForm(false)
 var network;
@@ -155,13 +157,13 @@ function createNetwork(){
   goma = new Person('Goma', 'goma@gmail.com', 'goma');
   paula = new Person('Paula', 'paula@gmail.com', 'paula');
   lipi = new Person('Lipi', 'lipi@gmail.com', 'lipi');
-  karine.skills = ['Viagem', 'Culinaria', 'EducaÁ„o', 'Disney', 'Chocolate'];
-  gabriel.skills = ['NFL', 'FicÁ„o', 'Game of Thrones', 'Board Games', 'Video Game', 'Disney']; 
+  karine.skills = ['Viagem', 'Culinaria', 'Educa√ß√£o', 'Disney', 'Chocolate'];
+  gabriel.skills = ['NFL', 'Fic√ß√£o', 'Game of Thrones', 'Board Games', 'Video Game', 'Disney']; 
   hiroshi.skills = ['Board Games', 'Arquitetura', 'Kanjis', 'Video Game', 'Culinaria'];
   hidemi.skills = ['Culinaria', 'Viagem', 'Pipoca', 'Chocolate'];
   goma.skills = ['NFL', 'Board Games', 'Trocar Fralda', 'RPG', 'Viagem', 'Disney'];
   paula.skills = ['Viagem', 'Trocar Fralda', 'Tenis', 'Farmacia', 'Disney'];
-  lipi.skills = ['Passear', 'Subir o Sof·', 'Chocolate'];
+  lipi.skills = ['Passear', 'Subir o Sof√°', 'Chocolate'];
 
   network.addPerson(karine);
   network.addPerson(gabriel);
@@ -175,6 +177,7 @@ function createNetwork(){
   
  createNetwork()
  drawGraph()
+ 
 </script>
 
 </body>

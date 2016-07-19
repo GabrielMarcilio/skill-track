@@ -1,0 +1,17 @@
+{
+    "name": "skill-track",
+    "version": "0.0.1",
+    "description": "Display a network of shared interests or skills.",
+    "keywords": ["skills", "network"],
+    "repository": "https://github.com/GabrielMarcilio/skill-track.git",
+    "homepage": "http://paularmstrong.github.com/node-templates/",
+    "author": "Gabriel Marcilio",
+    "dependencies": {
+        "finalhandler": "0.5.0",
+        "serve-static": "1.11.1"
+    },
+    "main": "main",
+    "engines": {
+        "node": ">= 0.10.13"
+    }
+}
