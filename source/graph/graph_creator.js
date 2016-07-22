@@ -30,6 +30,23 @@ function createNodes(skill_network){
 	return new vis.DataSet(node_data);
 }
 
+
+function getEdgeValue(person_id, skill_name, network){
+	/**
+	 * Get the value of the edge that connects the given person to the given skill.
+	 * 
+	 * @param{string} person_id - The id of the person to obtain the edge value.
+	 * @param{string} skill_name - The name of the skill in the edge to obtain the value
+	 * @param{SkillNetwork} network - Holds information about the person, skills and interactions.
+	 * 
+	 * @returns{int} The edge value, based on the number of registered interactions between the given
+	 * person and skill. 
+	 */
+	interactions = network.getPersonInteractions(person_id, skill_name);
+	return interactions.length + 1;
+}
+
+
 function createEdges(skill_network){
 	edge_data = [];
 	
@@ -38,11 +55,14 @@ function createEdges(skill_network){
 		
 		for(var i=0; i<person.skills.length; i++){
 			skill = person.skills[i];
+			
+			edge_value = getEdgeValue(person_id, skill, network);
+			console.log('Edge value: ' + edge_value + ' ' + person_id + ' ' + skill);
 			edge_data.push(
 				{
-					from: person_id, to: skill
+					from: person_id, to: skill,	value:edge_value
 				}
-						
+	
 			)
 		}
 	}
@@ -77,6 +97,9 @@ function createGraph(skill_network, container){
 		 },
 		 edges:{
 			 width:2,
+			 scaling:{
+				 min:2, max:8
+			 }
 		 }
 	}
 	return new vis.Network(container, data, options);

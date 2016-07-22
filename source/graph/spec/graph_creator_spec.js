@@ -45,10 +45,9 @@ describe("Testing Skill Network", function() {
     it("Testing Create Edges", function(){
     	
     	edges = createEdges(this.network);
-    	console.log('Edges returned from method:' + edges.length);
     	expect(edges.length).toBe(9);
     	
-    	mario_edges = []
+    	mario_edges = [];
     	edge_ids = edges.getIds();
     	for (var i = 0; i < edge_ids.length; i++) {
     		var edge_id = edge_ids[i];
@@ -62,5 +61,30 @@ describe("Testing Skill Network", function() {
     	expect(mario_edges.indexOf('Jump')).not.toBe(-1);
     	expect(mario_edges.indexOf('Shooting')).not.toBe(-1);
     	expect(mario_edges.indexOf('March')).toBe(-1);
+    });
+    
+    it("Testing edge values", function(){
+    	
+    	edges = createEdges(this.network);
+    	edge_values = []
+    	edge_values['Jump']=0;
+    	edge_values['Shooting']=0;
+    	edge_values['Dino Ridding']=0;
+    	
+    	edge_ids = edges.getIds();
+    	for (var i = 0; i < edge_ids.length; i++) {
+    		var edge_id = edge_ids[i];
+    		var edge = edges.get(edge_id);
+    		
+    		if (edge.from == 'mario_id'){
+    			edge_values[edge.to] = edge.value
+    		}
+    	}
+    	
+    	expect(edge_values['Jump']).toBe(2);
+    	expect(edge_values['Dino Ridding']).toBe(2);
+    	expect(edge_values['Shooting']).toBe(3);
+    	
+    	
     });
 });

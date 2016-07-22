@@ -145,7 +145,7 @@ var graph;
 
 function createNetwork(){
   network = new SkillNetwork('Rede da Ka');
-  karine = new Person('Karine', 'ka@gmail.com', 'Karine');
+  karine = new Person('Karine', 'ka@gmail.com', 'karine');
   gabriel = new Person('Gabriel', 'gabriel@gmail.com', 'gabriel');
   hiroshi = new Person('Hiroshi', 'hiroshi@gmail.com', 'hiroshi');
   hidemi = new Person('Hidemi', 'hidemi@gmail.com', 'hidemi');
@@ -168,6 +168,17 @@ function createNetwork(){
   network.addPerson(paula)
   network.addPerson(lipi)
   
+  persons_that_travelled = ['karine', 'goma', 'paula'];
+  
+  for(var i=0; i<persons_that_travelled.length; i++){
+	  person_id = persons_that_travelled[i]
+	  
+	  console.log('Adding travel for' + person_id)
+	  travel_date= new Date(2013, 11, 3)
+	  interaction = new Interaction(person_id, 'Disney', travel_date, 'Melhores Ferias', 'gabriel')
+	  network.addInteraction(interaction);
+	  console.log('Interaction added')
+  }
 }
   
  createNetwork()

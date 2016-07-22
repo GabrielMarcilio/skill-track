@@ -22,7 +22,7 @@ function Person(name, email, id, skills){
 }
 
 
-function Interaction(person, skill_name, date, description){
+function Interaction(person, skill_name, date, description, reporter){
 	/**
 	 * Represent a interactoin betwee a people and a sikil within the network.
 	 *
@@ -31,11 +31,13 @@ function Interaction(person, skill_name, date, description){
 	 *@param{string} skill_name - The name of the skill to register the interaction.
 	 *@param{Date} date - The interaction date.
 	 *@param{string} description - The interaction description.
+	 *@param{string} reporter - The id of the person reporing the interaction.
 	 */
 	this.person = person;
 	this.skill_name = skill_name;
 	this.date = date;
 	this.description = description
+	this.reporter = reporter
 	
 }
 
@@ -110,27 +112,33 @@ SkillNetwork.prototype = {
     	}
     	
     	return skill_array;
+    },
+    
+    
+    addInteraction:function(interaction){
+    	/**
+    	 * Add an interacion between a people and a skill.
+    	 * 
+    	 * @param{Interaction} interaction - the interaction to add.
+    	 */
+    	this.interactions.push(interaction);
+    },
+
+    getPersonInteractions:function(person_id, skill_id){
+    	/**
+    	 * Retrieve all interactions registered for a given person.
+    	 * 
+    	 * @param{string} person_id - The id of the person to obtain the interactions
+    	 */
+    	result = this.interactions.filter(inter => inter.person == person_id);
+    	
+    	if (skill_id !== undefined){
+    		
+    		result = result.filter(inter => inter.skill_name == skill_id);
+    	}
+    	
+    	return result;
     }
-    
-    
-//    addInteraction:function(interaction){
-//    	/**
-//    	 * Add an interacion between a people and a skill.
-//    	 * 
-//    	 * @param{Interaction} interaction - the interaction to add.
-//    	 */
-//    	this.interactions.push(interaction);
-//    },
-//
-//    getPersonInteractions:function(person_id){
-//    	/**
-//    	 * Retrieve all interactions registered for a given person.
-//    	 * 
-//    	 * @param{string} person_id - The id of the person to obtain the interactions
-//    	 */
-//    	result = this.interactions.filter(inter => inter.person == person_id);
-//    	return result;
-//    }
 }
 
 
@@ -167,5 +175,18 @@ function createTestNetwork(){
 	network.addPerson(yoshi)
 	network.addPerson(koopa)
 
+	// Registering some interactions for mario
+	interaction_date = new Date(1988, 10, 30);
+	mario_interaction_1 = new Interaction('mario_id', 'Shooting', interaction_date, 'Mario Defeated Bowser with a flower shot', 'princess_peach_id');
+	mario_interaction_2 = new Interaction('mario_id', 'Jump', interaction_date, 'Mario Jumped over an incredible ledge', 'luigi_id');
+	mario_interaction_3 = new Interaction('mario_id', 'Dino Ridding', interaction_date, 'He passed like the wind', 'toad_id');
+	mario_interaction_4 = new Interaction('mario_id', 'Shooting', interaction_date, 'Mario made a barbecue with  flower shot', 'yoshi_id');
+	
+	network.addInteraction(mario_interaction_1);
+	network.addInteraction(mario_interaction_2);
+	network.addInteraction(mario_interaction_3);
+	network.addInteraction(mario_interaction_4);
+	
+	
 	return network;
 }

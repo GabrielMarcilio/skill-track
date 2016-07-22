@@ -64,10 +64,13 @@ describe("Testing Skill Network", function() {
 		
 	});
 	
-	xit("Testing get interaction method", function(){
+	it("Testing get interaction method", function(){
 		
 		mario_interactions = this.network.getPersonInteractions('mario_id');
-		expect(mario_interactions.length).toBe(3);
+		expect(mario_interactions.length).toBe(4);
+		
+		mario_shooting_iteractions = this.network.getPersonInteractions('mario_id', 'Shooting');
+		expect(mario_shooting_iteractions.length).toBe(2);
 		
 	});
 	
