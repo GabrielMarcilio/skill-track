@@ -128,6 +128,46 @@
                 </tr>
             </table>
         </td>
+        <td>
+            <table id='add-interaction-form'>
+                <tr>
+                    <td colspan=3, align='center'>Editar Interação</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><label for="add-inter-person-id">Pessoa</label></td>
+                    <td><input id="add-inter-person-id" type="text" value="" readonly></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><label for="add-inter-skill-id">Interesse</label></td>
+                    <td><input id="add-inter-skill-id" type="text" value=""></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><label for="add-inter-date-id">Data</label></td>
+                    <td><input id="add-inter-date-id" type="date" value=""></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><label for="add-inter-description-id">Descrição</label></td>
+                    <td><input id="add-inter-description-id" type="text" value=""></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><label for="add-inter-reporter-id">Beneficiado</label></td>
+                    <td><input id="add-inter-reporter-id" type="text" value=""></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <button id="confirm-interaction-id" onclick="confirmAddInteraction(network);">Confirma</button>
+                        <button id="confirm-interaction-id" onclick="showAddInteraction(false);">Cancela</button>
+                    </td>
+                </tr>
+            </table>
+        </td>
     </tr>
 </table>
  
@@ -140,6 +180,7 @@ console.log('Starting Javascrit Section');
 
 showAddPerson(false);
 showEditPersonForm(false)
+showAddInteraction(false);
 var network;
 var graph; 
 

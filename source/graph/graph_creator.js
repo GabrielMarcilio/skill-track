@@ -57,7 +57,6 @@ function createEdges(skill_network){
 			skill = person.skills[i];
 			
 			edge_value = getEdgeValue(person_id, skill, network);
-			console.log('Edge value: ' + edge_value + ' ' + person_id + ' ' + skill);
 			edge_data.push(
 				{
 					from: person_id, to: skill,	value:edge_value
