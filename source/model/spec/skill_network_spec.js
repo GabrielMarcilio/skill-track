@@ -28,14 +28,16 @@ describe("Testing Skill Network", function() {
 	});
 	
 	
-	it("Testing Get Skills", function(){
+	it("Testing Get Interests", function(){
 		
-		skills_obtained = this.network.getSkills();
+		skills_obtained = this.network.getInterests();
 		var expected_skills = [ 
-            'Jump', 'Shooting', 'Dino Ridding', 'Running', 'Charisma', 'Planning', 'March' 
+            'Jump', 'Shooting', 'Dino Ridding', 'Running', 'Charisma', 'Planning', 'March',
+            'Gardening', 'Italian Food', 'Milan FC', 'Flowers', 'Martial Arts', 'Old Castles',
+            'Coins', 'Apples', 'Cannons', 'Flying Boats'
         ];
 		
-		expect(skills_obtained.length).toBe(7);
+		expect(skills_obtained.length).toBe(17);
 		
 		for(var i=0; i<expected_skills; i++){
 			expected_skill = expected_skills[i]
@@ -55,7 +57,7 @@ describe("Testing Skill Network", function() {
 		expected_skills.splice(dino_index, 1);
 		
 		expected_skills.push('Jiu-Jitsu')
-		skills_obtained = this.network.getSkills();
+		skills_obtained = this.network.getInterests();
 		
 		for(var i=0; i<expected_skills.length; i++){
 			expected_skill = expected_skills[i]
@@ -71,6 +73,20 @@ describe("Testing Skill Network", function() {
 		
 		mario_shooting_iteractions = this.network.getPersonInteractions('mario_id', 'Shooting');
 		expect(mario_shooting_iteractions.length).toBe(2);
+		
+	});
+	
+	
+	it("Test get interests", function(){
+		mario = this.network.getPersonByID('mario_id');
+		
+		expected_interests = ['Jump', 'Shooting', 'Dino Ridding', 'Gardening', 'Italian Food'];
+		mario_interests = mario.getInterests()
+		
+		for(var i=0; i<expected_interests.length; i++){
+			expected_interest = expected_interests[i]
+			expect(mario_interests.indexOf(expected_interest)).not.toBe(-1);
+		}
 		
 	});
 	

@@ -79,8 +79,13 @@
                 </tr>
                 <tr>
                     <td></td>
-                    <td><label for="add-skills-id">Interesses</label></td>
+                    <td><label for="add-skills-id">Conhecimentos</label></td>
                     <td><input id="add-skills-id" type="text" value=""></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><label for="add-passions-id">Paixoes</label></td>
+                    <td><input id="add-passions-id" type="text" value=""></td>
                 </tr>
                 <tr>
                     <td></td>
@@ -115,8 +120,13 @@
                 </tr>
                 <tr>
                     <td></td>
-                    <td><label for="edit-skills-id">Interesses</label></td>
+                    <td><label for="edit-skills-id">Conhecimentos</label></td>
                     <td><input id="edit-skills-id" type="text" value=""></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><label for="edit-passions-id">Paixões</label></td>
+                    <td><input id="edit-passions-id" type="text" value=""></td>
                 </tr>
                 <tr>
                     <td></td>
@@ -193,13 +203,27 @@ function createNetwork(){
   goma = new Person('Goma', 'goma@gmail.com', 'goma');
   paula = new Person('Paula', 'paula@gmail.com', 'paula');
   lipi = new Person('Lipi', 'lipi@gmail.com', 'lipi');
-  karine.skills = ['Viagem', 'Culinaria', 'Educação', 'Disney', 'Chocolate'];
-  gabriel.skills = ['NFL', 'Ficção', 'Game of Thrones', 'Board Games', 'Video Game', 'Disney']; 
+  
+  karine.skills = ['Viagem', 'Culinaria', 'Educação', 'Disney'];
+  karine.passions = ['Barcelona', 'Muffins', 'Game of Thrones', 'Chocolate'];
+
+  gabriel.skills = ['Game of Thrones', 'Board Games', 'Video Game']; 
+  gabriel.passions = ['NFL', 'Ficção', 'Disney', 'Formula 1']; 
+
   hiroshi.skills = ['Board Games', 'Arquitetura', 'Kanjis', 'Video Game', 'Culinaria'];
-  hidemi.skills = ['Culinaria', 'Viagem', 'Pipoca', 'Chocolate'];
-  goma.skills = ['NFL', 'Board Games', 'Trocar Fralda', 'RPG', 'Viagem', 'Disney'];
-  paula.skills = ['Viagem', 'Trocar Fralda', 'Tenis', 'Farmacia', 'Disney'];
-  lipi.skills = ['Passear', 'Subir o Sofá', 'Chocolate'];
+  hiroshi.passions = ['Piano', 'Canada'];
+
+  hidemi.skills = ['Culinaria', 'Pipoca', 'Chocolate'];
+  hidemi.passions = ['Dormir', 'Familia', 'Netflix', 'Viagem'];
+
+  goma.skills = ['NFL', 'Board Games', 'Trocar Fralda', 'RPG', 'Disney'];
+  goma.passions = ['NFL', 'Paternidade', 'Augusto'];
+
+  paula.skills = ['Viagem', 'Trocar Fralda', 'Quebrar Panela', 'Farmacia'];
+  paula.passions = ['Tenis', 'Compras', 'Farmacia', 'Disney'];
+
+  lipi.skills = ['Passear', 'Fugir da Pipoca'];
+  lipi.passions = ['Subir o Sofá', 'Garagem', 'Chocolate'];
 
   network.addPerson(karine);
   network.addPerson(gabriel);

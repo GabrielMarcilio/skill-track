@@ -79,11 +79,13 @@ function showNodeToEdit(node_id, network){
 	console.log('Editing person: ' + person.name);
 	showEditPersonForm(true);
 	
-	skills_text = person.skills.join(", ");
+	var skills_text = person.skills.join(", ");
+	var passions_text = person.passions.join(", ");
 	document.getElementById("edit-name-id").value= person.name; 
 	document.getElementById("edit-email-id").value= person.email; 
 	document.getElementById("edit-id-id").value= person.id; 
 	document.getElementById("edit-skills-id").value= skills_text; 
+	document.getElementById("edit-passions-id").value= passions_text; 
 	
 }
 
@@ -92,13 +94,16 @@ function confirmNodeEdit(network){
     var email = document.getElementById("edit-email-id").value;
     var node_id = document.getElementById("edit-id-id").value;
     var all_skills = document.getElementById("edit-skills-id").value;
+    var all_passions = document.getElementById("edit-passions-id").value;
     
     new_skills =splitAndTrim(all_skills)
+    new_passions =splitAndTrim(all_passions)
     console.log('New skills: ' + new_skills);
     person = network.getPersonByID(node_id);
     person.name = name;
     person.email=email;
     person.skills = new_skills;
+    person.passions = new_passions
     network.updatePerson(person);
     drawGraph()
     showEditPersonForm(false);
@@ -123,9 +128,15 @@ function addPerson(){
     var email = document.getElementById("add-email-id").value
     var id = document.getElementById("add-id-id").value
     var all_skills = document.getElementById("add-skills-id").value
-    skills = splitAndTrim(all_skills)
-    var person = new Person(name, email, id, skills);
+    var all_passions = document.getElementById("add-passions-id").value
     
+    var skills = splitAndTrim(all_skills)
+    var passions = splitAndTrim(all_passions)
+    
+    console.log('Adding: ' + skills + ' | ' + passions)
+    var person = new Person(name, email, id, skills, passions);
+    
+    var passions = splitAndTrim(all_passions)
     try{
     	network.addPerson(person);
     	drawGraph();

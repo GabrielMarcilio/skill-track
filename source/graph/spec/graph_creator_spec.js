@@ -9,27 +9,25 @@ describe("Testing Skill Network", function() {
     
     it("Testing Create Nodes", function(){
     	
-    	nodes = createNodes(this.network);
+    	var nodes = createNodes(this.network);
     	
-    	expected_nodes =[];
-    	expected_nodes['mario_id'] = 'Mario';
-    	expected_nodes['luigi_id'] = 'Luigi';
-    	expected_nodes['princess_peach_id'] = 'Peach';
-    	expected_nodes['bowser_id'] = 'Bowser';
-    	expected_nodes['toad_id'] = 'Toad';
-    	expected_nodes['yoshi_id'] = 'Yoshi';
-    	expected_nodes['koopa_id'] = 'Koopa';
-
-    	expected_nodes['Jump'] = 'Jump';
-    	expected_nodes['Shooting'] = 'Shooting';
-    	expected_nodes['Charisma'] = 'Charisma';
+    	var all_interests = this.network.getInterests()
     	
-    	expected_nodes['Planning'] = 'Planning';
-    	expected_nodes['Running'] = 'Running';
-    	expected_nodes['Dino Ridding'] = 'Dino Ridding';
-    	expected_nodes['March'] = 'March';
+    	var expected_nodes =[];
+    	for(var i=0; i<all_interests.length; i++){
+    		interest = all_interests[i];
+    		expected_nodes[interest]=interest
+    	}
     	
-    	expect(nodes.length).toBe(14);
+    	// Adding persons to the expected nodes
+    	persons = this.network.persons
+    	for(person_id in this.network.persons) {
+    		person = this.network.persons[person_id]
+    		person_name = person.name
+    		expected_nodes[person_id] = person_name;
+    	}
+    	
+    	expect(nodes.length).toBe(24);
    
     	node_ids = nodes.getIds()
     	var nodes_length = node_ids.length;
@@ -45,7 +43,7 @@ describe("Testing Skill Network", function() {
     it("Testing Create Edges", function(){
     	
     	edges = createEdges(this.network);
-    	expect(edges.length).toBe(9);
+    	expect(edges.length).toBe(21);
     	
     	mario_edges = [];
     	edge_ids = edges.getIds();
@@ -57,10 +55,16 @@ describe("Testing Skill Network", function() {
     		}
     	}
     	
-    	expect(mario_edges.length).toBe(3)
+    	expect(mario_edges.length).toBe(5) // 3 Skills and 2 passions
+    	
+    	//Testing Skills
     	expect(mario_edges.indexOf('Jump')).not.toBe(-1);
     	expect(mario_edges.indexOf('Shooting')).not.toBe(-1);
     	expect(mario_edges.indexOf('March')).toBe(-1);
+
+    	// Testing Passions
+    	expect(mario_edges.indexOf('Gardening')).not.toBe(-1);
+    	expect(mario_edges.indexOf('Italian Food')).not.toBe(-1);
     });
     
     it("Testing edge values", function(){

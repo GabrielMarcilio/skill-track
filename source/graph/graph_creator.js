@@ -15,7 +15,7 @@ function createNodes(skill_network){
 	}
 	
 	//Creating the nodes associated with skills
-	network_skills = skill_network.getSkills()
+	network_skills = skill_network.getInterests()
 	for(var i=0; i<network_skills.length; i++){
 		skill = network_skills[i];
 		node_data.push(
@@ -53,16 +53,27 @@ function createEdges(skill_network){
 	for(person_id in skill_network.persons) {
 		person = skill_network.persons[person_id];
 		
-		for(var i=0; i<person.skills.length; i++){
-			skill = person.skills[i];
+		var skills_conf = [person.skills, 'rgb(102,102,255)']
+		var passions_conf = [person.passions, 'rgb(255,128,0)']
+		var interest_and_config = [skills_conf, passions_conf];
+		
+		for(var j=0; j<interest_and_config.length; j++){
+			var interests_and_conf = interest_and_config[j];
+			var interests = interests_and_conf[0];
+			var edge_color = interests_and_conf[1];
 			
-			edge_value = getEdgeValue(person_id, skill, network);
-			edge_data.push(
-				{
-					from: person_id, to: skill,	value:edge_value
-				}
-	
-			)
+			for(var i=0; i<interests.length; i++){
+				var interest = interests[i];
+				var edge_value = getEdgeValue(person_id, interest, network);
+				
+				var edge_title = person.name + ' tem ' +(edge_value -1) + ' interações com ' + interest
+				edge_data.push(
+					{
+						from: person_id, to: interest,	value:edge_value, color:edge_color, title:edge_title
+					}
+		
+				)
+			}
 		}
 	}
 	
@@ -90,7 +101,7 @@ function createGraph(skill_network, container){
 	         },
 	         skill: {
 	        	 color: {background:'rgb(255,255,102)', border:'rgb(255,255,102)'},
-	        	 shape: 'big diamond',
+	        	 shape: 'elipse',
 	        	 size: 40
 	         },
 		 },

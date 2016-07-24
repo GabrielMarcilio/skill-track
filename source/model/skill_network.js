@@ -1,5 +1,5 @@
 
-function Person(name, email, id, skills){
+function Person(name, email, id, skills, passions){
 	/**
 	 * Represents a person within the network.
 	 * 
@@ -8,6 +8,8 @@ function Person(name, email, id, skills){
 	 * @param{int} age - The person age.
 	 * @param{string} email - Person email contact.
 	 * @param{string} id - Uniquely identifies a person.
+	 * @param{array} skills - Person skills.
+	 * @param{array} passions - Person passions.
 	 */
 	this.name = name;
 	this.email = email;
@@ -19,6 +21,24 @@ function Person(name, email, id, skills){
 	else{
 		this.skills = skills;
 	}
+	if (passions == undefined){
+		this.passions = []; 
+	}
+	else{
+		this.passions = passions;
+	}
+}
+
+Person.prototype = {
+    constructor: Person,
+	    
+    getInterests:function(){
+    	/**
+    	 * Get A list containing the person skills and passions
+    	 */
+    	return this.skills.concat(this.passions)
+    	
+    }
 }
 
 
@@ -90,28 +110,33 @@ SkillNetwork.prototype = {
     },
     
     
-    getSkills:function(){
+    getInterests:function(){
+    	/**
+    	 * An intrest is either a skill or a passion. This method will obtain all skills and passions
+    	 * registered by a person.
+    	 */
     	// An associative array to avoid repetitions
-    	var  skills_set = []
+    	var  interest_set = []
     	
     	// Iterating over all persons
     	for(person_id in this.persons) {
     		person = this.persons[person_id];
     		
-    		//Iterating over all person skills
-    		for (var i=0; i<person.skills.length; i++){
-    			skill = person.skills[i];
-    			skills_set[skill] = skill;
+    		//Interating over all person interests
+    		var interests = person.getInterests();
+    		for (var i=0; i<interests.length; i++){
+    			interest = interests[i];
+    			interest_set[interest] = interest;
     		}
     	}
     	
-    	var skill_array =[]
+    	var interest_array =[]
     	// Creating an array from the associative array
-    	for(skill_name in skills_set){
-    		skill_array.push(skill_name);
+    	for(interest_name in interest_set){
+    		interest_array.push(interest_name);
     	}
     	
-    	return skill_array;
+    	return interest_array;
     },
     
     
@@ -160,12 +185,30 @@ function createTestNetwork(){
 	koopa = new Person('Koopa', 'koopa@henchmen.com', 'koopa_id');
 	
 	mario.skills = ['Jump', 'Shooting', 'Dino Ridding'];
+	mario.passions = ['Gardening', 'Italian Food'];
+
 	luigi.skills = ['Running'];
+	luigi.passions = ['Italian Food', 'Milan FC'];
+	
+	
 	peach.skills = ['Charisma'];
+	peach.passions = ['Flowers', 'Martial Arts'];
+	
+	
 	bowser.skills = ['Planning'];
+	bowser.passions = ['Old Castles'];
+	
+	
 	toad.skills = ['Running'];
+	toad.passions = ['Old Castles'];
+	
+	
 	yoshi.skills = ['Running'];
+	yoshi.passions = ['Coins', 'Apples'];
+	
+	
 	koopa.skills = ['March'];
+	koopa.passions = ['Cannons', 'Flying Boats'];
 
 	network.addPerson(mario);
 	network.addPerson(luigi);
