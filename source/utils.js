@@ -174,7 +174,7 @@ function drawGraph(){
 		  if (clicked_node.length > 0){
 			  handleNodeSeletion(clicked_node)
 		  }
-		  else if(clicked_edge !== undefined){
+		  else if(clicked_edge.length > 0){
 			  handleEdgeSelection(clicked_edge);
 		  }
 		  else{
