@@ -1,38 +1,27 @@
+function setFormEnabled(element_id, enabled){
+	var fields = document.getElementById(element_id).getElementsByTagName('*');
+    for(var i = 0; i < fields.length; i++)
+    {
+        fields[i].disabled = enabled;
+    }
+}
 
 function showAddPerson(visibility){
    /*
     * Controls the visibility of the add person button and add person form.
     */
-   if (visibility == true){
-       document.getElementById('show-add-person').style.visibility="hidden"; 
-       document.getElementById('add-table-form').style.visibility="visible";
-   }
-   else{
-       document.getElementById('show-add-person').style.visibility="visible"; 
-       document.getElementById('add-table-form').style.visibility="hidden";
-   }
-    
+	setFormEnabled('add-table-form', !visibility)
 }
 
 function showEditPersonForm(visibility){
-	if (visibility == true){
-		document.getElementById('edit-table-form').style.display="block";
-	}
-	else{
-		document.getElementById('edit-table-form').style.display="none";
-	}
+	setFormEnabled('edit-table-form', !visibility)
 }
 
 function showAddInteraction(visibility){
 	/**
 	 * Change the visibility of the editor to add interactions 
 	 */
-	if (visibility == true){
-		document.getElementById('add-interaction-form').style.display="block";
-	}
-	else{
-		document.getElementById('add-interaction-form').style.display="none";
-	}
+	setFormEnabled('add-interaction-form', !visibility)
 }
 
 function showInteractionToAdd(person_id, skill){
@@ -83,7 +72,6 @@ function showNodeToEdit(node_id, network){
 	var passions_text = person.passions.join(", ");
 	document.getElementById("edit-name-id").value= person.name; 
 	document.getElementById("edit-email-id").value= person.email; 
-	document.getElementById("edit-id-id").value= person.id; 
 	document.getElementById("edit-skills-id").value= skills_text; 
 	document.getElementById("edit-passions-id").value= passions_text; 
 	
@@ -92,10 +80,10 @@ function showNodeToEdit(node_id, network){
 function confirmNodeEdit(network){
 	var name = document.getElementById("edit-name-id").value;
     var email = document.getElementById("edit-email-id").value;
-    var node_id = document.getElementById("edit-id-id").value;
     var all_skills = document.getElementById("edit-skills-id").value;
     var all_passions = document.getElementById("edit-passions-id").value;
     
+    var node_id = graph.getSelectedNodes();
     new_skills =splitAndTrim(all_skills)
     new_passions =splitAndTrim(all_passions)
     console.log('New skills: ' + new_skills);
@@ -146,10 +134,32 @@ function addPerson(){
 		window.alert(err);
     }
     	
-    
 }
 
 
+function handleNodeSeletion(clicked_node){
+	clicked_person = network.getPersonByID(clicked_node) !== undefined;
+	if(clicked_person){
+		showNodeToEdit(clicked_node, network);
+	}
+	else{
+		showEditPersonForm(false);
+	}
+	showAddInteraction(false);
+}
+
+function handleEdgeSelection(selected_edge){
+	connected_nodes = graph.getConnectedNodes(clicked_edge)
+    console.log('Number of clicked nodes: ' + connected_nodes.length)
+	if (connected_nodes.length ==2){
+	    var person_id = connected_nodes[0];
+	    var skill = connected_nodes[1];
+		showInteractionToAdd(person_id, skill)
+	}
+	else {
+	    showAddInteraction(false)
+	}
+}
 function drawGraph(){
 	/*
 	 * Update the graph with the current person representation
@@ -159,29 +169,16 @@ function drawGraph(){
 	
 	graph.on("click", function (params) {
 		  clicked_node = params['nodes']
+		  clicked_edge = params['edges']
 		  
-		  
-		  clicked_person = network.getPersonByID(clicked_node) !== undefined;
-		  if (clicked_person){
-			  showNodeToEdit(clicked_node, network);
+		  if (clicked_node.length > 0){
+			  handleNodeSeletion(clicked_node)
+		  }
+		  else if(clicked_edge !== undefined){
+			  handleEdgeSelection(clicked_edge);
 		  }
 		  else{
 			  showEditPersonForm(false);
-		  }
-		  
-		  clicked_edge = params['edges']
-		  if (clicked_edge !== undefined){
-			  connected_nodes = graph.getConnectedNodes(clicked_edge)
-			  if (connected_nodes.length ==2){
-				  var person_id = connected_nodes[0];
-				  var skill = connected_nodes[1];
-				  showInteractionToAdd(person_id, skill)
-			  }
-			  else {
-				  showAddInteraction(false)
-			  }
-		  }
-		  else{
 			  showAddInteraction(false);
 		  }
 			  

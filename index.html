@@ -12,11 +12,17 @@
 
         table.view {
             width: 100%;
+            table-layout: auto;
         }
 
         table td {
             vertical-align: top;
+            width:60px;
         }
+        
+        table td.absorbing-column {
+		    width: 100%;
+		}
 
         table table {
             background-color: #f5f5f5;
@@ -97,6 +103,12 @@
                 </tr>
             </table>
         </td>
+        <td rowspan=3 class="absorbing-column">
+             <div id="mynetwork"></div>
+        </td>
+    </tr>
+     
+    <tr>
         <td>
             
             <table id='edit-table-form'>
@@ -112,11 +124,6 @@
                     <td></td>
                     <td><label for="edit-email-id">Email</label></td>
                     <td><input id="edit-email-id" type="text" value=""></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td><label for="edit-id-id">ID</label></td>
-                    <td><input id="edit-id-id" type="text" value="" readonly></td>
                 </tr>
                 <tr>
                     <td></td>
@@ -138,6 +145,8 @@
                 </tr>
             </table>
         </td>
+    </tr>
+    <tr>
         <td>
             <table id='add-interaction-form'>
                 <tr>
@@ -181,16 +190,14 @@
     </tr>
 </table>
  
-<button id='show-add-person' onclick='showAddPerson(true);'>Adicionar Pessoa</button>
   
-<div id="mynetwork"></div>
-
 <script type="text/javascript" charset='utf-8'>
 console.log('Starting Javascrit Section');
 
-showAddPerson(false);
+showAddPerson(true);
 showEditPersonForm(false)
 showAddInteraction(false);
+
 var network;
 var graph; 
 
