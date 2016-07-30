@@ -59,6 +59,8 @@
 </head>
 <body>
 
+<button id="load-example-id" onclick="createExampleNetwork();">Carregar Exemplo</button>
+<button id="clear-network-id" onclick="clearNetwork();">Resetar</button>
 <h1></h1>
 <table>
     <tr>
@@ -201,8 +203,8 @@ showAddInteraction(false);
 var network;
 var graph; 
 
-function createNetwork(){
-  network = new SkillNetwork('Rede da Ka');
+function createExampleNetwork(){
+  network = new SkillNetwork('Example Network');
   karine = new Person('Karine', 'ka@gmail.com', 'karine');
   gabriel = new Person('Gabriel', 'gabriel@gmail.com', 'gabriel');
   hiroshi = new Person('Hiroshi', 'hiroshi@gmail.com', 'hiroshi');
@@ -251,10 +253,16 @@ function createNetwork(){
 	  network.addInteraction(interaction);
 	  console.log('Interaction added')
   }
+  drawGraph()
 }
-  
- createNetwork()
- drawGraph()
+
+function clearNetwork(){
+	network.clear();
+	drawGraph();
+}
+
+createExampleNetwork()
+
  
 </script>
 

@@ -76,6 +76,11 @@ function SkillNetwork(name){
 SkillNetwork.prototype = {
     constructor: SkillNetwork,
     
+    clear:function(){
+    	this.persons = [];
+    	this.interactions = [];
+    },
+    
     addPerson:function(person){
     	/**
     	 * Add a person in the network.

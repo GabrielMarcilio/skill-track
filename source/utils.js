@@ -160,6 +160,7 @@ function handleEdgeSelection(selected_edge){
 	    showAddInteraction(false)
 	}
 }
+
 function drawGraph(){
 	/*
 	 * Update the graph with the current person representation
