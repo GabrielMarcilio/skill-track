@@ -1,0 +1,47 @@
+
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="./utils.js"></script>
+<script>
+
+	  
+$(document).ready(function(){
+    $("#test_get").click(function(){
+        $.get("/sum", function(data, status){
+        	console.log('Get Callback')
+        	console.log('Data len:', data.length)
+        	console.log(data[0]);
+        	console.log(data[1])
+        	
+        });
+    });
+});
+$(document).ready(function(){
+    $("#test_post").click(function(){
+    	var persons =  createPersons()
+    	    
+   	    $.post("/postingpersons",
+   	    		{'persons':persons},
+    		    function(data, status){
+    		        alert("Data: " + data + "\nStatus: " + status);
+    		    });
+        	
+        });
+ });
+</script>
+</head>
+<body>
+
+
+ <button id=test_get>Test Get Button</button>
+ <button id=test_post>Test Post Button</button>
+  
+
+
+</body>
+</html>
+
+
