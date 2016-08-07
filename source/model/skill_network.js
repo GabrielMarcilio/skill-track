@@ -160,11 +160,15 @@ SkillNetwork.prototype = {
     	 * 
     	 * @param{string} person_id - The id of the person to obtain the interactions
     	 */
-    	result = this.interactions.filter(inter => inter.person == person_id);
+    	result =[]
     	
-    	if (skill_id !== undefined){
-    		
-    		result = result.filter(inter => inter.skill_name == skill_id);
+    	for(var i=0; i<this.interactions.length; i++){
+    		var inter = this.interactions[i];
+    		var valid_skill = (skill_id == undefined) || (skill_id == inter.skill_name);
+    		var valid_person = inter.person == person_id;
+    		if(valid_person && valid_skill){
+    			result.push(inter)
+    		}
     	}
     	
     	return result;
@@ -237,4 +241,11 @@ function createTestNetwork(){
 	
 	
 	return network;
+}
+
+module.exports ={
+	createTestNetwork: createTestNetwork,
+	SkillNetwork:SkillNetwork,
+	Interaction:Interaction,
+	Person:Person,
 }
