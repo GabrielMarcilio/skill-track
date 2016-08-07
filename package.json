@@ -1,20 +1,28 @@
 {
-    "name": "skill-track",
-    "version": "0.0.1",
-    "description": "Display a network of shared interests or skills.",
-    "keywords": ["skills", "network"],
-    "repository": "https://github.com/GabrielMarcilio/skill-track.git",
-    "homepage": "http://skilltrack-skilltrack.rhcloud.com/",
-    "author": "Gabriel Marcilio",
-    "dependencies": {
-        "finalhandler": "0.5.0",
-        "serve-static": "1.11.1"
-    },
-    "main": "main.js",
-    "engines": {
-        "node": ">= 0.10.13"
-    },
-    "scripts": {
-        "start": "node main.js"
-    }
+  "name": "skill-track",
+  "version": "0.0.1",
+  "description": "Display a network of shared interests or skills.",
+  "keywords": [
+    "skills",
+    "network"
+  ],
+  "repository": "https://github.com/GabrielMarcilio/skill-track.git",
+  "homepage": "http://skilltrack-skilltrack.rhcloud.com/",
+  "author": "Gabriel Marcilio",
+  "dependencies": {
+    "finalhandler": "0.5.0",
+    "serve-static": "1.11.1",
+    "mysql": "~2.11.1"
+  },
+  "main": "main.js",
+  "engines": {
+    "node": ">= 0.10.13"
+  },
+  "scripts": {
+    "start": "node main.js",
+    "test": "jasmine-node spec"
+  },
+  "devDependencies": {
+    "jasmine-node": "~1.14.5"
+  }
 }
