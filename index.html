@@ -49,13 +49,21 @@
             border: 1px solid lightgray;
         }
     </style>
-  <script type="text/javascript" src="lib/vis-4.16.1/vis.js"></script>
+  <script type="text/javascript" src="/lib/vis-4.16.1/vis.js"></script>
   <link href="lib/vis-4.16.1/vis.css" rel="stylesheet" type="text/css" />
    
   <script src="source/model/skill_network.js"></script>
   <script src="source/graph/graph_creator.js"></script>
   <script src="source/utils.js"></script>
-  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+<script>
+$(document).ready(function(){
+	network = new SkillNetwork('Passions and Skills Diagram');
+    loadNetwork(network);
+});
+</script>
+
 </head>
 <body>
 
@@ -203,65 +211,7 @@ showAddInteraction(false);
 var network;
 var graph; 
 
-function createExampleNetwork(){
-  network = new SkillNetwork('Example Network');
-  karine = new Person('Karine', 'ka@gmail.com', 'karine');
-  gabriel = new Person('Gabriel', 'gabriel@gmail.com', 'gabriel');
-  hiroshi = new Person('Hiroshi', 'hiroshi@gmail.com', 'hiroshi');
-  hidemi = new Person('Hidemi', 'hidemi@gmail.com', 'hidemi');
-  goma = new Person('Goma', 'goma@gmail.com', 'goma');
-  paula = new Person('Paula', 'paula@gmail.com', 'paula');
-  lipi = new Person('Lipi', 'lipi@gmail.com', 'lipi');
-  
-  karine.skills = ['Viagem', 'Culinaria', 'Educação', 'Disney'];
-  karine.passions = ['Barcelona', 'Muffins', 'Game of Thrones', 'Chocolate'];
 
-  gabriel.skills = ['Game of Thrones', 'Board Games', 'Video Game']; 
-  gabriel.passions = ['NFL', 'Ficção', 'Disney', 'Formula 1']; 
-
-  hiroshi.skills = ['Board Games', 'Arquitetura', 'Kanjis', 'Video Game', 'Culinaria'];
-  hiroshi.passions = ['Piano', 'Canada'];
-
-  hidemi.skills = ['Culinaria', 'Pipoca', 'Chocolate'];
-  hidemi.passions = ['Dormir', 'Familia', 'Netflix', 'Viagem'];
-
-  goma.skills = ['NFL', 'Board Games', 'Trocar Fralda', 'RPG', 'Disney'];
-  goma.passions = ['NFL', 'Paternidade', 'Augusto'];
-
-  paula.skills = ['Viagem', 'Trocar Fralda', 'Quebrar Panela', 'Farmacia'];
-  paula.passions = ['Tenis', 'Compras', 'Farmacia', 'Disney'];
-
-  lipi.skills = ['Passear', 'Fugir da Pipoca'];
-  lipi.passions = ['Subir o Sofá', 'Garagem', 'Chocolate'];
-
-  network.addPerson(karine);
-  network.addPerson(gabriel);
-  network.addPerson(hiroshi)
-  network.addPerson(hidemi)
-  network.addPerson(goma)
-  network.addPerson(paula)
-  network.addPerson(lipi)
-  
-  persons_that_travelled = ['karine', 'goma', 'paula'];
-  
-  for(var i=0; i<persons_that_travelled.length; i++){
-	  person_id = persons_that_travelled[i]
-	  
-	  console.log('Adding travel for' + person_id)
-	  travel_date= new Date(2013, 11, 3)
-	  interaction = new Interaction(person_id, 'Disney', travel_date, 'Melhores Ferias', 'gabriel')
-	  network.addInteraction(interaction);
-	  console.log('Interaction added')
-  }
-  drawGraph()
-}
-
-function clearNetwork(){
-	network.clear();
-	drawGraph();
-}
-
-createExampleNetwork()
 
  
 </script>

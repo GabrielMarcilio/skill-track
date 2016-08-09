@@ -12,37 +12,22 @@ sql.connectMysql(con);
 
 var persons = [
      {
-    	'name':'Gabriel','email':'gaheris.sc@gmail.com', 'skills':'python, java, qwt', 'passions':'fiction, board game, video game'
+    	'name':'Dummy','email':'dummy@gmail.com', 'skills':'python, java, qwt', 'passions':'fiction, board game, video game'
      },
      {
-    	 'name':'Karine','email':'koceano@gmail.com', 'skills':'cooking, teaching, planning', 'passions':'tripping, game of thrones, cats'
+    	 'name':'Dummy 2','email':'dummy2@gmail.com', 'skills':'cooking, teaching, planning', 'passions':'tripping, game of thrones, cats'
      },
 ]
 sql.clearTable('persons', con);
 sql.writePersons(persons, con);
+
+person = {
+		'name':'New Name','email':'new@gmail.com', 'skills':' new python, java, qwt', 'passions':' new fiction, board game, video game','id':'80'
+}
+database = 'sk_test'
+sql.editPerson(con, person, database)
 sql.readPersons(con);
 sql.disconnectMysql(con);
-//var create_user_query = "CREATE USER 'paulo_alberto'@'%' IDENTIFIED BY 'paulo_alberto';";
-//var add_provileges = "GRANT INSERT, SELECT ON sk_test.cities TO 'paulo_alberto'@'%';"
-	
-//console.log('Creating user')
-//sql.execute_query(con, create_user_query);
 
-//console.log('Adding priviledges')
-//sql.execute_query(con, add_provileges);
-
-
-//console.log('Disconnecting')
-//con_paulo = con
-//con_paulo.changeUser({user : 'paulo_alberto', password:'paulo_alberto', database:'sk_test'});
-//console.log('Activating new user connection')
-//console.log('Requesting query')
-//sql.execute_query(con_paulo, 'SELECT * FROM cities;')
-//
-////var add_user_2 = create_connection("add_user", "add_user");
-//var add_user_2 = con_paulo;
-//add_user_2.changeUser({user : 'add_user', password:'add_user', database:'sk_test'});
-//sql.execute_query(add_user_2, "DROP USER 'paulo_alberto'@'%';");
-//sql.disconnect_mysql(add_user_2)
 
 

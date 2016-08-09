@@ -111,19 +111,6 @@ function readPersons(connection){
 		}
 	});
 }
-//function execute_query(connection, query_command){
-//	connection.query(query_command, function(err, rows){
-//		console.log('Execute query callback: ' + query_command)
-//		if(err){
-//			console.log('Erro ao executar:' + query_command + " " + err)
-//			throw err;
-//		}
-//		else{
-//			console.log('Sucess '+ query_command);
-//			console.log(rows)
-//		}
-//	});
-//}
 
 module.exports ={
 		createConnection: createConnection,

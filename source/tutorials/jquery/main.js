@@ -15,12 +15,10 @@ app.listen(PORT, function(){
 
 
 app.get('/', function(req, res) {
-	console.log('Obtaining root page')
     res.sendFile(path.join(__dirname + '/test_page.html'));
 });
 
 app.get('/jquery.js', function(req, res) {
-	console.log('Obtaining jquery')
 	res.sendFile(path.join(__dirname + '/jquery.js'));
 });
 app.get('/utils.js', function(req, res) {

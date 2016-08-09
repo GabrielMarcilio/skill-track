@@ -243,9 +243,14 @@ function createTestNetwork(){
 	return network;
 }
 
-module.exports ={
-	createTestNetwork: createTestNetwork,
-	SkillNetwork:SkillNetwork,
-	Interaction:Interaction,
-	Person:Person,
+
+//This code might be invoke from the browser. In this case we dont need to export the functions 
+// (in fact we can't).
+if (typeof module !== 'undefined' && module.exports) {
+	module.exports ={
+		createTestNetwork: createTestNetwork,
+		SkillNetwork:SkillNetwork,
+		Interaction:Interaction,
+		Person:Person,
+	}
 }

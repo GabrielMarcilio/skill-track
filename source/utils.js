@@ -65,7 +65,6 @@ function confirmAddInteraction(){
 
 function showNodeToEdit(node_id, network){
 	person = network.getPersonByID(node_id);
-	console.log('Editing person: ' + person.name);
 	showEditPersonForm(true);
 	
 	var skills_text = person.skills.join(", ");
@@ -95,9 +94,11 @@ function confirmNodeEdit(network){
     network.updatePerson(person);
     drawGraph()
     showEditPersonForm(false);
+    updatePersonInDatabase(person);
 }
 
 function splitAndTrim(single_text){
+	console.log('Spliting: '+ single_text);
 	var text_tokens = single_text.split(',')
 	text_array = [];
 	
@@ -129,6 +130,7 @@ function addPerson(){
     	network.addPerson(person);
     	drawGraph();
     	showAddPerson(false);
+    	addPersonInDatabase(person)
     }
 	catch(err){
 		window.alert(err);
@@ -184,4 +186,52 @@ function drawGraph(){
 		  }
 			  
 	  });
+}
+
+function updatePersonInDatabase(person){
+	 $.post(
+		"/updatePerson",
+		{'person':person},
+	    function(data, status){
+	        alert("Update person result: " + data + "\nStatus: " + status);
+    });
+}
+function addPersonInDatabase(person){
+	/**
+	 * Send a request to the server to store the person created in the database
+	 */
+    $.post(
+		"/storePerson",
+		{'person':person},
+	    function(data, status){
+	        alert("Store person result: " + data + "\nStatus: " + status);
+    });
+    	
+}
+
+function loadNetwork(network){
+	/**
+	 * Populates the given etwork with information from the database
+	 */
+	$.get("/loadPersons", function(data, status){
+		network.clear();
+    	for(var i=0; i< data.length; i++){
+    		var person_data = data[i];
+    		var skills = splitAndTrim(person_data.skills);
+    	    var passions = splitAndTrim(person_data.passions);
+    		person = new Person(
+    			name =person_data.name,
+    			name =person_data.email,
+    			name =person_data.id,
+    			name =skills,
+    			name =passions
+    		)
+    		
+    		network.addPerson(person);
+    		console.log('Added: ' + person.name)
+    	}
+    	
+    	drawGraph();
+    	
+    });
 }

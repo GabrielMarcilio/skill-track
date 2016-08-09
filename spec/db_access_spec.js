@@ -1,23 +1,24 @@
 var db = require('../source/db/database_access.js')
+var test_database = "sk_test"; 
 
 describe("Testing Database access", function() {
-	beforeEach(function() {
+	beforeEach(function(done) {
 		var sql_username = process.env.OPENSHIFT_MYSQL_DB_USERNAME;
 		var sql_pass = process.env.OPENSHIFT_MYSQL_DB_PASSWORD;
 		var port = process.env.OPENSHIFT_MYSQL_DB_PORT;
 
 		// First you need to create a connection to the db
-		this.connection = db.createConnection(sql_username, sql_pass, port)
-		db.clearTable('persons', this.connection, 'sk_test');
+		this.connection = db.createConnection(sql_username, sql_pass, port, test_database);
+		db.clearTable('persons', this.connection, done);
 		
 	});
 	
-	afterEach(function() {
-		db.disconnectMysql(this.connection);
+	afterEach(function(done) {
+		db.disconnectMysql(this.connection, done);
 		
 	});
 	
-	it("Testing Write and Read Persons", function(){
+	it("Testing Write and Read Persons", function(done){
 		// Adding some persons in the db and checking if they are correctly obtained back
 		var persons = [
            {
@@ -50,13 +51,15 @@ describe("Testing Database access", function() {
 					var skills_read = person.skills;
 					var passions_read = person.passions;
 					
-					var obtained_data = [name_read, email_read, skills_read, passions_read];
+					var obtained_data = [email_read, skills_read, passions_read];
 					expected_data = all_expected_data[name_read];
 					
-					expect(obtained_data).toBe(expected_data);
+					for(var j=0; j<3; j++){
+						expect(obtained_data[i]).toBe(expected_data[i]);
+					}
 					delete all_expected_data[name_read];
 				}
-				
+				done();
 			}
 		});
 	});
