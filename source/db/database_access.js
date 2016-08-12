@@ -42,7 +42,29 @@ function updatePerson(connection, person, database, callback){
 		"UPDATE "+ database + ".persons SET name = ?, email=?, skills=?, passions=? WHERE id = ?", 
 		[person.name, person.email, person.skills, person.passions, person.id], callback);
 }
+
+function updateInteraction(connection, interaction, database, callback){
+	/**
+	 * Updates the given interaction (json) in the database
+	 */
+	connection.query('UPDATE interactions SET ? WHERE ?', [interaction, {'interaction_id':interaction.interaction_id}], callback);
+}
 		  
+
+function writeInteraction(connection, interaction, database, callback){
+	/**
+	 * stores the given interaction (json) in the database
+	 */
+	connection.query('INSERT INTO interactions SET ?', interaction, callback);
+}
+
+function readInteractions(connection, database, callback){
+	/**
+	 * Read all interactions stored in the database
+	 */
+	query = 'SELECT * FROM ' + database + '.interactions;'
+	connection.query(query, callback);
+}
 
 function writePersons(persons, connection, callback){
 	/**
@@ -51,27 +73,15 @@ function writePersons(persons, connection, callback){
 	 * @param{array} persons - An array of persons (JSON). Each person entry is composed by name, 
 	 * email, skills and passions.
 	 */
-    var query_lines = [
-        'INSERT INTO persons (name, email, skills, passions)',
-        'VALUES',
-    ]
+	var values = []
 	
-    for(var i=0; i<persons.length; i++){
+	for(var i=0; i<persons.length; i++){
     	current = persons[i]
-    	query_line = "('"+current.name+"' , '" + current.email + "' , '" + current.skills+"' , '" + current.passions+"')"
+    	var current_row = [current.name, current.email, current.skills, current.passions];
+    	values.push(current_row);
+	}
     	
-    	if( i==persons.length-1){
-    		query_line +=';' 
-    	}
-    	else{
-    		query_line +=','
-    	}
-    	
-    	query_lines.push(query_line)
-    }
-    
-    var add_persons_query = query_lines.join('\n');
-    connection.query(add_persons_query, callback);
+    connection.query('INSERT INTO persons (name, email, skills, passions) VALUES ?', [values], callback);
 	
 }
 
@@ -101,5 +111,8 @@ module.exports ={
 		writePersons: writePersons,
 		clearTable: clearTable,
 		readPersons: readPersons,
-		updatePerson:updatePerson
+		updatePerson:updatePerson,
+		writeInteraction:writeInteraction,
+		readInteractions:readInteractions,
+		updateInteraction: updateInteraction
 }

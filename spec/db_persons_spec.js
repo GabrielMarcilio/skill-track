@@ -29,38 +29,39 @@ describe("Testing Database access", function() {
            },
         ]
 
+		var connection = this.connection;
 		//Sending data
-		db.writePersons(persons, this.connection);
-		
-		//Reading back
-		db.readPersons(this.connection, function(err, rows){
-			if(err){
-				throw err;
-			}
-			else{
-				var all_expected_data = {
-					'Mario':['mario@nintendo.com', 'Running, Jumping', 'Pasta, Juventus, Karts'],
-					'Luiggi':['luigi@nintendo.com', 'Running, Cooking', 'Dinossaurs, Kart, Ghosts']
+		db.writePersons(persons, this.connection, function(err, result){
+			//Reading back
+			db.readPersons(connection, function(err, rows){
+				if(err){
+					throw err;
 				}
-
-				expect(rows.length).toBe(2);
-				for(var i=0; i<rows.length; i++){
-					person = rows[i]
-					var name_read = person.name;
-					var email_read = person.email;
-					var skills_read = person.skills;
-					var passions_read = person.passions;
-					
-					var obtained_data = [email_read, skills_read, passions_read];
-					expected_data = all_expected_data[name_read];
-					
-					for(var j=0; j<3; j++){
-						expect(obtained_data[i]).toBe(expected_data[i]);
+				else{
+					var all_expected_data = {
+						'Mario':['mario@nintendo.com', 'Running, Jumping', 'Pasta, Juventus, Karts'],
+						'Luiggi':['luigi@nintendo.com', 'Running, Cooking', 'Dinossaurs, Kart, Ghosts']
 					}
-					delete all_expected_data[name_read];
+	
+					expect(rows.length).toBe(2);
+					for(var i=0; i<rows.length; i++){
+						person = rows[i]
+						var name_read = person.name;
+						var email_read = person.email;
+						var skills_read = person.skills;
+						var passions_read = person.passions;
+						
+						var obtained_data = [email_read, skills_read, passions_read];
+						expected_data = all_expected_data[name_read];
+						
+						for(var j=0; j<3; j++){
+							expect(obtained_data[i]).toBe(expected_data[i]);
+						}
+						delete all_expected_data[name_read];
+					}
+					done();
 				}
-				done();
-			}
+			});
 		});
 	});
 });
