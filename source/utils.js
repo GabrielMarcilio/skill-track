@@ -91,14 +91,15 @@ function confirmNodeEdit(network){
     var all_passions = document.getElementById("edit-passions-id").value;
     
     var node_id = graph.getSelectedNodes();
-    new_skills =splitAndTrim(all_skills)
-    new_passions =splitAndTrim(all_passions)
-    console.log('New skills: ' + new_skills);
-    person = network.getPersonByID(node_id);
+    var new_skills =splitAndTrim(all_skills)
+    var new_passions =splitAndTrim(all_passions)
+    var person = network.getPersonByID(node_id);
+    console.log('!!!!!Updating person: ' + person.name + ' p: ' + all_passions);
     person.name = name;
     person.email=email;
     person.skills = new_skills;
     person.passions = new_passions
+    console.log('Person with passions from editor: '+  person.name + ' p:' + person.passions)
     network.updatePerson(person);
     drawGraph()
     showEditPersonForm(false);
@@ -138,7 +139,7 @@ function addPerson(){
 
 
 function handleNodeSeletion(clicked_node){
-	clicked_person = network.getPersonByID(clicked_node) !== undefined;
+	var clicked_person = network.getPersonByID(clicked_node) !== undefined;
 	if(clicked_person){
 		showNodeToEdit(clicked_node, network);
 	}
@@ -149,7 +150,7 @@ function handleNodeSeletion(clicked_node){
 }
 
 function handleEdgeSelection(selected_edge){
-	connected_nodes = graph.getConnectedNodes(clicked_edge)
+	var connected_nodes = graph.getConnectedNodes(clicked_edge)
     console.log('Number of clicked nodes: ' + connected_nodes.length)
 	if (connected_nodes.length ==2){
 	    var person_id = connected_nodes[0];
@@ -188,8 +189,9 @@ function drawGraph(){
 
 
 function updatePersonInDatabase(person){
+	console.log('Updating in db: ' + person.name + ' person.passions: ' + person.passions)
 	var person_memento = person.createMemento();
-	console.log('Page updating person: ' + person_memento.passions + ' ' + typeof person_memento.passions)
+	console.log('Page updating person: ' + person_memento.name + ' p: ' + person_memento.passions + ' ' + typeof person_memento.passions)
 	 $.post(
 		"/updatePerson",
 		{'person':person_memento},
@@ -231,6 +233,7 @@ function loadNetwork(network){
     	for(var i=0; i< data.length; i++){
     		var person_memento = data[i];
     		var person = new Person();
+    		console.log('Requesting memento set ' + person_memento.passions)
     		person.setMemento(person_memento);
     		network.addPerson(person);
     		console.log('Added: ' + person.name)

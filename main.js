@@ -5,7 +5,7 @@ var sql = require('./source/db/database_access.js')
 
 var app = express();
 
-var port = process.env.OPENSHIFT_NODEJS_PORT  || 8090;
+var port = process.env.OPENSHIFT_NODEJS_PORT  || 8080;
 var ipaddress = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
 
 var sql_username = process.env.OPENSHIFT_MYSQL_DB_USERNAME;
@@ -102,11 +102,13 @@ app.post('/updatePerson', function(req, res) {
 	con = sql.createConnection(sql_host, sql_username, sql_pass, sql_port, sql_database)
 	sql.connectMysql(con);
 	
+	console.log('Updating person: ' + person.id + ' ' + person.passions + ' t:' + typeof person.passions)
 	sql.updatePerson(con, person, sql_database, function(err, rows){
 		if(err){
 			throw err;
 		}
 		else{
+			console.log('Update ok!')
 			sql.disconnectMysql(con);
 		}
 	});
