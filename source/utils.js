@@ -57,11 +57,9 @@ function confirmAddInteraction(){
     var reporter = document.getElementById("add-inter-reporter-id").value;
     
     if(reporter==''){
-    	console.log('clearing reporter')
     	reporter=undefined;
     }
     
-    console.log('Creating interaction '+ typeof reporter)
     var interaction = new Interaction(person_id, skill, date, description, reporter);
     network.addInteraction(interaction);
     
@@ -94,12 +92,10 @@ function confirmNodeEdit(network){
     var new_skills =splitAndTrim(all_skills)
     var new_passions =splitAndTrim(all_passions)
     var person = network.getPersonByID(node_id);
-    console.log('!!!!!Updating person: ' + person.name + ' p: ' + all_passions);
     person.name = name;
     person.email=email;
     person.skills = new_skills;
     person.passions = new_passions
-    console.log('Person with passions from editor: '+  person.name + ' p:' + person.passions)
     network.updatePerson(person);
     drawGraph()
     showEditPersonForm(false);
@@ -121,7 +117,6 @@ function addPerson(){
     var skills = splitAndTrim(all_skills)
     var passions = splitAndTrim(all_passions)
     
-    console.log('Adding: ' + skills + ' | ' + passions)
     var person = new Person(name, email, id, skills, passions);
     
     var passions = splitAndTrim(all_passions)
@@ -151,7 +146,6 @@ function handleNodeSeletion(clicked_node){
 
 function handleEdgeSelection(selected_edge){
 	var connected_nodes = graph.getConnectedNodes(clicked_edge)
-    console.log('Number of clicked nodes: ' + connected_nodes.length)
 	if (connected_nodes.length ==2){
 	    var person_id = connected_nodes[0];
 	    var skill = connected_nodes[1];
@@ -189,9 +183,7 @@ function drawGraph(){
 
 
 function updatePersonInDatabase(person){
-	console.log('Updating in db: ' + person.name + ' person.passions: ' + person.passions)
 	var person_memento = person.createMemento();
-	console.log('Page updating person: ' + person_memento.name + ' p: ' + person_memento.passions + ' ' + typeof person_memento.passions)
 	 $.post(
 		"/updatePerson",
 		{'person':person_memento},
@@ -214,7 +206,6 @@ function addPersonInDatabase(person){
 }
 
 function addInteractionInDatabase(interaction){
-	console.log('Page posting interaction to add:  ' + typeof interaction.date);
 	$.post(
 		"/storeInteraction",
 		{'interaction':interaction},
@@ -228,15 +219,12 @@ function loadNetwork(network){
 	 * Populates the given etwork with information from the database
 	 */
 	$.get("/loadPersons", function(data, status){
-		console.log('Loading persons')
 		network.clear();
     	for(var i=0; i< data.length; i++){
     		var person_memento = data[i];
     		var person = new Person();
-    		console.log('Requesting memento set ' + person_memento.passions)
     		person.setMemento(person_memento);
     		network.addPerson(person);
-    		console.log('Added: ' + person.name)
     	}
     	
     	// The persons are loaded, time to load the interactions

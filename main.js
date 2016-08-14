@@ -23,7 +23,6 @@ app.use('/source', express.static(__dirname + '/source'));
 
 app.listen(port, ipaddress, function(){
   //Callback triggered when server is successfully listening. Hurray!
-  console.log("Server listening on: http://localhost:%s", port);
 });
 
 
@@ -50,7 +49,6 @@ app.get('/loadInteractions', function(req, res) {
 
 app.get('/loadPersons', function(req, res) {
 	// Callback triggered when load persons is requested
-	console.log('Connecting mysql: h:' + sql_host + ' u: ' +sql_username + ' p: ' + sql_pass + ' pt: ' + sql_port + ' db:' + sql_database)
 	con = sql.createConnection(sql_host, sql_username, sql_pass, sql_port, sql_database)
 	sql.connectMysql(con);
 	
@@ -102,13 +100,11 @@ app.post('/updatePerson', function(req, res) {
 	con = sql.createConnection(sql_host, sql_username, sql_pass, sql_port, sql_database)
 	sql.connectMysql(con);
 	
-	console.log('Updating person: ' + person.id + ' ' + person.passions + ' t:' + typeof person.passions)
 	sql.updatePerson(con, person, sql_database, function(err, rows){
 		if(err){
 			throw err;
 		}
 		else{
-			console.log('Update ok!')
 			sql.disconnectMysql(con);
 		}
 	});

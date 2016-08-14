@@ -79,7 +79,6 @@ function splitAndTrim(single_text){
 	 * Splits the given string into an array of strings. The comas in the given text will be used
 	 * as key to the split method. Also all texts in given array will be trimmed.
 	 */
-	console.log('Spliting: '+ single_text);
 	var text_tokens = single_text.split(',')
 	text_array = [];
 	
