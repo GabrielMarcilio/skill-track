@@ -94,7 +94,7 @@ app.post('/storePerson', function(req, res) {
 			sql.disconnectMysql(con);
 		}
 	});
-	
+
 });
 app.post('/updatePerson', function(req, res) {
 	var person = req.body.person;
