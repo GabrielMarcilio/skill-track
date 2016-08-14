@@ -21,7 +21,7 @@ app.use('/lib', express.static(__dirname + '/lib'));
 app.use('/source', express.static(__dirname + '/source'));
 
 console.log('Serving on: ' + ipaddress + ' : ' + port)
-app.listen(port, function(){
+app.listen(port, ipaddress, function(){
   //Callback triggered when server is successfully listening. Hurray!
   console.log("Server listening on: http://localhost:%s", port);
 });
