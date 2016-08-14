@@ -90,4 +90,36 @@ describe("Testing Skill Network", function() {
 		
 	});
 	
+	it("Test Get and Set Memento", function(){
+		mario = new Person('Mario', 'mario@plumber.com', 'mario_id')
+		mario.skills = ['Jump', 'Shooting', 'Dino Ridding'];
+		mario.passions = ['Gardening', 'Italian Food'];
+		
+		mario_memento = mario.createMemento();
+		
+		// Check if the person skills and passions where converted to strings
+		console.log('Memento skills: ' + mario_memento.skills);
+		expect(mario_memento.skills).toBe('Jump,Shooting,Dino Ridding');
+		expect(mario_memento.passions).toBe('Gardening,Italian Food');
+		
+		clonned_mario = new Person();
+		clonned_mario.setMemento(mario_memento);
+		
+		expect(clonned_mario.name).toBe('Mario');
+		expect(clonned_mario.email).toBe('mario@plumber.com');
+		expect(clonned_mario.id).toBe( 'mario_id');
+		
+		expect(clonned_mario.skills.length).toBe(3);
+		// When the memento is set the vakues are converted once again to array
+		for(var i=0; i<3; i++){
+			expect(clonned_mario.skills[i]).toBe(mario.skills[i])
+		}
+
+		expect(clonned_mario.passions.length).toBe(2);
+		for(var i=0; i<3; i++){
+			expect(clonned_mario.passions[i]).toBe(mario.passions[i])
+		}
+		
+	})
+	
 });

@@ -56,8 +56,16 @@ function confirmAddInteraction(){
     var description = document.getElementById("add-inter-description-id").value;
     var reporter = document.getElementById("add-inter-reporter-id").value;
     
+    if(reporter==''){
+    	console.log('clearing reporter')
+    	reporter=undefined;
+    }
+    
+    console.log('Creating interaction '+ typeof reporter)
     var interaction = new Interaction(person_id, skill, date, description, reporter);
     network.addInteraction(interaction);
+    
+    addInteractionInDatabase(interaction);
     showAddInteraction(false);
     drawGraph();
 }
@@ -97,17 +105,7 @@ function confirmNodeEdit(network){
     updatePersonInDatabase(person);
 }
 
-function splitAndTrim(single_text){
-	console.log('Spliting: '+ single_text);
-	var text_tokens = single_text.split(',')
-	text_array = [];
-	
-    for (i=0; i<text_tokens.length; i++){
-    	text_array.push(text_tokens[i].trim());
-    }
-    
-    return text_array;
-}
+
 
 function addPerson(){
 	/*
@@ -188,10 +186,13 @@ function drawGraph(){
 	  });
 }
 
+
 function updatePersonInDatabase(person){
+	var person_memento = person.createMemento();
+	console.log('Page updating person: ' + person_memento.passions + ' ' + typeof person_memento.passions)
 	 $.post(
 		"/updatePerson",
-		{'person':person},
+		{'person':person_memento},
 	    function(data, status){
 	        alert("Update person result: " + data + "\nStatus: " + status);
     });
@@ -200,13 +201,24 @@ function addPersonInDatabase(person){
 	/**
 	 * Send a request to the server to store the person created in the database
 	 */
+	var person_memento = person.createMemento();
     $.post(
 		"/storePerson",
-		{'person':person},
+		{'person':person_memento},
 	    function(data, status){
 	        alert("Store person result: " + data + "\nStatus: " + status);
     });
     	
+}
+
+function addInteractionInDatabase(interaction){
+	console.log('Page posting interaction to add:  ' + typeof interaction.date);
+	$.post(
+		"/storeInteraction",
+		{'interaction':interaction},
+	    function(data, status){
+	        alert("Store person result: " + data + "\nStatus: " + status);
+    });
 }
 
 function loadNetwork(network){
@@ -214,24 +226,31 @@ function loadNetwork(network){
 	 * Populates the given etwork with information from the database
 	 */
 	$.get("/loadPersons", function(data, status){
+		console.log('Loading persons')
 		network.clear();
     	for(var i=0; i< data.length; i++){
-    		var person_data = data[i];
-    		var skills = splitAndTrim(person_data.skills);
-    	    var passions = splitAndTrim(person_data.passions);
-    		person = new Person(
-    			name =person_data.name,
-    			name =person_data.email,
-    			name =person_data.id,
-    			name =skills,
-    			name =passions
-    		)
-    		
+    		var person_memento = data[i];
+    		var person = new Person();
+    		person.setMemento(person_memento);
     		network.addPerson(person);
     		console.log('Added: ' + person.name)
     	}
     	
-    	drawGraph();
+    	// The persons are loaded, time to load the interactions
+    	$.get("/loadInteractions", function(data, status){
+    		for(var i=0; i< data.length; i++){
+        		var interaction_data = data[i];
+        		var interaction = new Interaction(
+        			interaction_data.person_id, 
+        			interaction_data.skill_name,
+        			interaction_data.date, 
+        			interaction_data.description, 
+        			interaction_data.reporter
+    			)
+        		network.addInteraction(interaction);
+    		}
+    		drawGraph();
+    	});
     	
-    });
+    }); 
 }

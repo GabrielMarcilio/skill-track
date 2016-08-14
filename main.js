@@ -30,8 +30,26 @@ app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname + '/index.html'));
 });
 
+app.get('/loadInteractions', function(req, res) {
+	// Callback triggered when load interactions is requested
+	con = sql.createConnection(sql_username, sql_pass, sql_port, sql_database)
+	sql.connectMysql(con);
+	
+	sql.readInteractions(con, sql_database, function(err, rows){
+		console.log('Loading interactions')
+		// Once connected and the rows were read, we can send then to the client
+		if(err){
+			throw err;
+		}
+		else{
+			res.json(rows);
+			sql.disconnectMysql(con);
+		}
+	});
+});
+
 app.get('/loadPersons', function(req, res) {
-	// Callback triggered when load networkd is requested
+	// Callback triggered when load persons is requested
 	con = sql.createConnection(sql_username, sql_pass, sql_port, sql_database)
 	sql.connectMysql(con);
 	
@@ -47,14 +65,28 @@ app.get('/loadPersons', function(req, res) {
 	});
 });
 
+
+app.post('/storeInteraction', function(req, res) {
+	var interaction = req.body.interaction;
+	con = sql.createConnection(sql_username, sql_pass, sql_port, sql_database)
+	sql.connectMysql(con);
+	sql.writeInteraction(con, interaction, sql_database, function(err, rows){
+		if(err){
+			throw err;
+		}
+		else{
+			sql.disconnectMysql(con);
+		}
+	});
+});
+
 app.post('/storePerson', function(req, res) {
 	var person = req.body.person;
 	
 	con = sql.createConnection(sql_username, sql_pass, sql_port, sql_database)
 	sql.connectMysql(con);
 	
-	sql.writePersons([person], con, function(err, rows){
-		// Once connected and the rows were read, we can send then to the client
+	sql.writePersons(con, [person], sql_database, function(err, rows){
 		if(err){
 			throw err;
 		}
@@ -67,12 +99,10 @@ app.post('/storePerson', function(req, res) {
 });
 app.post('/updatePerson', function(req, res) {
 	var person = req.body.person;
-	
 	con = sql.createConnection(sql_username, sql_pass, sql_port, sql_database)
 	sql.connectMysql(con);
 	
 	sql.updatePerson(con, person, sql_database, function(err, rows){
-		// Once connected and the rows were read, we can send then to the client
 		if(err){
 			throw err;
 		}

@@ -38,9 +38,7 @@ function updatePerson(connection, person, database, callback){
 	/**
 	 * Updates the given person data into the database
 	 */
-	connection.query(
-		"UPDATE "+ database + ".persons SET name = ?, email=?, skills=?, passions=? WHERE id = ?", 
-		[person.name, person.email, person.skills, person.passions, person.id], callback);
+	connection.query('UPDATE persons SET name = ?, email = ?, skills = ?, passions = ? WHERE id = ?', [person.name, person.email, person.skills, person.passions, person.id], callback);
 }
 
 function updateInteraction(connection, interaction, database, callback){
@@ -55,6 +53,17 @@ function writeInteraction(connection, interaction, database, callback){
 	/**
 	 * stores the given interaction (json) in the database
 	 */
+	date = interaction.date
+	
+	if (typeof date === 'string' || date instanceof String){
+		// Replacing a string with a date object (jquery might have converted it)
+		interaction.date = new Date(interaction.date)
+	}
+	
+	if(interaction.reporter == ''){
+		// Replacing an empty string with undefined (jquery might have converted it)
+		interaction.reporter = undefined
+	}
 	connection.query('INSERT INTO interactions SET ?', interaction, callback);
 }
 
@@ -66,7 +75,7 @@ function readInteractions(connection, database, callback){
 	connection.query(query, callback);
 }
 
-function writePersons(persons, connection, callback){
+function writePersons(connection, persons, callback){
 	/**
 	 * Writes a set os persons (JSON representation) into the table persons in dabase
 	 * 

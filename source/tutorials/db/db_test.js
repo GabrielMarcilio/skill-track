@@ -19,7 +19,7 @@ var persons = [
      },
 ]
 sql.clearTable('persons', con);
-sql.writePersons(persons, con);
+sql.writePersons(con, persons);
 
 person = {
 		'name':'New Name','email':'new@gmail.com', 'skills':' new python, java, qwt', 'passions':' new fiction, board game, video game','id':'80'

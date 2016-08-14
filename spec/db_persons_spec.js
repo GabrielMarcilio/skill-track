@@ -31,7 +31,7 @@ describe("Testing Database access", function() {
 
 		var connection = this.connection;
 		//Sending data
-		db.writePersons(persons, this.connection, function(err, result){
+		db.writePersons(this.connection, persons, function(err, result){
 			//Reading back
 			db.readPersons(connection, function(err, rows){
 				if(err){
@@ -61,6 +61,57 @@ describe("Testing Database access", function() {
 					}
 					done();
 				}
+			});
+		});
+	});
+	
+it("Testing Update person", function(done){
+		
+		// Converting date to string to save in db
+		connection = this.connection;
+		person = {
+	        	   'name':'Mario','email':'mario@nintendo.com', 'skills':'Running, Jumping', 'passions':'Pasta,Juventus,Karts'
+        }
+		
+		// Writting one interaction to edit
+		db.writePersons(connection, [person], function(err, result){
+			if(err){
+				console.log('Error:' + err)
+				throw err;
+			}
+			var person_id = result.insertId
+			
+			// Forcing a some non-ascii strs
+			edited_person = {
+				'name':'New Mário','email':'new_mario@nintendo.com', 'skills':'Running, Jumping, poço', 'passions':'Pasta,Juventus,Karts,pokemon', 'id':person_id
+			}
+			
+			db.updatePerson(connection, edited_person, test_database, function(err, result){
+				if(err){
+					console.log('Error when updating persons')
+					throw err;
+				}
+				//Read the persons table once again and check if the expected values are retrieved
+				db.readPersons(connection, function(err, rows){
+					if(err){
+						throw err;
+					}
+					else{
+						expect(rows.length).toBe(1);
+						person_read = rows[0]
+						attrs_to_check = ['name', 'email', 'skills', 'passions', 'id'];
+						var expected_values = edited_person;
+						
+						
+						
+						for(var i=0; i<attrs_to_check.length; i++){
+							var attr_to_check = attrs_to_check[i];
+							expect(person_read[attr_to_check]).toBe(expected_values[attr_to_check]);
+						}
+						
+						done()
+					}
+				});
 			});
 		});
 	});

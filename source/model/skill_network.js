@@ -38,7 +38,56 @@ Person.prototype = {
     	 */
     	return this.skills.concat(this.passions)
     	
+    },
+    
+    createMemento:function(){
+    	/**
+    	 * Creates a memento with the person attributes (in a json representation). This memento can
+    	 * be stored in a database (so arrays attrtibutes are converted to strings) and can be used
+    	 * recreate the person within a network. As expected the memento will not contain any of the
+    	 * Person class methods
+    	 */
+    	var skills_text = this.skills.join(",");
+    	var passions_text = this.passions.join(",");
+    	
+    	var person_json = {
+			'name':this.name,
+			'email':this.email, 
+			'skills':skills_text, 
+			'passions':passions_text,
+			'id':this.id
+		}
+    	
+    	return person_json
+    },
+    
+    setMemento:function(memento){
+    	var skills_array = splitAndTrim(memento.skills);
+    	var passions_array = splitAndTrim(memento.passions);
+    	
+    	this.name = memento.name;
+    	this.email = memento.email;
+    	this.id = memento.id;
+    	
+		this.skills = skills_array;
+		this.passions = passions_array;
     }
+}
+
+function splitAndTrim(single_text){
+	/*
+	 * Splits the given string into an array of strings. The comas in the given text will be used
+	 * as key to the split method. Also all texts in given array will be trimmed.
+	 */
+	console.log('Spliting: '+ single_text);
+	var text_tokens = single_text.split(',')
+	text_array = [];
+	
+    for (i=0; i<text_tokens.length; i++){
+    	text_array.push(text_tokens[i].trim());
+    }
+    
+    return text_array;
 }
 
 
@@ -47,13 +96,13 @@ function Interaction(person, skill_name, date, description, reporter){
 	 * Represent a interactoin betwee a people and a sikil within the network.
 	 *
 	 *@constructor
-	 *@param{string} person - The id of the person that used the skill.
+	 *@param{string} person_id - The id of the person that used the skill.
 	 *@param{string} skill_name - The name of the skill to register the interaction.
 	 *@param{Date} date - The interaction date.
 	 *@param{string} description - The interaction description.
 	 *@param{string} reporter - The id of the person reporing the interaction.
 	 */
-	this.person = person;
+	this.person_id = person;
 	this.skill_name = skill_name;
 	this.date = date;
 	this.description = description
@@ -165,7 +214,7 @@ SkillNetwork.prototype = {
     	for(var i=0; i<this.interactions.length; i++){
     		var inter = this.interactions[i];
     		var valid_skill = (skill_id == undefined) || (skill_id == inter.skill_name);
-    		var valid_person = inter.person == person_id;
+    		var valid_person = inter.person_id == person_id;
     		if(valid_person && valid_skill){
     			result.push(inter)
     		}

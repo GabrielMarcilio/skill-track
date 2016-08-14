@@ -109,31 +109,6 @@ describe("Testing Interactions table access", function() {
 					done()
 				}
 			});
-//			
-//			// Read the interactions just set
-//			db.readInteractions(connection, test_database, function(err, rows){
-//				if(err){
-//					throw err;
-//				}
-//				else{
-//					expect(rows.length).toBe(1);
-//					interaction_read = rows[0]
-//					attrs_to_check = ['person_id', 'skill_name', 'date', 'description', 'reporter'];
-//					var expected_values = new_interaction;
-//					
-//					// Coonverting the dates to strs to ease the comparison.
-//					expected_values['date'] = new Date(1988, 10, 30).toISOString();
-//					interaction_read['date'] = interaction_read['date'].toISOString();
-//					
-//					
-//					for(var i=0; i<attrs_to_check.length; i++){
-//						var attr_to_check = attrs_to_check[i];
-//						expect(interaction_read[attr_to_check]).toBe(expected_values[attr_to_check]);
-//					}
-//					
-//					done()
-//				}
-//			});
 		});
 	});
 });
