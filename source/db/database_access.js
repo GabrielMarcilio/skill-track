@@ -1,12 +1,12 @@
 var mysql = require("mysql");
 
-function createConnection(user, password, port, database){
+function createConnection(host, user, password, port, database){
 	/**
 	 * Creates a connecton object. This connection is responsible for executing queries in the 
 	 * database.
 	 */
 	var con = mysql.createConnection({
-	  host: "localhost",
+	  host: host,
 	  user: user,
 	  password: password,
 	  database:database,

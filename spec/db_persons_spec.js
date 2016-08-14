@@ -6,9 +6,10 @@ describe("Testing Database access", function() {
 		var sql_username = process.env.OPENSHIFT_MYSQL_DB_USERNAME;
 		var sql_pass = process.env.OPENSHIFT_MYSQL_DB_PASSWORD;
 		var port = process.env.OPENSHIFT_MYSQL_DB_PORT;
+		var host = process.env.OPENSHIFT_MYSQL_DB_HOST || "127.0.0.1";
 
 		// First you need to create a connection to the db
-		this.connection = db.createConnection(sql_username, sql_pass, port, test_database);
+		this.connection = db.createConnection(host, sql_username, sql_pass, port, test_database);
 		db.clearTable('persons', this.connection, done);
 		
 	});
