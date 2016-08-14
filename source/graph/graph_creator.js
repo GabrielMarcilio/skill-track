@@ -9,7 +9,8 @@ function createNodes(skill_network){
 			{
 				id:person.id,
 				label: person.name,
-				group: 'person'
+				group: 'person',
+				font:{color:'white'}
 			}
 		);
 	}
@@ -95,7 +96,7 @@ function createGraph(skill_network, container){
 		 },
 		 groups: {
 	         person: {
-	             color: {background:'rgb(102,255,102)',border:'rgb(102,255,102)'},
+	             color: {background:'rgb(0,0,0)',border:'rgb(0,0,0)'},
 	             shape: 'elipse',
 	             size: 40
 	         },
