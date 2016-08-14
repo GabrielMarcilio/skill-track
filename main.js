@@ -5,7 +5,7 @@ var sql = require('./source/db/database_access.js')
 
 var app = express();
 
-var port = process.env.OPENSHIFT_NODEJS_PORT  || 8080;
+var port = process.env.OPENSHIFT_NODEJS_PORT  || 8090;
 var ipaddress = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
 
 var sql_username = process.env.OPENSHIFT_MYSQL_DB_USERNAME;
@@ -51,6 +51,7 @@ app.get('/loadInteractions', function(req, res) {
 
 app.get('/loadPersons', function(req, res) {
 	// Callback triggered when load persons is requested
+	console.log('Connecting mysql: u:' + sql_username + ' p: ' + sql_pass + ' pt: ' + sql_port + ' db:' + sql_database)
 	con = sql.createConnection(sql_username, sql_pass, sql_port, sql_database)
 	sql.connectMysql(con);
 	
