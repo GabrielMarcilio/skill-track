@@ -21,13 +21,18 @@ app.use(bodyParser.json());
 app.use('/lib', express.static(__dirname + '/lib'));
 app.use('/source', express.static(__dirname + '/source'));
 
-app.listen(port, ipaddress, function(){
+server = app.listen(port, ipaddress, function(){
   //Callback triggered when server is successfully listening. Hurray!
+	console.log('Server listening por: ' + port)
 });
 
 
 app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname + '/index.html'));
+    res.sendFile(path.join(__dirname + '/home.html'));
+});
+
+app.get('/showSubscribePage', function(req, res) {
+	res.sendFile(path.join(__dirname + '/sign_up.html'));
 });
 
 app.get('/loadInteractions', function(req, res) {
@@ -52,7 +57,7 @@ app.get('/loadPersons', function(req, res) {
 	con = sql.createConnection(sql_host, sql_username, sql_pass, sql_port, sql_database)
 	sql.connectMysql(con);
 	
-	sql.readPersons(con, function(err, rows){
+	sql.readPersons(con, sql_database, function(err, rows){
 		// Once connected and the rows were read, we can send then to the client
 		if(err){
 			throw err;
@@ -75,6 +80,46 @@ app.post('/storeInteraction', function(req, res) {
 		}
 		else{
 			sql.disconnectMysql(con);
+		}
+	});
+});
+
+
+app.post('/signUp', function(req, res) {
+	var user_info = req.body.user_info;
+	
+	// In tests we might specify a different database
+	var database = req.body.database;
+	if(database == undefined){
+		database = sql_database;
+	}
+	con = sql.createConnection(sql_host, sql_username, sql_pass, sql_port, database)
+	sql.connectMysql(con);
+	
+	// Read the users table to check if the passed email is not in use
+	sql.readPersons(con, database, function(err, rows){
+		var used_emails = [];
+		for(var i=0; i<rows.length; i++){
+			var user = rows[i];
+			used_emails.push(user.email);
+		}
+		
+		if(used_emails.indexOf(user_info.email) > -1){
+			//Email already in use
+			 res.status(409).send('Email "' + user_info.email + '" já cadastrado.');
+			 sql.disconnectMysql(con);
+		}
+		else{
+			
+			sql.writePersons(con, [user_info], database, function(err, result){
+				if(err){
+					res.status(409).send('Não foi possivel cadastrar usuário');;
+					sql.disconnectMysql(con);
+				}
+				sql.disconnectMysql(con);
+				res.json({'name':user_info.name});
+			
+			});
 		}
 	});
 });
@@ -110,3 +155,4 @@ app.post('/updatePerson', function(req, res) {
 	});
 });
 
+module.exports = server;

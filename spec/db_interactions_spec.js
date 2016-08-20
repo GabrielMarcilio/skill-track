@@ -20,7 +20,7 @@ describe("Testing Interactions table access", function() {
 	});
 	
 	
-	xit("Testing Write and Read interactions", function(done){
+	it("Testing Write and Read interactions", function(done){
 		
 		// Converting date to string to save in db
 		var date_to_store = new Date(1988, 10, 30);

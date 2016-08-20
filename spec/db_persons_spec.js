@@ -23,25 +23,24 @@ describe("Testing Database access", function() {
 		// Adding some persons in the db and checking if they are correctly obtained back
 		var persons = [
            {
-        	   'name':'Mario','email':'mario@nintendo.com', 'skills':'Running, Jumping', 'passions':'Pasta, Juventus, Karts'
+        	   'name':'Mario','email':'mario@nintendo.com', 'skills':'Running, Jumping', 'passions':'Pasta, Juventus, Karts', 'password': 'abcd'
            },
            {
-        	   'name':'Luiggi','email':'luigi@nintendo.com', 'skills':'Running, Cooking', 'passions':'Dinossaurs, Kart, Ghosts'
+        	   'name':'Luiggi','email':'luigi@nintendo.com', 'skills':'Running, Cooking', 'passions':'Dinossaurs, Kart, Ghosts', 'password':'defg'
            },
         ]
 
 		var connection = this.connection;
 		//Sending data
-		db.writePersons(this.connection, persons, function(err, result){
-			//Reading back
-			db.readPersons(connection, function(err, rows){
+		db.writePersons(this.connection, persons, test_database, function(err, result){
+			db.readPersons(connection, test_database, function(err, rows){
 				if(err){
 					throw err;
 				}
 				else{
 					var all_expected_data = {
-						'Mario':['mario@nintendo.com', 'Running, Jumping', 'Pasta, Juventus, Karts'],
-						'Luiggi':['luigi@nintendo.com', 'Running, Cooking', 'Dinossaurs, Kart, Ghosts']
+						'Mario':['mario@nintendo.com', 'Running, Jumping', 'Pasta, Juventus, Karts', 'abcd'],
+						'Luiggi':['luigi@nintendo.com', 'Running, Cooking', 'Dinossaurs, Kart, Ghosts', 'defg']
 					}
 	
 					expect(rows.length).toBe(2);
@@ -66,16 +65,16 @@ describe("Testing Database access", function() {
 		});
 	});
 	
-it("Testing Update person", function(done){
+	it("Testing Update person", function(done){
 		
 		// Converting date to string to save in db
 		connection = this.connection;
 		person = {
-	        	   'name':'Mario','email':'mario@nintendo.com', 'skills':'Running, Jumping', 'passions':'Pasta,Juventus,Karts'
+	        	   'name':'Mario','email':'mario@nintendo.com', 'skills':'Running, Jumping', 'passions':'Pasta,Juventus,Karts', 'password':'abcd'
         }
 		
 		// Writting one interaction to edit
-		db.writePersons(connection, [person], function(err, result){
+		db.writePersons(connection, [person], test_database, function(err, result){
 			if(err){
 				console.log('Error:' + err)
 				throw err;
@@ -89,21 +88,20 @@ it("Testing Update person", function(done){
 			
 			db.updatePerson(connection, edited_person, test_database, function(err, result){
 				if(err){
-					console.log('Error when updating persons')
+					console.log('Error when updating persons' + err)
 					throw err;
 				}
 				//Read the persons table once again and check if the expected values are retrieved
-				db.readPersons(connection, function(err, rows){
+				db.readPersons(connection, test_database, function(err, rows){
 					if(err){
 						throw err;
 					}
 					else{
 						expect(rows.length).toBe(1);
 						person_read = rows[0]
-						attrs_to_check = ['name', 'email', 'skills', 'passions', 'id'];
+						attrs_to_check = ['name', 'email', 'skills', 'passions', 'id', 'password'];
 						var expected_values = edited_person;
-						
-						
+					    expected_values.password = person.password // Check if the pasword was left untouched
 						
 						for(var i=0; i<attrs_to_check.length; i++){
 							var attr_to_check = attrs_to_check[i];

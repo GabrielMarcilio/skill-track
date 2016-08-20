@@ -38,7 +38,9 @@ function updatePerson(connection, person, database, callback){
 	/**
 	 * Updates the given person data into the database
 	 */
-	connection.query('UPDATE persons SET name = ?, email = ?, skills = ?, passions = ? WHERE id = ?', [person.name, person.email, person.skills, person.passions, person.id], callback);
+	update_query = 'UPDATE '+ database+'.persons SET ? WHERE ?'
+	
+	connection.query(update_query, [person, {'id':person.id}], callback);
 }
 
 function updateInteraction(connection, interaction, database, callback){
@@ -67,6 +69,14 @@ function writeInteraction(connection, interaction, database, callback){
 	connection.query('INSERT INTO interactions SET ?', interaction, callback);
 }
 
+//function writeUser(connection, user, test_database, callback){
+//	/**
+//	 * Writes the given user info into the users table
+//	 */
+//	var write_query = 'INSERT INTO ' + test_database + '.users SET ?'
+//	connection.query(write_query, user, callback);
+//}
+
 function readInteractions(connection, database, callback){
 	/**
 	 * Read all interactions stored in the database
@@ -75,7 +85,7 @@ function readInteractions(connection, database, callback){
 	connection.query(query, callback);
 }
 
-function writePersons(connection, persons, callback){
+function writePersons(connection, persons, database, callback){
 	/**
 	 * Writes a set os persons (JSON representation) into the table persons in dabase
 	 * 
@@ -86,11 +96,12 @@ function writePersons(connection, persons, callback){
 	
 	for(var i=0; i<persons.length; i++){
     	current = persons[i]
-    	var current_row = [current.name, current.email, current.skills, current.passions];
+    	var current_row = [current.name, current.email, current.skills, current.passions, current.password];
     	values.push(current_row);
 	}
-    	
-    connection.query('INSERT INTO persons (name, email, skills, passions) VALUES ?', [values], callback);
+    
+	var query = 'INSERT INTO ' + database + '.persons (name, email, skills, passions, password) VALUES ?'
+    connection.query(query, [values], callback);
 	
 }
 
@@ -102,14 +113,14 @@ function clearTable(table_name, connection, callback){
 	connection.query(query, callback);
 }
 
-function readPersons(connection, callback){
+function readPersons(connection, database, callback){
 	/**
 	 * Get the persons stored in the table persons. The given callback will  be triggered with two
 	 * parameters: the query status and the read rows. Each row will be a JSON repsresentation of 
 	 * a person (name, email, id, skills and passions).
 	 *
 	 */
-	query = 'SELECT * FROM persons;'
+	query = 'SELECT * FROM '+ database+'.persons;'
 	connection.query(query, callback);
 }
 
