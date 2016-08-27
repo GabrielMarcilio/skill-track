@@ -1,9 +1,12 @@
-var express = require('express');
-var path = require('path');
-var bodyParser = require('body-parser')
-var sql = require('./source/db/database_access.js')
-
-var app = express();
+const express = require('express');
+const path = require('path');
+const bodyParser = require('body-parser')
+const passport = require('passport')  
+const session = require('express-session')  
+const MySQLStore = require('express-mysql-session')(session);
+const sql = require('./source/db/database_access.js')
+const flash    = require('connect-flash');
+const app = express();
 
 var port = process.env.OPENSHIFT_NODEJS_PORT  || 8080;
 var ipaddress = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
@@ -12,8 +15,32 @@ var sql_username = process.env.OPENSHIFT_MYSQL_DB_USERNAME;
 var sql_pass = process.env.OPENSHIFT_MYSQL_DB_PASSWORD;
 var sql_port = process.env.OPENSHIFT_MYSQL_DB_PORT;
 var sql_host = process.env.OPENSHIFT_MYSQL_DB_HOST || "127.0.0.1"
-var sql_database = 'skilltrack'
+var sql_database = process.env.MYSQL_DATABASE_NAME ||'skilltrack'
 	
+var sql_info = {
+    host: sql_host,
+    port: sql_port,
+    user: sql_username,
+    password: sql_pass,
+    database: sql_database
+};
+	 
+var sessionStore = new MySQLStore(sql_info);
+
+require('./source/passport/passport')(passport, sql_info); // pass passport for configuration
+
+app.use(session({
+    secret: 'session_secret',
+    store: sessionStore,
+    resave: false,
+    saveUninitialized: false
+}));
+
+app.use(passport.initialize())  
+app.use(passport.session())  
+app.use(flash());
+app.set('view engine', 'ejs'); // set up ejs for templating
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -22,8 +49,7 @@ app.use('/lib', express.static(__dirname + '/lib'));
 app.use('/source', express.static(__dirname + '/source'));
 
 server = app.listen(port, ipaddress, function(){
-  //Callback triggered when server is successfully listening. Hurray!
-	console.log('Server listening por: ' + port)
+	console.log('Server listening port: ' + port)
 });
 
 
@@ -32,8 +58,28 @@ app.get('/', function(req, res) {
 });
 
 app.get('/showSubscribePage', function(req, res) {
-	res.sendFile(path.join(__dirname + '/sign_up.html'));
+	res.render('sign_up.ejs', { message: req.flash('signup_message') }); 
 });
+
+app.get('/showLogInPage', function(req, res) {
+    res.render('sign_in.ejs', { message: req.flash('login_message') }); 
+});
+
+app.get('/skilltrackNetwork', isLoggedIn, function(req, res) {
+	res.sendFile(path.join(__dirname + '/logged.html'));
+});
+
+
+
+function isLoggedIn(req, res, next) {
+    // if user is authenticated in the session, carry on 
+    if (req.isAuthenticated()){
+        return next();
+    }
+	
+    // if they aren't redirect them to the home page
+    res.redirect('/');
+}
 
 app.get('/loadInteractions', function(req, res) {
 	// Callback triggered when load interactions is requested
@@ -85,45 +131,6 @@ app.post('/storeInteraction', function(req, res) {
 });
 
 
-app.post('/signUp', function(req, res) {
-	var user_info = req.body.user_info;
-	
-	// In tests we might specify a different database
-	var database = req.body.database;
-	if(database == undefined){
-		database = sql_database;
-	}
-	con = sql.createConnection(sql_host, sql_username, sql_pass, sql_port, database)
-	sql.connectMysql(con);
-	
-	// Read the users table to check if the passed email is not in use
-	sql.readPersons(con, database, function(err, rows){
-		var used_emails = [];
-		for(var i=0; i<rows.length; i++){
-			var user = rows[i];
-			used_emails.push(user.email);
-		}
-		
-		if(used_emails.indexOf(user_info.email) > -1){
-			//Email already in use
-			 res.status(409).send('Email "' + user_info.email + '" já cadastrado.');
-			 sql.disconnectMysql(con);
-		}
-		else{
-			
-			sql.writePersons(con, [user_info], database, function(err, result){
-				if(err){
-					res.status(409).send('Não foi possivel cadastrar usuário');;
-					sql.disconnectMysql(con);
-				}
-				sql.disconnectMysql(con);
-				res.json({'name':user_info.name});
-			
-			});
-		}
-	});
-});
-
 app.post('/storePerson', function(req, res) {
 	var person = req.body.person;
 	
@@ -155,4 +162,14 @@ app.post('/updatePerson', function(req, res) {
 	});
 });
 
-module.exports = server;
+require('./source/routes/routes')(app, passport)
+
+function close(){
+	sessionStore.close()
+	server.close();
+}
+
+module.exports ={
+		close: close,
+		server:server
+}

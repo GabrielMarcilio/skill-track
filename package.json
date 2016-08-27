@@ -7,7 +7,7 @@
     "network"
   ],
   "repository": "https://github.com/GabrielMarcilio/skill-track.git",
-  "homepage": "http://skilltrack-skilltrack.rhcloud.com/",
+  "homepage": "https://skilltrack-skilltrack.rhcloud.com/",
   "author": "Gabriel Marcilio",
   "dependencies": {
     "finalhandler": "0.5.0",
@@ -15,7 +15,13 @@
     "mysql": "~2.11.1",
     "express": "~4.14.0",
     "path": "~0.12.7",
-    "body-parser": "~1.15.2"
+    "body-parser": "~1.15.2",
+    "passport": "~0.3.2",
+    "express-session": "~1.14.0",
+    "express-mysql-session": "~1.1.1",
+    "passport-local": "~1.0.0",
+    "ejs": "~2.5.1",
+    "connect-flash": "~0.1.1"
   },
   "main": "main.js",
   "engines": {

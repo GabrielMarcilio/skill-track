@@ -1,11 +1,17 @@
+// Configuring env variable required for testing
+var test_database = "sk_test";
+process.env.MYSQL_DATABASE_NAME =test_database
+
+
 var db = require('../source/db/database_access.js')
 var supertest = require('supertest')
 
-var test_database = "sk_test";
-var server = require('../main.js')
+var app = require('../main.js')
 
 test_ran = 0;
-describe("Testing Users table access", function() {
+total_tests = 3;
+
+describe("Test app services", function() {
 	beforeEach(function(done) {
 		// Starting the server
 		
@@ -27,10 +33,10 @@ describe("Testing Users table access", function() {
 
 	afterEach(function(done) {
 		//Shuting down server and terminating sql connection
-		if (test_ran==2){
+		if (test_ran==total_tests){
 			// Argh! Jasmine-Node does not support afterAll, and  i can only close the server 
 			//after all tests have ran
-			server.close()
+			app.close()
 		}
 		db.disconnectMysql(this.connection, done);
 		
@@ -39,20 +45,16 @@ describe("Testing Users table access", function() {
 	
 	
 	it("Testing Create user", function(done){
-		var user_data = {
-			'name': 'Mario',
-			'email': 'mario@nintendo.com',
-			'password': 'Its me! Mario!',
-			'skills': 'Jumping,Running',
-			'passions': 'Pasta,Juventus'
-			
-		}
+		var name= 'Mario';
+		var email= 'mario@nintendo.com';
+		var password = 'Its me! Mario!';
+		
 		var connection = this.connection;
-		supertest(server)
+		
+		supertest(app.server)
 	      .post('/signUp')
-	      .send({'user_info': user_data, 'database':test_database})
-	      .expect(200)
-	      .end(function(){
+	      .send({'name': name, 'email':email, 'password':password, 'password_confirm':password})
+	      .end(function(err, res){
 	    	  
 	    	  // At this point we expect one person to be added in the persons table
 	    	  db.readPersons(connection, test_database, function(err, rows){
@@ -60,13 +62,12 @@ describe("Testing Users table access", function() {
 						done.fail(err)
 					}
 					else{
-						
 						expect(rows.length).toBe(1);
 						var created_person = rows[0];
 						expect(created_person.name).toBe('Mario');
 						expect(created_person.email).toBe('mario@nintendo.com');
-						expect(created_person.skills).toBe('Jumping,Running');
-						expect(created_person.passions).toBe('Pasta,Juventus');
+						expect(created_person.skills).toBe('');
+						expect(created_person.passions).toBe('');
 						expect(created_person.password).toBe('Its me! Mario!');
 						done()
 					}
@@ -88,18 +89,33 @@ describe("Testing Users table access", function() {
 		// Directly adding the user in the db
 		db.writePersons(connection, [user_data], test_database, function(err, result){
 			// Now attempt to register a user with the same email
-			var another_data = {
-				'name': 'Luigi',
-				'email': 'mario@nintendo.com',
-				'password': 'Its me! Luiggi!',
-				'skills': 'No Skills at all',
-				'passions': 'Sleeping'
-				
-			}
-			supertest(server)
+			supertest(app.server)
 		      .post('/signUp')
-		      .send({'user_info': another_data, 'database':test_database})
-		      .expect(409, 'Email "mario@nintendo.com" já cadastrado.', done)
+		      .send({'name': 'Luigi', 'email':'mario@nintendo.com', 'password':'Its me! Luiggi!', 'password_confirm':'Its me! Luiggi!'})
+		      .expect(302, 'Moved Temporarily. Redirecting to /showSubscribePage', done)
+		});
+	});
+
+	
+	it("Testing LogIn", function(done){
+		var user_data = {
+			'name': 'Mario',
+			'email': 'mario@nintendo.com',
+			'password': 'Its me! Mario!',
+			'skills': 'Jumping,Running',
+			'passions': 'Pasta,Juventus'
+					
+		}
+		var connection = this.connection;
+		
+		// Directly adding the user in the db
+		db.writePersons(connection, [user_data], test_database, function(err, result){
+			// Now attempt to log in with the created user info
+			supertest(app.server)
+			.post('/signIn')
+			.send({'email': 'mario@nintendo.com', 'password':'Its me! Mario!'})
+			.expect(302, 'Moved Temporarily. Redirecting to /skilltrackNetwork') // Redirecting to protected content
+			.end(done)
 		});
 	});
 	

@@ -31,7 +31,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
 <!-- Navbar on small screens -->
 <div id="navDemo" class="w3-hide w3-hide-large w3-hide-medium w3-top" style="margin-top:51px">
   <ul class="w3-navbar w3-left-align w3-large w3-black">
-    <li><a class="w3-padding-large" href="/">Início</a></li>
+    <li><a class="w3-padding-large" href="/">In�cio</a></li>
     <li><a class="w3-padding-large" href="/showSubscribePage">Cadastrar</a></li>
   </ul>
 </div>
@@ -45,29 +45,23 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
 
 <!-- Contact -->
 <div class="w3-content" style="max-width:400px">
-  <form>
-    <div class="w3-group">
-      <label class="w3-label w3-text-cyan">Nome</label>
-      <input id="signup-name" class="w3-input w3-border w3-hover-border-black" style="width:100%;" type="text" required>
-    </div>
+  <% if (message.length > 0) { %>
+        <div class="w3-container w3-red"><%= message %></div>
+    <% } %>
+    
+  <form action="/signIn" method="post">
     <div class="w3-group">
       <label class="w3-label w3-text-cyan">Email</label>
-      <input id="signup-email" class="w3-input w3-border w3-hover-border-black" style="width:100%;" type="text">
+      <input id="signin-email" class="w3-input w3-border w3-hover-border-black" style="width:100%;" type="text" name='email'>
     </div>
     <div class="w3-group">
       <label class="w3-label w3-text-cyan">Senha</label>
-      <input id="signup-pass" class="w3-input w3-border w3-hover-border-black" style="width:100%;" type="password">
+      <input id="signin-pass" class="w3-input w3-border w3-hover-border-black" style="width:100%;" type="password" name=password>
     </div>
-    <div class="w3-group">
-      <label class="w3-label w3-text-cyan">Confirme a Senha</label>
-      <input id="signup-pass-confirm" class="w3-input w3-border w3-hover-border-black" style="width:100%;" type="password">
-    </div>
-    <button type="button" class="w3-btn w3-cyan w3-btn-block w3-padding-12" onclick="signUp();">Send</button>
+    <button type="submit" class="w3-btn w3-cyan w3-btn-block w3-padding-12">Send</button>
   </form>
 
 </div>
-
-
 
 <script>
 // Used to toggle the menu on small screens when clicking on the menu button

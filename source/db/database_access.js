@@ -124,6 +124,16 @@ function readPersons(connection, database, callback){
 	connection.query(query, callback);
 }
 
+
+function readPersonByEmail(connection, email, callback){
+	query = "SELECT * FROM persons where email = '" +email +"';" 
+	connection.query(query, callback);
+}
+
+function readPersonById(connection, id, callback){
+	query = "SELECT * FROM persons where id = '" +id +"';" 
+	connection.query(query, callback);
+}
 module.exports ={
 		createConnection: createConnection,
 		connectMysql: connectMysql,
@@ -134,5 +144,7 @@ module.exports ={
 		updatePerson:updatePerson,
 		writeInteraction:writeInteraction,
 		readInteractions:readInteractions,
-		updateInteraction: updateInteraction
+		updateInteraction: updateInteraction,
+		readPersonByEmail:readPersonByEmail,
+		readPersonById:readPersonById
 }
