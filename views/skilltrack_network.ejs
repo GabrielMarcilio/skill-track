@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>W3.CSS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+<link rel="stylesheet" href="http://www.w3schools.com/lib/w3-theme-cyan.css">
+<style>
+body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
+.w3-navbar,h1,button {font-family: "Montserrat", sans-serif}
+.fa-anchor,.fa-coffee {font-size:200px}
+  
+     
+.mynetwork {
+      width: 100vw;
+      height: 100vh;
+      border: 10px solid lightgray;
+      vertical-align: bottom;
+}
+</style>
+
+<!-- Imports -->
+<script type="text/javascript" src="../lib/vis-4.16.1/vis.js"></script>
+ <link href="../lib/vis-4.16.1/vis.css" rel="stylesheet" type="text/css" />
+  
+<script src="../source/utils.js"></script>
+<script src="../source/model/skill_network.js"></script>
+<script src="../source/graph/graph_creator.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+<script>
+$(document).ready(function(){
+    network = new SkillNetwork('Passions and Skills Diagram');
+    loadNetwork(network);
+});
+</script>
+
+</head>
+<body>
+
+<!-- Edit Person Modal -->
+<div id="edit_person" class="w3-modal">
+    <div class="w3-modal-content w3-card-8 w3-animate-top" style="max-width:400px">
+        <header class="w3-container w3-theme-l1">
+            <h4>Nome</h4>
+        </header>
+      
+        <div class="w3-group">
+          <label class="w3-label w3-text-black" for="edit-name-id"><b>Nome</b></label>
+          <input class="w3-input w3-border w3-hover-border-cyan" id="edit-name-id" type="text" value="">
+        </div>
+        <div class="w3-group">
+          <label class="w3-label w3-text-black" for="edit-email-id"><b>Email</b></label>
+          <input class="w3-input w3-border w3-hover-border-cyan" id="edit-email-id" type="text" value="">
+        </div>
+        <div class="w3-group">
+          <label class="w3-label w3-text-black" for="edit-skills-id"><b>Conhecimentos</b></label>
+          <input class="w3-input w3-border w3-hover-border-cyan" id="edit-skills-id" type="text" value="">
+        </div> 
+        <div class="w3-group">
+          <label class="w3-label w3-text-black" for="edit-passions-id"><b>Paixões</b></label>
+          <input class="w3-input w3-border w3-hover-border-cyan" id="edit-passions-id" type="text" value="">
+        </div>
+        <footer class="w3-container w3-theme-l1 w3-right-align">
+            <button id="confirm changes-id" onclick="confirmNodeEdit(network);">Confirma</button>
+            <button id="cancel changes-id" onclick="document.getElementById('edit_person').style.display='none'">Cancela</button>
+        </footer> 
+    </div>
+</div>
+
+<!-- Edit Interaction Menu -->
+<div id="edit_interaction" class="w3-modal">
+    <div class="w3-modal-content w3-card-8 w3-animate-top" style="max-width:400px">
+        <header class="w3-container w3-theme-l1">
+            <h4>Editar Interação</h4>
+        </header>
+      
+        <div class="w3-group">
+          <label class="w3-label w3-text-black" for="add-inter-person-id"><b>Pessoa</b></label>
+          <input class="w3-input w3-border w3-hover-border-cyan" id="add-inter-person-id" type="text" value="" readonly>
+        </div>
+        <div class="w3-group">
+          <label class="w3-label w3-text-black" for="add-inter-skill-id"><b>Interesse</b></label>
+          <input class="w3-input w3-border w3-hover-border-cyan" id="add-inter-skill-id" type="text" value="" readonly>
+        </div>
+        <div class="w3-group">
+          <label class="w3-label w3-text-black" for="add-inter-date-id"><b>Data</b></label>
+          <input class="w3-input w3-border w3-hover-border-cyan" id="add-inter-date-id" type="date" value="">
+        </div> 
+        <div class="w3-group">
+          <label class="w3-label w3-text-black" for="add-inter-description-id"><b>Descrição</b></label>
+          <input class="w3-input w3-border w3-hover-border-cyan" id="add-inter-description-id" type="text" value="">
+        </div>
+        <div class="w3-group">
+          <label class="w3-label w3-text-black" for="add-inter-reporter-id"><b>Beneficiado</b></label>
+          <input class="w3-input w3-border w3-hover-border-cyan" id="add-inter-reporter-id" type="text" value="">
+        </div>
+        <footer class="w3-container w3-theme-l1 w3-right-align">
+            <button id="confirm-inter-changes-id" onclick="confirmAddInteraction(network);">Confirma</button>
+            <button id="cancel-inter-changes-id" onclick="document.getElementById('edit_interaction').style.display='none'">Cancela</button>
+        </footer> 
+    </div>
+</div>
+
+	<!-- Navbar -->
+	<ul class="w3-navbar w3-cyan w3-card-2 w3-top w3-left-align w3-large">
+	  <li class="w3-hide-medium w3-hide-large w3-opennav w3-right">
+	    <a class="w3-padding-large w3-hover-white w3-large w3-cyan" href="javascript:void(0);" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
+	  </li>
+	  <li class="w3-navitem">Olá Fulano</li>
+	  <li class="w3-hide-small w3-right"><a href="/logout" class="w3-padding-large w3-hover-white">Sair</a></li>
+	</ul>
+	
+	<!-- Navbar on small screens -->
+	<div id="navDemo" class="w3-hide w3-hide-large w3-hide-medium w3-top" style="margin-top:51px">
+	  <ul class="w3-navbar w3-left-align w3-large w3-black">
+	    <li><a class="w3-padding-large" href="/logout" class="w3-padding-large w3-hover-white">Sair</a></li>
+	  </ul>
+	</div>
+	
+	<div id="mynetwork" class=mynetwork></div>
+<script type="text/javascript">
+
+console.log('Starting Javascrit Section');
+
+var network;
+var graph; 
+
+
+</script>
+</body>
+</html>
+
+

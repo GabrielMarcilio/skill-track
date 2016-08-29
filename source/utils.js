@@ -1,28 +1,26 @@
-function setFormEnabled(element_id, enabled){
-	var fields = document.getElementById(element_id).getElementsByTagName('*');
-    for(var i = 0; i < fields.length; i++)
-    {
-        fields[i].disabled = enabled;
-    }
+function setFormVisible(form_id, visible){
+	if(visible){
+		document.getElementById(form_id).style.display='block'
+	}
+	else{
+		document.getElementById(form_id).style.display='none'
+	}
 }
 
-function showAddPerson(visibility){
-   /*
-    * Controls the visibility of the add person button and add person form.
-    */
-	setFormEnabled('add-table-form', !visibility)
-}
 
 function showEditPersonForm(visibility){
-	setFormEnabled('edit-table-form', !visibility)
+	console.log('Calling show edit person form ' + visibility)
+	setFormVisible('edit_person', visibility)
 }
+
 
 function showAddInteraction(visibility){
 	/**
 	 * Change the visibility of the editor to add interactions 
 	 */
-	setFormEnabled('add-interaction-form', !visibility)
+	setFormVisible('edit_interaction', visibility)
 }
+
 
 function showInteractionToAdd(person_id, skill){
 	/**

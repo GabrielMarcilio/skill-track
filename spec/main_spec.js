@@ -2,7 +2,6 @@
 var test_database = "sk_test";
 process.env.MYSQL_DATABASE_NAME =test_database
 
-
 var db = require('../source/db/database_access.js')
 var supertest = require('supertest')
 
@@ -14,8 +13,6 @@ total_tests = 3;
 describe("Test app services", function() {
 	beforeEach(function(done) {
 		// Starting the server
-		
-		
 		var sql_username = process.env.OPENSHIFT_MYSQL_DB_USERNAME;
 		var sql_pass = process.env.OPENSHIFT_MYSQL_DB_PASSWORD;
 		var port = process.env.OPENSHIFT_MYSQL_DB_PORT;
@@ -41,8 +38,6 @@ describe("Test app services", function() {
 		db.disconnectMysql(this.connection, done);
 		
 	});
-	
-	
 	
 	it("Testing Create user", function(done){
 		var name= 'Mario';

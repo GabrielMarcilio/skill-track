@@ -1,5 +1,6 @@
+const sql = require('../db/database_access.js')
 
-module.exports = function(app, passport) {
+module.exports = function(app, passport, sql_username, sql_pass, sql_port, sql_host, sql_database) {
 
 	app.get('/', function(req, res) {
 		res.render('home.ejs')
@@ -14,7 +15,7 @@ module.exports = function(app, passport) {
 	});
 	
 	app.get('/skilltrackNetwork', isLoggedIn, function(req, res) {
-		res.render('logged.ejs')
+		res.render('skilltrack_network.ejs')
 	});
 
 	app.post('/signUp', passport.authenticate('local-signup', {

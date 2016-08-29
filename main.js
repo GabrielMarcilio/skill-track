@@ -16,6 +16,7 @@ var sql_port = process.env.OPENSHIFT_MYSQL_DB_PORT;
 var sql_host = process.env.OPENSHIFT_MYSQL_DB_HOST || "127.0.0.1"
 var sql_database = process.env.MYSQL_DATABASE_NAME ||'skilltrack'
 	
+
 var sql_info = {
     host: sql_host,
     port: sql_port,
@@ -51,7 +52,7 @@ server = app.listen(port, ipaddress, function(){
 	console.log('Server listening port: ' + port)
 });
 
-require('./source/routes/routes')(app, passport)
+require('./source/routes/routes')(app, passport, sql_username, sql_pass, sql_port, sql_host, sql_database)
 
 function close(){
 	sessionStore.close()
