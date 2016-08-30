@@ -69,13 +69,6 @@ function writeInteraction(connection, interaction, database, callback){
 	connection.query('INSERT INTO interactions SET ?', interaction, callback);
 }
 
-//function writeUser(connection, user, test_database, callback){
-//	/**
-//	 * Writes the given user info into the users table
-//	 */
-//	var write_query = 'INSERT INTO ' + test_database + '.users SET ?'
-//	connection.query(write_query, user, callback);
-//}
 
 function readInteractions(connection, database, callback){
 	/**

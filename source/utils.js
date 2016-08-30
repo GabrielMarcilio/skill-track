@@ -1,3 +1,17 @@
+function setEditPersonEnabled(enabled){
+	document.getElementById("edit-name-id").disabled= !enabled; 
+	document.getElementById("edit-email-id").disabled= !enabled; 
+	document.getElementById("edit-skills-id").disabled= !enabled; 
+	document.getElementById("edit-passions-id").disabled= !enabled; 
+
+    if(enabled){
+    	document.getElementById("confirm-person-changes-id").style.visibility="visible";
+    }
+    else{
+    	document.getElementById("confirm-person-changes-id").style.visibility="hidden";
+    }
+}
+
 function setFormVisible(form_id, visible){
 	if(visible){
 		document.getElementById(form_id).style.display='block'
@@ -71,12 +85,17 @@ function showNodeToEdit(node_id, network){
 	person = network.getPersonByID(node_id);
 	showEditPersonForm(true);
 	
+	var edit_enabled = person.id == current_user_id;
+	setEditPersonEnabled(edit_enabled)
+	
 	var skills_text = person.skills.join(", ");
 	var passions_text = person.passions.join(", ");
 	document.getElementById("edit-name-id").value= person.name; 
 	document.getElementById("edit-email-id").value= person.email; 
 	document.getElementById("edit-skills-id").value= skills_text; 
 	document.getElementById("edit-passions-id").value= passions_text; 
+	
+	console.log('Editing current user: ' + person.id + ' ' + current_user_id + ' ' + (person.id == current_user_id));
 	
 }
 

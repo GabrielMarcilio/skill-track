@@ -33,8 +33,16 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
 
 <script>
 $(document).ready(function(){
-    network = new SkillNetwork('Passions and Skills Diagram');
-    loadNetwork(network);
+	
+	$.get("/userInfo", function(data, status){
+		var user_info = data
+		user_name = user_info.name
+		current_user_id = data.user_id
+        console.log('Data read on page: ' + user_name + ' ' + current_user_id);
+		$("#greetings-id").text('Olá ' + user_name)
+	    network = new SkillNetwork('Passions and Skills Diagram');
+	    loadNetwork(network);
+    });
 });
 </script>
 
@@ -45,6 +53,7 @@ $(document).ready(function(){
 <div id="edit_person" class="w3-modal">
     <div class="w3-modal-content w3-card-8 w3-animate-top" style="max-width:400px">
         <header class="w3-container w3-theme-l1">
+        <span id="cancel-person-changes-id" onclick="document.getElementById('edit_person').style.display='none'" class="w3-closebtn">×</span>
             <h4>Nome</h4>
         </header>
       
@@ -65,8 +74,8 @@ $(document).ready(function(){
           <input class="w3-input w3-border w3-hover-border-cyan" id="edit-passions-id" type="text" value="">
         </div>
         <footer class="w3-container w3-theme-l1 w3-right-align">
-            <button id="confirm changes-id" onclick="confirmNodeEdit(network);">Confirma</button>
-            <button id="cancel changes-id" onclick="document.getElementById('edit_person').style.display='none'">Cancela</button>
+            <button id="confirm-person-changes-id" onclick="confirmNodeEdit(network);">Confirma</button>
+            
         </footer> 
     </div>
 </div>
@@ -110,7 +119,7 @@ $(document).ready(function(){
 	  <li class="w3-hide-medium w3-hide-large w3-opennav w3-right">
 	    <a class="w3-padding-large w3-hover-white w3-large w3-cyan" href="javascript:void(0);" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
 	  </li>
-	  <li class="w3-navitem">Olá Fulano</li>
+	  <li id=greetings-id class="w3-navitem">Olá Fulano</li>
 	  <li class="w3-hide-small w3-right"><a href="/logout" class="w3-padding-large w3-hover-white">Sair</a></li>
 	</ul>
 	
@@ -128,6 +137,8 @@ console.log('Starting Javascrit Section');
 
 var network;
 var graph; 
+var current_user_id;
+var user_name;
 
 
 </script>

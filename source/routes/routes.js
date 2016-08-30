@@ -6,6 +6,31 @@ module.exports = function(app, passport, sql_username, sql_pass, sql_port, sql_h
 		res.render('home.ejs')
 	});
 	
+	
+	app.get('/userInfo', isLoggedIn, function(req, res){
+		var user_id = req.session.passport.user;
+		
+		con = sql.createConnection(sql_host, sql_username, sql_pass, sql_port, sql_database)
+		sql.connectMysql(con);
+		
+		sql.readPersonById(con, user_id, function(err, rows){
+    		if(rows.length == 0){
+    			var user_name = undefined
+    		}
+    		else{
+    			var user_name = rows[0].name;
+    		}
+    		
+    		console.log('Returning user info: ' + user_name + ' ' + user_id)
+    		var user_info = {
+    			'name':user_name,
+    			'user_id': user_id
+    		}
+    		res.json(user_info);
+    	});
+		
+	});
+	
 	app.get('/showSubscribePage', function(req, res) {
 		res.render('sign_up.ejs', { message: req.flash('signup_message') }); 
 	});
