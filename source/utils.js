@@ -51,7 +51,6 @@ function showInteractionToAdd(person_id, skill){
 	document.getElementById("add-inter-skill-id").value= skill; 
 	document.getElementById("add-inter-date-id").value= today.toJSON().substring(0, 10); 
 	document.getElementById("add-inter-description-id").value= ""; 
-	document.getElementById("add-inter-reporter-id").value= ""; 
 	
 	showAddInteraction(true);
 }
@@ -66,11 +65,13 @@ function confirmAddInteraction(){
 	var date = new Date(date_string);
 	date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
     var description = document.getElementById("add-inter-description-id").value;
-    var reporter = document.getElementById("add-inter-reporter-id").value;
-    
-    if(reporter==''){
-    	reporter=undefined;
-    }
+    var reporter = current_user_id
+    console.log('Adding interaction for ' + current_user_id)
+//    var reporter = document.getElementById("add-inter-reporter-id").value;
+//    
+//    if(reporter==''){
+//    	reporter=undefined;
+//    }
     
     var interaction = new Interaction(person_id, skill, date, description, reporter);
     network.addInteraction(interaction);

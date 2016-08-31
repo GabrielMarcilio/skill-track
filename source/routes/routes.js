@@ -21,7 +21,6 @@ module.exports = function(app, passport, sql_username, sql_pass, sql_port, sql_h
     			var user_name = rows[0].name;
     		}
     		
-    		console.log('Returning user info: ' + user_name + ' ' + user_id)
     		var user_info = {
     			'name':user_name,
     			'user_id': user_id
@@ -57,7 +56,6 @@ module.exports = function(app, passport, sql_username, sql_pass, sql_port, sql_h
 	
 	
 	app.get('/logout', function(req, res){
-	    console.log('Received a logout request');
 	    req.logout();
 	    res.redirect('/');
 	});
