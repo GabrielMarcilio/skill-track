@@ -47,6 +47,7 @@ app.use(bodyParser.json());
 // Serving static files
 app.use('/lib', express.static(__dirname + '/lib'));
 app.use('/source', express.static(__dirname + '/source'));
+app.use('/views', express.static(__dirname + '/views'));
 
 server = app.listen(port, ipaddress, function(){
 	console.log('Server listening port: ' + port)
