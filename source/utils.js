@@ -1,8 +1,15 @@
 function setEditPersonEnabled(enabled){
 	document.getElementById("edit-name-id").disabled= !enabled; 
 	document.getElementById("edit-email-id").disabled= !enabled; 
-	document.getElementById("edit-skills-id").disabled= !enabled; 
-	document.getElementById("edit-passions-id").disabled= !enabled; 
+	
+	for(var i=0; i<max_number_of_interests; i++){
+		var edit_skill_field_name = "edit-skills-id-" + i
+		var edit_passion_field_name = "edit-passions-id-" + i
+		
+		console.log('Disabling fields: ' + edit_skill_field_name + ' : ' + edit_passion_field_name);
+		document.getElementById(edit_skill_field_name).disabled= !enabled; 
+		document.getElementById(edit_passion_field_name).disabled= !enabled; 
+	}
 
     if(enabled){
     	document.getElementById("confirm-person-changes-id").style.visibility="visible";
@@ -83,12 +90,28 @@ function showNodeToEdit(node_id, network){
 	var edit_enabled = person.id == current_user_id;
 	setEditPersonEnabled(edit_enabled)
 	
-	var skills_text = person.skills.join(", ");
 	var passions_text = person.passions.join(", ");
 	document.getElementById("edit-name-id").value= person.name; 
 	document.getElementById("edit-email-id").value= person.email; 
-	document.getElementById("edit-skills-id").value= skills_text; 
-	document.getElementById("edit-passions-id").value= passions_text; 
+	for(var i=0; i<max_number_of_interests; i++){
+		var skill = person.skills[i]
+		var skill_field_id = "edit-skills-id-" + i;
+		console.log('Setting the value of: ' + skill_field_id)
+		
+		if(skill == undefined){
+			skill = '';
+		}
+		document.getElementById(skill_field_id).value= skill; 
+		
+		
+		var passion = person.passions[i]
+		
+		if(passion == undefined){
+			passion = '';
+		}
+		var passion_field_id = "edit-passions-id-" + i;
+		document.getElementById(passion_field_id).value= passion; 
+	}
 	
 	console.log('Editing current user: ' + person.id + ' ' + current_user_id + ' ' + (person.id == current_user_id));
 	
@@ -97,12 +120,26 @@ function showNodeToEdit(node_id, network){
 function confirmNodeEdit(network){
 	var name = document.getElementById("edit-name-id").value;
     var email = document.getElementById("edit-email-id").value;
-    var all_skills = document.getElementById("edit-skills-id").value;
-    var all_passions = document.getElementById("edit-passions-id").value;
     
     var node_id = graph.getSelectedNodes();
-    var new_skills =splitAndTrim(all_skills)
-    var new_passions =splitAndTrim(all_passions)
+    
+    var new_skills = [];
+    var new_passions = [];
+    for(var i=0; i<max_number_of_interests; i++){
+		var skill_field_id = "edit-skills-id-" + i;
+		var skill = document.getElementById(skill_field_id).value;
+		if(skill !== ""){
+			new_skills.push(skill);
+		}
+		
+		var passion_field_id = "edit-passions-id-" + i;
+		var passion = document.getElementById(passion_field_id).value;
+		if(passion !== ""){
+			new_passions.push(passion);
+		}
+		
+    }
+    
     var person = network.getPersonByID(node_id);
     person.name = name;
     person.email=email;

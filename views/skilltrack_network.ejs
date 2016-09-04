@@ -66,11 +66,38 @@ $(document).ready(function(){
         </div>
         <div class="w3-group">
           <label class="w3-label w3-text-black" for="edit-skills-id"><b>Conhecimentos</b></label>
-          <input class="w3-input w3-border w3-hover-border-cyan" id="edit-skills-id" type="text" value="">
+          <div class="w3-row-padding">
+            <div class="w3-half">
+                <input class="w3-input w3-border w3-hover-border-cyan" id="edit-skills-id-0" type="text" value="" placeholder="1">
+            </div>
+			<div class="w3-half">
+			    <input class="w3-input w3-border w3-hover-border-cyan" id="edit-skills-id-1" type="text" value="" placeholder="2">
+			</div>
+            <div class="w3-half">
+                <input class="w3-input w3-border w3-hover-border-cyan" id="edit-skills-id-2" type="text" value="" placeholder="3">
+            </div>
+			<div class="w3-half">
+			    <input class="w3-input w3-border w3-hover-border-cyan" id="edit-skills-id-3" type="text" value="" placeholder="4">
+			</div>
+		  </div>
         </div> 
         <div class="w3-group">
           <label class="w3-label w3-text-black" for="edit-passions-id"><b>Paixões</b></label>
-          <input class="w3-input w3-border w3-hover-border-cyan" id="edit-passions-id" type="text" value="">
+          <div class="w3-row-padding">
+            <div class="w3-half">
+                <input class="w3-input w3-border w3-hover-border-cyan" id="edit-passions-id-0" type="text" value="" placeholder="1)">
+            </div>
+            <div class="w3-half">
+                <input class="w3-input w3-border w3-hover-border-cyan" id="edit-passions-id-1" type="text" value="" placeholder="2)">
+            </div>
+            <div class="w3-half">
+                <input class="w3-input w3-border w3-hover-border-cyan" id="edit-passions-id-2" type="text" value="" placeholder="3)">
+            </div>
+            <div class="w3-half">
+                <input class="w3-input w3-border w3-hover-border-cyan" id="edit-passions-id-3" type="text" value="" placeholder="4)">
+            </div>
+          </div>
+          
         </div>
         <footer class="w3-container w3-theme-l1 w3-right-align">
             <button id="confirm-person-changes-id" onclick="confirmNodeEdit(network);">Salvar</button>
@@ -136,6 +163,7 @@ var network;
 var graph; 
 var current_user_id;
 var user_name;
+var max_number_of_interests=4
 
 
 </script>
