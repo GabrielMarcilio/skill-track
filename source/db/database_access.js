@@ -39,7 +39,7 @@ function updatePerson(connection, person, database, callback){
 	 * Updates the given person data into the database
 	 */
 	update_query = 'UPDATE '+ database+'.persons SET ? WHERE ?'
-	
+	console.log('Executing query on db: ' + update_query)
 	connection.query(update_query, [person, {'id':person.id}], callback);
 }
 
@@ -47,6 +47,7 @@ function updateInteraction(connection, interaction, database, callback){
 	/**
 	 * Updates the given interaction (json) in the database
 	 */
+	console.log('Executing Update interaction on db.')
 	connection.query('UPDATE interactions SET ? WHERE ?', [interaction, {'interaction_id':interaction.interaction_id}], callback);
 }
 		  
