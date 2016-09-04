@@ -54,7 +54,6 @@ $(document).ready(function(){
     <div class="w3-modal-content w3-card-8 w3-animate-top" style="max-width:400px">
         <header class="w3-container w3-theme-l1">
         <span id="cancel-person-changes-id" onclick="document.getElementById('edit_person').style.display='none'" class="w3-closebtn">×</span>
-            <h4>Nome</h4>
         </header>
       
         <div class="w3-group">
@@ -74,7 +73,7 @@ $(document).ready(function(){
           <input class="w3-input w3-border w3-hover-border-cyan" id="edit-passions-id" type="text" value="">
         </div>
         <footer class="w3-container w3-theme-l1 w3-right-align">
-            <button id="confirm-person-changes-id" onclick="confirmNodeEdit(network);">Confirma</button>
+            <button id="confirm-person-changes-id" onclick="confirmNodeEdit(network);">Salvar</button>
             
         </footer> 
     </div>
@@ -84,7 +83,7 @@ $(document).ready(function(){
 <div id="edit_interaction" class="w3-modal">
     <div class="w3-modal-content w3-card-8 w3-animate-top" style="max-width:400px">
         <header class="w3-container w3-theme-l1">
-            <h4>Editar Interação</h4>
+            <h4>Registrar Interação</h4>
         </header>
       
         <div class="w3-group">
@@ -106,8 +105,8 @@ $(document).ready(function(){
         <div class="w3-group">
         </div>
         <footer class="w3-container w3-theme-l1 w3-right-align">
-            <button id="confirm-inter-changes-id" onclick="confirmAddInteraction(network);">Confirma</button>
-            <button id="cancel-inter-changes-id" onclick="document.getElementById('edit_interaction').style.display='none'">Cancela</button>
+            <button id="confirm-inter-changes-id" onclick="confirmAddInteraction(network);">Salvar</button>
+            <button id="cancel-inter-changes-id" onclick="document.getElementById('edit_interaction').style.display='none'">Cancelar</button>
         </footer> 
     </div>
 </div>
