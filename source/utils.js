@@ -67,17 +67,11 @@ function confirmAddInteraction(){
     var description = document.getElementById("add-inter-description-id").value;
     var reporter = current_user_id
     console.log('Adding interaction for ' + current_user_id)
-//    var reporter = document.getElementById("add-inter-reporter-id").value;
-//    
-//    if(reporter==''){
-//    	reporter=undefined;
-//    }
     
     var interaction = new Interaction(person_id, skill, date, description, reporter);
-    network.addInteraction(interaction);
-    
-    addInteractionInDatabase(interaction);
     showAddInteraction(false);
+    addInteractionInDatabase(interaction, network);
+    
     drawGraph();
 }
 
@@ -114,10 +108,8 @@ function confirmNodeEdit(network){
     person.email=email;
     person.skills = new_skills;
     person.passions = new_passions
-    network.updatePerson(person);
-    drawGraph()
     showEditPersonForm(false);
-    updatePersonInDatabase(person);
+    updatePersonInDatabase(person, network);
 }
 
 
@@ -200,13 +192,14 @@ function drawGraph(){
 }
 
 
-function updatePersonInDatabase(person){
+function updatePersonInDatabase(person, network){
 	var person_memento = person.createMemento();
 	 $.post(
 		"/updatePerson",
 		{'person':person_memento},
 	    function(data, status){
-	        alert("Update person result: " + data + "\nStatus: " + status);
+			console.log('Update person result: ' + data + status)
+			loadNetwork(network)
     });
 }
 function addPersonInDatabase(person){
@@ -218,7 +211,7 @@ function addPersonInDatabase(person){
 		"/storePerson",
 		{'person':person_memento},
 	    function(data, status){
-	        alert("Store person result: " + data + "\nStatus: " + status);
+//	        alert("Store person result: " + data + "\nStatus: " + status);
     });
     	
 }
@@ -228,7 +221,8 @@ function addInteractionInDatabase(interaction){
 		"/storeInteraction",
 		{'interaction':interaction},
 	    function(data, status){
-	        alert("Store person result: " + data + "\nStatus: " + status);
+			console.log('Interaction store result: ' + data + status)
+			loadNetwork(network)
     });
 }
 

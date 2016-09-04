@@ -108,13 +108,17 @@ module.exports = function(app, passport, sql_username, sql_pass, sql_port, sql_h
 
 	app.post('/storeInteraction', function(req, res) {
 		var interaction = req.body.interaction;
+		console.log('Storing interaction ' + interaction.person_id + ' : ' + interaction.skill_name)
 		con = sql.createConnection(sql_host, sql_username, sql_pass, sql_port, sql_database)
 		sql.connectMysql(con);
 		sql.writeInteraction(con, interaction, sql_database, function(err, rows){
 			if(err){
+				console.log('Interaction Store fail')
 				throw err;
 			}
 			else{
+				console.log('Interaction store success')
+				res.json({});
 				sql.disconnectMysql(con);
 			}
 		});
@@ -139,14 +143,18 @@ module.exports = function(app, passport, sql_username, sql_pass, sql_port, sql_h
 
 	app.post('/updatePerson', function(req, res) {
 		var person = req.body.person;
+		console.log('Update person request.' + person.name + ' : ' +  person.skills + ' : ' +  person.passions)
 		con = sql.createConnection(sql_host, sql_username, sql_pass, sql_port, sql_database)
 		sql.connectMysql(con);
 		
 		sql.updatePerson(con, person, sql_database, function(err, rows){
 			if(err){
+				console.log('Update person error: ' + err);
 				throw err;
 			}
 			else{
+				console.log('Update sucessfull')
+				res.json({});
 				sql.disconnectMysql(con);
 			}
 		});
