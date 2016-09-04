@@ -3,7 +3,7 @@ const sql = require('../db/database_access.js')
 module.exports = function(app, passport, sql_username, sql_pass, sql_port, sql_host, sql_database) {
 
 	app.get('/', function(req, res) {
-		res.render('home.ejs')
+		res.render('home.ejs', { is_logged: req.isAuthenticated() });
 	});
 	
 	
@@ -31,11 +31,11 @@ module.exports = function(app, passport, sql_username, sql_pass, sql_port, sql_h
 	});
 	
 	app.get('/showSubscribePage', function(req, res) {
-		res.render('sign_up.ejs', { message: req.flash('signup_message') }); 
+		res.render('sign_up.ejs', { message: req.flash('signup_message'), is_logged: req.isAuthenticated() }); 
 	});
 	
 	app.get('/showLogInPage', function(req, res) {
-	    res.render('sign_in.ejs', { message: req.flash('login_message') }); 
+	    res.render('sign_in.ejs', { message: req.flash('login_message'), is_logged: req.isAuthenticated() }); 
 	});
 	
 	app.get('/skilltrackNetwork', isLoggedIn, function(req, res) {
@@ -62,7 +62,9 @@ module.exports = function(app, passport, sql_username, sql_pass, sql_port, sql_h
 	
 
 	function isLoggedIn(req, res, next) {
-	    // if user is authenticated in the session, carry on 
+		/**
+		 * Redirect not logged calls to root
+		 */
 	    if (req.isAuthenticated()){
 	        return next();
 	    }

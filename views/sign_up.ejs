@@ -26,6 +26,10 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
   <li class="w3-hide-small"><a href="/" class="w3-padding-large w3-hover-white">Início</a></li>
   <li class="w3-hide-small"><a href="/showSubscribePage" class="w3-padding-large w3-white">Criar Uma Conta</a></li>
   <li class="w3-hide-small"><a href="/showLogInPage" class="w3-padding-large w3-hover-white">Acessar Minha Conta</a></li>
+  
+  <% if (is_logged) { %>
+    <li class="w3-hide-small w3-right"><a href="/logout" class="w3-padding-large w3-hover-white">Sair</a></li>
+  <% } %>
 </ul>
 
 <!-- Navbar on small screens -->
@@ -34,6 +38,10 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
     <li><a class="w3-padding-large" href="/showHome">Início</a></li>
     <li><a class="w3-padding-large" href="/showSignUpPage">Criar Uma Conta</a></li>
     <li><a class="w3-padding-large" href="/showLogInPage">Acessar Minha Conta</a></li>
+    
+    <% if (is_logged) { %>
+    <li><a class="w3-padding-large" href="/logout">Sair</a></li>
+    <% } %>
   </ul>
 </div>
 
