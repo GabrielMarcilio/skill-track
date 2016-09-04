@@ -56,6 +56,7 @@ module.exports = function(app, passport, sql_username, sql_pass, sql_port, sql_h
 	
 	
 	app.get('/logout', function(req, res){
+		console.log('Usuario Saindo.')
 	    req.logout();
 	    res.redirect('/');
 	});

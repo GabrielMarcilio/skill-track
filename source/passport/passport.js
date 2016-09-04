@@ -107,6 +107,7 @@ module.exports = function(passport, sql_info) {
         passReqToCallback : true // allows us to pass back the entire request to the callback
     },
     function(req, email, password, done) {
+    	console.log('Usuario entrando: ' + email)
     	con = sql.createConnection(sql_info.host, sql_info.user, sql_info.password, sql_info.port, sql_info.database)
     	sql.connectMysql(con);
 
@@ -119,6 +120,7 @@ module.exports = function(passport, sql_info) {
     		
     		if(rows.length !==1){
     			sql.disconnectMysql(con);
+    			console.log('Login invalido (usuario nao encontrado)')
     			return done(null, false, req.flash('login_message', 'Usuário ou senha invalidos.'))
     		}
     		else{
@@ -133,10 +135,12 @@ module.exports = function(passport, sql_info) {
     			} 
     			if(loaded_user.password == password){
     				sql.disconnectMysql(con);
+    				console.log('Usuario logado')
         			return done(null, loaded_user)
     			}
     			else{
     				sql.disconnectMysql(con);
+    				console.log('Password invalido')
         			return done(null, false, req.flash('login_message', 'Usuário ou senha invalidos.'))
     			}
     		}
