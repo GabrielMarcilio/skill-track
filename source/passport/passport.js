@@ -76,10 +76,12 @@ module.exports = function(passport, sql_info) {
     			return done(null, false, req.flash('signup_message', 'Email "' + email + '" já cadastrado.'))
     		}
     		else{
+    			var password_to_store = password.hashCode()
+    			
     			var new_user = {
     				'name':req.body.name,
     				'email':email,
-    				'password':password,
+    				'password':password_to_store,
     				'skills':'',
     				'passions':'',
     			}
@@ -125,6 +127,7 @@ module.exports = function(passport, sql_info) {
     		}
     		else{
     			var user_row = rows[0]
+    			var password_to_check = password.hashCode()
     			var loaded_user = {
     				'name':user_row['name'],
     				'email':user_row['email'],
@@ -133,7 +136,7 @@ module.exports = function(passport, sql_info) {
     				'passions':user_row['passions'],
     				'id':user_row['id']
     			} 
-    			if(loaded_user.password == password){
+    			if(loaded_user.password == password_to_check){
     				sql.disconnectMysql(con);
     				console.log('Usuario logado')
         			return done(null, loaded_user)

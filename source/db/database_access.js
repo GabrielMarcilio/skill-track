@@ -126,6 +126,22 @@ function readPersonById(connection, id, callback){
 	query = "SELECT * FROM persons where id = '" +id +"';" 
 	connection.query(query, callback);
 }
+
+
+String.prototype.hashCode = function() {
+	/**
+	* Generate a hash representation for the given string
+    */
+    var hash = 0, i, chr, len;
+    if (this.length === 0) return hash;
+    for (i = 0, len = this.length; i < len; i++) {
+        chr   = this.charCodeAt(i);
+        hash  = ((hash << 5) - hash) + chr;
+        hash |= 0; // Convert to 32bit integer
+    }
+     return hash;
+};
+
 module.exports ={
 		createConnection: createConnection,
 		connectMysql: connectMysql,
