@@ -38,7 +38,7 @@ function updatePerson(connection, person, database, callback){
 	/**
 	 * Updates the given person data into the database
 	 */
-	update_query = 'UPDATE '+ database+'.persons SET ? WHERE ?'
+	var update_query = 'UPDATE '+ database+'.persons SET ? WHERE ?'
 	connection.query(update_query, [person, {'id':person.id}], callback);
 }
 
@@ -54,7 +54,7 @@ function writeInteraction(connection, interaction, database, callback){
 	/**
 	 * stores the given interaction (json) in the database
 	 */
-	date = interaction.date
+	var date = interaction.date
 	
 	if (typeof date === 'string' || date instanceof String){
 		// Replacing a string with a date object (jquery might have converted it)
@@ -73,7 +73,7 @@ function readInteractions(connection, database, callback){
 	/**
 	 * Read all interactions stored in the database
 	 */
-	query = 'SELECT * FROM ' + database + '.interactions;'
+	var query = 'SELECT * FROM ' + database + '.interactions;'
 	connection.query(query, callback);
 }
 
@@ -112,18 +112,18 @@ function readPersons(connection, database, callback){
 	 * a person (name, email, id, skills and passions).
 	 *
 	 */
-	query = 'SELECT * FROM '+ database+'.persons;'
+	var query = 'SELECT * FROM '+ database+'.persons;'
 	connection.query(query, callback);
 }
 
 
 function readPersonByEmail(connection, email, callback){
-	query = "SELECT * FROM persons where email = '" +email +"';" 
+	var query = "SELECT * FROM persons where email = '" +email +"';" 
 	connection.query(query, callback);
 }
 
 function readPersonById(connection, id, callback){
-	query = "SELECT * FROM persons where id = '" +id +"';" 
+	var query = "SELECT * FROM persons where id = '" +id +"';" 
 	connection.query(query, callback);
 }
 

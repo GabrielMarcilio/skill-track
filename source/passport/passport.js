@@ -12,19 +12,27 @@ module.exports = function(passport, sql_info) {
 
     // used to deserialize the user
     passport.deserializeUser(function(id, done) {
-    	con = sql.createConnection(sql_info.host, sql_info.user, sql_info.password, sql_info.port, sql_info.database)
+    	var con = sql.createConnection(sql_info.host, sql_info.user, sql_info.password, sql_info.port, sql_info.database)
     	sql.connectMysql(con);
+    	console.log('requesting read persons by eail')
     	sql.readPersonById(con, id, function(err, rows){
+    		console.log('Database acessed, processing data')
     		if(err){
     			console.log('Sql error when desserializing user: ' + err)
+    			sql.disconnectMysql(con);
     			done('Usuario não encontrado', {})
     		}
-    		if((rows == undefined) || (rows.length == 0)){
+    		else if((rows == undefined) || (rows.length == 0)){
+    			console.log('Disconnecting due to user not found')
+    			sql.disconnectMysql(con);
     			done('Usuario não encontrado', {})
     		}
-    		var user_row = rows[0];
-    		
-    		done(null, user_row)
+    		else{
+    			console.log('Running else')
+    			var user_row = rows[0];
+    			sql.disconnectMysql(con);
+    			done(null, user_row)
+    		}
     	});
     });
 
@@ -38,7 +46,7 @@ module.exports = function(passport, sql_info) {
         passReqToCallback : true // allows us to pass back the entire request to the callback
     },
     function(req, email, password, done) {
-    	con = sql.createConnection(sql_info.host, sql_info.user, sql_info.password, sql_info.port, sql_info.database)
+    	var con = sql.createConnection(sql_info.host, sql_info.user, sql_info.password, sql_info.port, sql_info.database)
     	
     	var name = req.body.name;
     	var confirmed_password = req.body.password_confirm;
@@ -58,7 +66,7 @@ module.exports = function(passport, sql_info) {
 				return done(err);
 			}
     		
-    		if(rows.length >0){
+    		else if(rows.length >0){
     			sql.disconnectMysql(con);
     			return done(null, false, req.flash('signup_message', 'Email "' + email + '" já cadastrado.'))
     		}
@@ -97,7 +105,7 @@ module.exports = function(passport, sql_info) {
     },
     function(req, email, password, done) {
     	console.log('Usuario entrando: ' + email)
-    	con = sql.createConnection(sql_info.host, sql_info.user, sql_info.password, sql_info.port, sql_info.database)
+    	var con = sql.createConnection(sql_info.host, sql_info.user, sql_info.password, sql_info.port, sql_info.database)
     	sql.connectMysql(con);
 
     	// Read the users table to check if the passed email is not in use
@@ -107,7 +115,7 @@ module.exports = function(passport, sql_info) {
 				return done(err);
 			}
     		
-    		if(rows.length !==1){
+    		else if(rows.length !==1){
     			sql.disconnectMysql(con);
     			console.log('Login invalido (usuario nao encontrado)')
     			return done(null, false, req.flash('login_message', 'Usuário ou senha invalidos.'))

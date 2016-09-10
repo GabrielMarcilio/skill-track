@@ -10,7 +10,7 @@ module.exports = function(app, passport, sql_username, sql_pass, sql_port, sql_h
 	app.get('/userInfo', isLoggedIn, function(req, res){
 		var user_id = req.session.passport.user;
 		
-		con = sql.createConnection(sql_host, sql_username, sql_pass, sql_port, sql_database)
+		var con = sql.createConnection(sql_host, sql_username, sql_pass, sql_port, sql_database)
 		sql.connectMysql(con);
 		
 		sql.readPersonById(con, user_id, function(err, rows){
@@ -25,6 +25,7 @@ module.exports = function(app, passport, sql_username, sql_pass, sql_port, sql_h
     			'name':user_name,
     			'user_id': user_id
     		}
+    		sql.disconnectMysql(con);
     		res.json(user_info);
     	});
 		
@@ -37,7 +38,7 @@ module.exports = function(app, passport, sql_username, sql_pass, sql_port, sql_h
 	app.get('/showUpdateProfile', isLoggedIn, function(req, res) {
 		var user_id = req.session.passport.user;
 		
-		con = sql.createConnection(sql_host, sql_username, sql_pass, sql_port, sql_database)
+		var con = sql.createConnection(sql_host, sql_username, sql_pass, sql_port, sql_database)
 		sql.connectMysql(con);
 		
 		sql.readPersonById(con, user_id, function(err, rows){
@@ -52,6 +53,7 @@ module.exports = function(app, passport, sql_username, sql_pass, sql_port, sql_h
     			'user_email':user_email,
     			'user_id': user_id
     		}
+    		sql.disconnectMysql(con);
     		res.render('update_account.ejs', { 
     				error_message: req.flash('update_error_message'), 
     				success_message:req.flash('update_success_message'),
@@ -99,7 +101,7 @@ module.exports = function(app, passport, sql_username, sql_pass, sql_port, sql_h
 
 	app.get('/loadInteractions', function(req, res) {
 		// Callback triggered when load interactions is requested
-		con = sql.createConnection(sql_host, sql_username, sql_pass, sql_port, sql_database)
+		var con = sql.createConnection(sql_host, sql_username, sql_pass, sql_port, sql_database)
 		sql.connectMysql(con);
 		
 		sql.readInteractions(con, sql_database, function(err, rows){
@@ -116,12 +118,13 @@ module.exports = function(app, passport, sql_username, sql_pass, sql_port, sql_h
 
 	app.get('/loadPersons', function(req, res) {
 		// Callback triggered when load persons is requested
-		con = sql.createConnection(sql_host, sql_username, sql_pass, sql_port, sql_database)
+		var con = sql.createConnection(sql_host, sql_username, sql_pass, sql_port, sql_database)
 		sql.connectMysql(con);
 		
 		sql.readPersons(con, sql_database, function(err, rows){
 			// Once connected and the rows were read, we can send then to the client
 			if(err){
+				sql.disconnectMysql(con);
 				throw err;
 			}
 			else{
@@ -135,7 +138,7 @@ module.exports = function(app, passport, sql_username, sql_pass, sql_port, sql_h
 	app.post('/storeInteraction', function(req, res) {
 		var interaction = req.body.interaction;
 		console.log('Storing interaction ' + interaction.person_id + ' : ' + interaction.skill_name)
-		con = sql.createConnection(sql_host, sql_username, sql_pass, sql_port, sql_database)
+		var con = sql.createConnection(sql_host, sql_username, sql_pass, sql_port, sql_database)
 		sql.connectMysql(con);
 		sql.writeInteraction(con, interaction, sql_database, function(err, rows){
 			if(err){
@@ -154,7 +157,7 @@ module.exports = function(app, passport, sql_username, sql_pass, sql_port, sql_h
 	app.post('/storePerson', function(req, res) {
 		var person = req.body.person;
 		
-		con = sql.createConnection(sql_host, sql_username, sql_pass, sql_port, sql_database)
+		var con = sql.createConnection(sql_host, sql_username, sql_pass, sql_port, sql_database)
 		sql.connectMysql(con);
 		
 		sql.writePersons(con, [person], sql_database, function(err, rows){
@@ -170,7 +173,7 @@ module.exports = function(app, passport, sql_username, sql_pass, sql_port, sql_h
 	app.post('/updatePerson', function(req, res) {
 		var person = req.body.person;
 		console.log('Update person request.' + person.name + ' : ' +  person.skills + ' : ' +  person.passions)
-		con = sql.createConnection(sql_host, sql_username, sql_pass, sql_port, sql_database)
+		var con = sql.createConnection(sql_host, sql_username, sql_pass, sql_port, sql_database)
 		sql.connectMysql(con);
 		
 		sql.updatePerson(con, person, sql_database, function(err, rows){
@@ -203,7 +206,7 @@ module.exports = function(app, passport, sql_username, sql_pass, sql_port, sql_h
         else{
         	console.log('Running else')
         	// Checking if the given email is not in use
-        	con = sql.createConnection(sql_host, sql_username, sql_pass, sql_port, sql_database)
+        	var con = sql.createConnection(sql_host, sql_username, sql_pass, sql_port, sql_database)
     		sql.connectMysql(con);
         	
         	sql.readPersonByEmail(con, email, function(err, rows){
@@ -236,7 +239,7 @@ module.exports = function(app, passport, sql_username, sql_pass, sql_port, sql_h
         			email:email,
         			password:password.hashCode(),
         		}
-        		con = sql.createConnection(sql_host, sql_username, sql_pass, sql_port, sql_database)
+        		var con = sql.createConnection(sql_host, sql_username, sql_pass, sql_port, sql_database)
         		sql.connectMysql(con);
         		
         		sql.updatePerson(con, person, sql_database, function(err, rows){
