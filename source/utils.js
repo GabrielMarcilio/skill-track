@@ -1,6 +1,5 @@
 function setEditPersonEnabled(enabled){
 	document.getElementById("edit-name-id").disabled= !enabled; 
-	document.getElementById("edit-email-id").disabled= !enabled; 
 	
 	for(var i=0; i<max_number_of_interests; i++){
 		var edit_skill_field_name = "edit-skills-id-" + i
@@ -92,7 +91,6 @@ function showNodeToEdit(node_id, network){
 	
 	var passions_text = person.passions.join(", ");
 	document.getElementById("edit-name-id").value= person.name; 
-	document.getElementById("edit-email-id").value= person.email; 
 	for(var i=0; i<max_number_of_interests; i++){
 		var skill = person.skills[i]
 		var skill_field_id = "edit-skills-id-" + i;
@@ -119,7 +117,6 @@ function showNodeToEdit(node_id, network){
 
 function confirmNodeEdit(network){
 	var name = document.getElementById("edit-name-id").value;
-    var email = document.getElementById("edit-email-id").value;
     
     var node_id = graph.getSelectedNodes();
     
@@ -142,7 +139,6 @@ function confirmNodeEdit(network){
     
     var person = network.getPersonByID(node_id);
     person.name = name;
-    person.email=email;
     person.skills = new_skills;
     person.passions = new_passions
     showEditPersonForm(false);

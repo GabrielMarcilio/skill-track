@@ -3,7 +3,7 @@ const sql = require('../db/database_access.js')
 module.exports = function(app, passport, sql_username, sql_pass, sql_port, sql_host, sql_database) {
 
 	app.get('/', function(req, res) {
-		res.render('home.ejs', { is_logged: req.isAuthenticated(), message: req.flash('signup_message') });
+		res.render('home.ejs', { is_logged: req.isAuthenticated(), message: req.flash('login_message') });
 	});
 	
 	
@@ -32,10 +32,6 @@ module.exports = function(app, passport, sql_username, sql_pass, sql_port, sql_h
 	
 	app.get('/showSubscribePage', function(req, res) {
 		res.render('sign_up.ejs', { message: req.flash('signup_message'), is_logged: req.isAuthenticated() }); 
-	});
-	
-	app.get('/showLogInPage', function(req, res) {
-	    res.render('sign_in.ejs', { message: req.flash('login_message'), is_logged: req.isAuthenticated() }); 
 	});
 	
 	app.get('/showUpdateProfile', isLoggedIn, function(req, res) {
@@ -77,7 +73,7 @@ module.exports = function(app, passport, sql_username, sql_pass, sql_port, sql_h
 	
 	app.post('/signIn', passport.authenticate('local-signin', {
 		successRedirect : '/skilltrackNetwork', // redirect to the secure profile section
-		failureRedirect : '/showLogInPage', // redirect back to the signup page if there is an error
+		failureRedirect : '/',
 		failureFlash : true // allow flash messages
 	}));
 	
