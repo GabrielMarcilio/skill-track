@@ -39,28 +39,11 @@ module.exports = function(passport, sql_info) {
     	var name = req.body.name;
     	var confirmed_password = req.body.password_confirm;
     	
-    	// Validating user input
-    	var alerts =[];
-        if(name == ''){
-        	alerts.push('Insira um nome para o usuário');
+    	var parameter_allert = sql.validateAccountParameters(name, email, password, confirmed_password)
+        if(parameter_allert.length > 0){
+        	return done(null, false, req.flash('signup_message', parameter_allert))
         }
-        
-        if(email == ''){
-        	alerts.push('Insira um email');
-        }
-
-        if(password.length < 5){
-        	alerts.push('A senha deve ter no mínimo 5 caracteres');
-        }
-        
-        else if(password !== confirmed_password){
-        	alerts.push('Erro ao confirmar a senha');
-        }
-        
-        if(alerts.length > 0){
-        	var pendencies = alerts.join('\n')
-        	return done(null, false, req.flash('signup_message', pendencies))
-        }
+    	
     	
     	sql.connectMysql(con);
 

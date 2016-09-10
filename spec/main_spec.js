@@ -63,7 +63,9 @@ describe("Test app services", function() {
 						expect(created_person.email).toBe('mario@nintendo.com');
 						expect(created_person.skills).toBe('');
 						expect(created_person.passions).toBe('');
-						expect(created_person.password).toBe('Its me! Mario!');
+						
+						var expected_password = 'Its me! Mario!'.hashCode().toString()
+						expect(created_person.password).toBe(expected_password);
 						done()
 					}
 		      });
@@ -71,10 +73,11 @@ describe("Test app services", function() {
 	});
 	
 	it("Testing Duplicated email", function(done){
+		var password = 'Its me! Mario!'
 		var user_data = {
 			'name': 'Mario',
 			'email': 'mario@nintendo.com',
-			'password': 'Its me! Mario!',
+			'password': password.hashCode(),
 			'skills': 'Jumping,Running',
 			'passions': 'Pasta,Juventus'
 			
@@ -93,10 +96,11 @@ describe("Test app services", function() {
 
 	
 	it("Testing LogIn", function(done){
+		var password = 'Its me! Mario!'
 		var user_data = {
 			'name': 'Mario',
 			'email': 'mario@nintendo.com',
-			'password': 'Its me! Mario!',
+			'password': password.hashCode(),
 			'skills': 'Jumping,Running',
 			'passions': 'Pasta,Juventus'
 					
@@ -113,5 +117,9 @@ describe("Test app services", function() {
 			.end(done)
 		});
 	});
+
+	
+	
+	
 	
 });

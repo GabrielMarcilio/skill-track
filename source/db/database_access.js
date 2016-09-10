@@ -128,6 +128,39 @@ function readPersonById(connection, id, callback){
 }
 
 
+function validateAccountParameters(name, email, password, confirmed_password){
+	/**
+	 * Checks if the account data provided by the user is valid
+	 * 
+	 * @returns{String} A sting with the data pendencies found (or an empty string if the data is valid).
+	 */
+	var alerts =[];
+	var pendencies = '';
+		
+	if(name == ''){
+    	alerts.push('Insira um nome para o usuário');
+    }
+    
+    if(email == ''){
+    	alerts.push('Insira um email');
+    }
+
+    if(password.length < 5){
+    	alerts.push('A senha deve ter no mínimo 5 caracteres');
+    }
+    
+    else if(password !== confirmed_password){
+    	alerts.push('Erro ao confirmar a senha');
+    }
+    
+    if(alerts.length > 0){
+    	pendencies = alerts.join('\n')
+    }
+    
+    return pendencies;
+	
+}
+
 String.prototype.hashCode = function() {
 	/**
 	* Generate a hash representation for the given string
@@ -154,5 +187,6 @@ module.exports ={
 		readInteractions:readInteractions,
 		updateInteraction: updateInteraction,
 		readPersonByEmail:readPersonByEmail,
-		readPersonById:readPersonById
+		readPersonById:readPersonById,
+		validateAccountParameters:validateAccountParameters
 }

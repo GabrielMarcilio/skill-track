@@ -144,13 +144,17 @@ $(document).ready(function(){
 	  <li class="w3-hide-medium w3-hide-large w3-opennav w3-right">
 	    <a class="w3-padding-large w3-hover-white w3-large w3-cyan" href="javascript:void(0);" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
 	  </li>
-	  <li id=greetings-id class="w3-navitem">Olá Fulano</li>
-	  <li class="w3-hide-small w3-right"><a href="/logout" class="w3-padding-large w3-hover-white">Sair</a></li>
+	  <li id=greetings-id class="w3-navitem w3-right">Olá</li>
+	  <li class="w3-hide-small"><a href="/skilltrackNetwork" class="w3-padding-large w3-white">Mapa</a></li>
+	  <li class="w3-hide-small"><a href="/showUpdateProfile" class="w3-padding-large w3-hover-white">Alterar Conta</a></li>
+	  <li class="w3-hide-small"><a href="/logout" class="w3-padding-large w3-hover-white">Sair</a></li>
 	</ul>
 	
 	<!-- Navbar on small screens -->
 	<div id="navDemo" class="w3-hide w3-hide-large w3-hide-medium w3-top" style="margin-top:51px">
 	  <ul class="w3-navbar w3-left-align w3-large w3-black">
+	    <li><a class="w3-padding-large" href="/skilltrackNetwork" class="w3-padding-large w3-hover-white">Mapa</a></li>
+	    <li><a class="w3-padding-large" href="/showUpdateProfile" class="w3-padding-large w3-hover-white">Alterar Conta</a></li>
 	    <li><a class="w3-padding-large" href="/logout" class="w3-padding-large w3-hover-white">Sair</a></li>
 	  </ul>
 	</div>
@@ -166,7 +170,15 @@ var current_user_id;
 var user_name;
 var max_number_of_interests=4
 
-
+//Used to toggle the menu on small screens when clicking on the menu button
+function myFunction() {
+ var x = document.getElementById("navDemo");
+ if (x.className.indexOf("w3-show") == -1) {
+     x.className += " w3-show";
+ } else {
+     x.className = x.className.replace(" w3-show", "");
+ }
+}
 </script>
 </body>
 </html>

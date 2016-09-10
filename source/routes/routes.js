@@ -3,7 +3,7 @@ const sql = require('../db/database_access.js')
 module.exports = function(app, passport, sql_username, sql_pass, sql_port, sql_host, sql_database) {
 
 	app.get('/', function(req, res) {
-		res.render('home.ejs', { is_logged: req.isAuthenticated() });
+		res.render('home.ejs', { is_logged: req.isAuthenticated(), message: req.flash('signup_message') });
 	});
 	
 	
@@ -36,6 +36,33 @@ module.exports = function(app, passport, sql_username, sql_pass, sql_port, sql_h
 	
 	app.get('/showLogInPage', function(req, res) {
 	    res.render('sign_in.ejs', { message: req.flash('login_message'), is_logged: req.isAuthenticated() }); 
+	});
+	
+	app.get('/showUpdateProfile', isLoggedIn, function(req, res) {
+		var user_id = req.session.passport.user;
+		
+		con = sql.createConnection(sql_host, sql_username, sql_pass, sql_port, sql_database)
+		sql.connectMysql(con);
+		
+		sql.readPersonById(con, user_id, function(err, rows){
+    		if(rows.length == 0){
+    			var user_email = undefined
+    		}
+    		else{
+    			var user_email = rows[0].email;
+    		}
+    		
+    		var user_info = {
+    			'user_email':user_email,
+    			'user_id': user_id
+    		}
+    		res.render('update_account.ejs', { 
+    				error_message: req.flash('update_error_message'), 
+    				success_message:req.flash('update_success_message'),
+    				user_email:user_email
+    			}
+    		)
+		});
 	});
 	
 	app.get('/skilltrackNetwork', isLoggedIn, function(req, res) {
@@ -161,6 +188,79 @@ module.exports = function(app, passport, sql_username, sql_pass, sql_port, sql_h
 				sql.disconnectMysql(con);
 			}
 		});
+	});
+	
+	app.post('/updateProfile', function(req, res) {
+		var name = req.body.name;
+    	var confirmed_password = req.body.password_confirm;
+    	var password = req.body.password
+    	var email = req.body.email
+    	var user_id = req.session.passport.user;
+    	
+    	var parameter_allert = sql.validateAccountParameters(name, email, password, confirmed_password)
+        if(parameter_allert.length > 0){
+        	req.flash('update_error_message', parameter_allert)
+        	sql.disconnectMysql(con);
+        	res.redirect('/showUpdateProfile');
+        	return
+        }
+        else{
+        	console.log('Running else')
+        	// Checking if the given email is not in use
+        	con = sql.createConnection(sql_host, sql_username, sql_pass, sql_port, sql_database)
+    		sql.connectMysql(con);
+        	
+        	sql.readPersonByEmail(con, email, function(err, rows){
+        		if(err){
+        			req.flash('update_error_message', 'Erro ao acessar base de dados: ' + err);
+        			sql.disconnectMysql(con);
+        			res.redirect('/showUpdateProfile');
+        			return;
+    			}
+        		else if(rows.length >1){
+        			req.flash('update_error_message', 'Multiplos usuarios com email: ' + email);
+        			sql.disconnectMysql(con);
+        			res.redirect('/showUpdateProfile');
+        			return;
+        		}
+        		else if(rows.length ==1){
+        			var user_with_email = rows[0].id
+        			if(user_with_email != user_id){
+        				console.log('Invalid email')
+        				req.flash('update_error_message', 'Já existe um usuário com o email: ' + email);
+        				sql.disconnectMysql(con);
+        				res.redirect('/showUpdateProfile');
+        				return;
+        			}
+        		}
+
+        		// If the code arrived at this point, we can update the user profile
+        		var person = {
+        			id:user_id,
+        			email:email,
+        			password:password.hashCode(),
+        		}
+        		con = sql.createConnection(sql_host, sql_username, sql_pass, sql_port, sql_database)
+        		sql.connectMysql(con);
+        		
+        		sql.updatePerson(con, person, sql_database, function(err, rows){
+        			if(err){
+        				req.flash('update_error_message', 'Erro a acessar base de dados');
+        				sql.disconnectMysql(con);
+        				res.redirect('/showUpdateProfile');
+        				return
+        			}
+        			else{
+        				req.flash('update_success_message', 'Dados Atualizados')
+        				sql.disconnectMysql(con);
+        				res.redirect('/showUpdateProfile');
+        				return
+        			}
+        		});
+        		
+        	});
+        }
+    	
 	});
 	
 	
