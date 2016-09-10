@@ -21,6 +21,15 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
       border: 10px solid lightgray;
       vertical-align: bottom;
 }
+
+.legend { list-style: none; }
+.legend li { float: left; margin-right: 10px; }
+.legend span { border: 1px solid #ccc; float: left; width: 12px; height: 12px; margin: 2px; }
+/* your colors */
+.legend .passion { background-color: #FF8000; }
+.legend .skill { background-color: #6666FF; }
+.legend .subject { background-color: #FFFF66; }
+.legend .user { background-color: #000000; }
 </style>
 
 <!-- Imports -->
@@ -135,12 +144,40 @@ $(document).ready(function(){
     </div>
 </div>
 
+<!-- Show Help Card -->
+<div id="show_help" class="w3-modal">
+    <div class="w3-modal-content w3-card-8 w3-animate-top" style="max-width:600px">
+        <header class="w3-container w3-theme-l1">
+        <span id="close-help-id" onclick="document.getElementById('show_help').style.display='none'" class="w3-closebtn">×</span>
+            <h4>Ajuda</h4>
+        </header>
+    
+		    <ul class="legend">
+		        
+			    <li><span class="user"></span> Usuário</li><br>
+			    <li><span class="subject"></span> Tópico</li><br>
+		    </ul>
+		    <li> Ligações (linhas):</li>
+			<ul class="legend">
+			    <li><span class="passion"></span> Paixão</li><br>
+			    <li><span class="skill"></span> Conhecimento</li><br>
+		    </ul>
+		    <li> Ações:</li>
+			<ul>
+			    <li> Para inserir ou alterar suas informações: Clique sobre o seu nome.</li><br>
+			    <li> Para registrar uma interação: Clique sobre uma paixão ou interesse.</li><br>
+			</ul>
+    </div>
+</div>
+
 	<!-- Navbar -->
 	<ul class="w3-navbar w3-cyan w3-card-2 w3-top w3-left-align w3-large">
 	  <li class="w3-hide-medium w3-hide-large w3-opennav w3-right">
 	    <a class="w3-padding-large w3-hover-white w3-large w3-cyan" href="javascript:void(0);" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
 	  </li>
+	  <li class="w3-navitem w3-right w3-hover-white" onclick="document.getElementById('show_help').style.display='block'">Ajuda</li>
 	  <li id=greetings-id class="w3-navitem w3-right">Olá</li>
+
 	  <li class="w3-hide-small"><a href="/skilltrackNetwork" class="w3-padding-large w3-white">Mapa</a></li>
 	  <li class="w3-hide-small"><a href="/showUpdateProfile" class="w3-padding-large w3-hover-white">Alterar Conta</a></li>
 	  <li class="w3-hide-small"><a href="/logout" class="w3-padding-large w3-hover-white">Sair</a></li>

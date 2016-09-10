@@ -15,7 +15,11 @@ module.exports = function(passport, sql_info) {
     	con = sql.createConnection(sql_info.host, sql_info.user, sql_info.password, sql_info.port, sql_info.database)
     	sql.connectMysql(con);
     	sql.readPersonById(con, id, function(err, rows){
-    		if(rows.length == 0){
+    		if(err){
+    			console.log('Sql error when desserializing user: ' + err)
+    			done('Usuario não encontrado', {})
+    		}
+    		if((rows == undefined) || (rows.length == 0)){
     			done('Usuario não encontrado', {})
     		}
     		var user_row = rows[0];
