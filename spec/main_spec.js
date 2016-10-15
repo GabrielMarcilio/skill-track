@@ -116,10 +116,5 @@ describe("Test app services", function() {
 			.expect(302, 'Moved Temporarily. Redirecting to /skilltrackNetwork') // Redirecting to protected content
 			.end(done)
 		});
-	});
-
-	
-	
-	
-	
+	});	
 });

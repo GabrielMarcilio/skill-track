@@ -45,10 +45,12 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
 $(document).ready(function(){
 	
 	$.get("/userInfo", function(data, status){
-		var user_info = data
-		user_name = user_info.name
+		var user_info = data;
+		user_name = user_info.name;
+		user_type = user_info.type;
+		
 		current_user_id = data.user_id
-        console.log('Data read on page: ' + user_name + ' ' + current_user_id);
+        console.log('Data read on page: ' + user_name + ' ' + current_user_id + ' ' + user_type);
 		$("#greetings-id").text('Olá ' + user_name)
 	    network = new SkillNetwork('Passions and Skills Diagram');
 	    loadNetwork(network);
@@ -202,6 +204,8 @@ var network;
 var graph; 
 var current_user_id;
 var user_name;
+var user_type;
+
 var max_number_of_interests=4
 
 //Used to toggle the menu on small screens when clicking on the menu button

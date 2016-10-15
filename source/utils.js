@@ -86,7 +86,9 @@ function showNodeToEdit(node_id, network){
 	person = network.getPersonByID(node_id);
 	showEditPersonForm(true);
 	
-	var edit_enabled = person.id == current_user_id;
+	var current_user = person.id == current_user_id;
+	var is_admin = user_type == 'admin'
+	var edit_enabled = current_user || is_admin
 	setEditPersonEnabled(edit_enabled)
 	
 	var passions_text = person.passions.join(", ");

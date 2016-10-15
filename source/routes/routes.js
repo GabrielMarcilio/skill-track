@@ -15,15 +15,18 @@ module.exports = function(app, passport, sql_username, sql_pass, sql_port, sql_h
 		
 		sql.readPersonById(con, user_id, function(err, rows){
     		if(rows.length == 0){
-    			var user_name = undefined
+    			var user_name = undefined;
+    			var user_type = undefined;
     		}
     		else{
     			var user_name = rows[0].name;
+    			var user_type = rows[0].type;
     		}
     		
     		var user_info = {
     			'name':user_name,
-    			'user_id': user_id
+    			'user_id': user_id,
+    			'type': user_type,
     		}
     		sql.disconnectMysql(con);
     		res.json(user_info);
@@ -172,20 +175,46 @@ module.exports = function(app, passport, sql_username, sql_pass, sql_port, sql_h
 
 	app.post('/updatePerson', function(req, res) {
 		var person = req.body.person;
+		var user_id = req.session.passport.user;
+
+		// Either editing current user, or an admin is updating another user
+		console.log('Session:' + req.session)
+		var updating_current_user = user_id == person.id;
+			
 		console.log('Update person request.' + person.name + ' : ' +  person.skills + ' : ' +  person.passions)
 		var con = sql.createConnection(sql_host, sql_username, sql_pass, sql_port, sql_database)
 		sql.connectMysql(con);
 		
-		sql.updatePerson(con, person, sql_database, function(err, rows){
-			if(err){
-				console.log('Update person error: ' + err);
-				throw err;
+		sql.readPersonById(con, user_id, function(err, rows){
+			if(rows.length == 0){
+    			var user_type = undefined
+    		}
+    		else{
+    			var user_type = rows[0].type;
+    		}
+			
+			var is_admin = user_type == 'admin';
+			
+			console.log('Is admin? ' + is_admin + ' Is current? ' + updating_current_user);
+			if(is_admin || updating_current_user){
+				sql.updatePerson(con, person, sql_database, function(err, rows){
+					if(err){
+						console.log('Update person error: ' + err);
+						throw err;
+					}
+					else{
+						console.log('Update sucessfull')
+						res.json({});
+						sql.disconnectMysql(con);
+					}
+				});
 			}
-			else{
-				console.log('Update sucessfull')
-				res.json({});
+			else {
+				console.log('Failed to updated user: ' + person.id + ' from: ' + user_id)
 				sql.disconnectMysql(con);
-			}
+				throw 'Permissão negada para editar usuario'
+			} 
+				
 		});
 	});
 	
