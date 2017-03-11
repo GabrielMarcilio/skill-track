@@ -10,6 +10,7 @@
    
   <script src="source/model/skill_network.js"></script>
   <script src="source/graph/graph_creator.js"></script>
+  <script src="source/utils.js"></script>
   
   <style type="text/css">
     #mynetwork {
@@ -29,8 +30,10 @@
 
 <script type="text/javascript">
   var container = document.getElementById('mynetwork');
-  network = createTestNetwork()
-  var network = createGraph(network, container)
+  var selected_nodes = []
+  var network = createTestNetwork()
+  drawGraph();
+  
 </script>
 
 </body>

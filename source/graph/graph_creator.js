@@ -1,15 +1,24 @@
 
-function createNodes(skill_network){
+function createNodes(skill_network, highlighted_nodes){
 	var node_data = [];
+	
+	var extended_selected = getExtendendSelectedNodes(skill_network, highlighted_nodes)
 	
 	// Creating the nodes associated with persons
 	for(person_id in skill_network.persons) {
 		person = skill_network.persons[person_id];
+		
+		var node_group = 'transparent_person';
+		
+		if(extended_selected.length == 0 || extended_selected.indexOf(person_id) >=0){
+			 node_group = 'highlighted_person';
+		}
+		
 		node_data.push(
 			{
-				id:person.id,
+				id:person_id,
 				label: person.name,
-				group: 'person',
+				group: node_group,
 				font:{color:'white'}
 			}
 		);
@@ -19,11 +28,15 @@ function createNodes(skill_network){
 	network_skills = skill_network.getInterests()
 	for(var i=0; i<network_skills.length; i++){
 		skill = network_skills[i];
+		var skill_group = 'transparent_skill';
+		if(extended_selected.length == 0 || extended_selected.indexOf(skill) >=0){
+			skill_group = 'highlighted_skill';
+		}
 		node_data.push(
 			{
 				id:skill,
 				label: skill,
-				group: 'skill'
+				group: skill_group
 			}
 		);
 	}
@@ -32,6 +45,43 @@ function createNodes(skill_network){
 }
 
 
+function getExtendendSelectedNodes(skill_network, highlighted_nodes){
+	var extended_selected_nodes = [];
+	
+	// Checking for selected persons. All their insterests become highlighted
+	for(var i=0; i<highlighted_nodes.length; i++){
+		var current_person_id = highlighted_nodes[i];
+		var person = skill_network.getPersonByID(current_person_id);
+		
+		if(person !== undefined){
+			extended_selected_nodes = extended_selected_nodes.concat(person.passions);
+			extended_selected_nodes = extended_selected_nodes.concat(person.skills);
+			extended_selected_nodes.push(current_person_id);
+		}
+	}
+	
+	// Checking if the selected node is an skill/pasion. IN that case all persons with that skill /
+	//passion become highlighted
+	for(person_id in skill_network.persons) {
+		person = skill_network.persons[person_id];
+		
+		for(var i=0; i<highlighted_nodes.length; i++){
+			var current_interest = highlighted_nodes[i];
+			
+			if(person.passions.indexOf(current_interest) >= 0){
+				extended_selected_nodes.push(person_id);
+				extended_selected_nodes.push(current_interest);
+			}
+			else if(person.skills.indexOf(current_interest) >= 0){
+				extended_selected_nodes.push(person_id);
+				extended_selected_nodes.push(current_interest);
+			}
+		}
+	}
+	
+	return extended_selected_nodes
+
+}
 function getEdgeValue(person_id, skill_name, network){
 	/**
 	 * Get the value of the edge that connects the given person to the given skill.
@@ -81,9 +131,11 @@ function createEdges(skill_network){
 	return new vis.DataSet(edge_data);
 	
 }
-function createGraph(skill_network, container){
-	var edges = createEdges(skill_network);
-	var nodes = createNodes(skill_network);
+function createGraph(skill_network, container, highlight){
+	
+	highlight = typeof highlight !== 'undefined' ? highlight : [];
+	var edges = createEdges(skill_network, highlight);
+	var nodes = createNodes(skill_network, highlight);
 	
 	var data = {
 	    nodes: nodes,
@@ -95,13 +147,23 @@ function createGraph(skill_network, container){
 		    improvedLayout:true,
 		 },
 		 groups: {
-	         person: {
-	             color: {background:'rgb(0,0,0)',border:'rgb(0,0,0)'},
+			 highlighted_person: {
+	             color: {background: 'rgba(0,0,0, 1)',border:'rgb(0,0,0)'},
 	             shape: 'elipse',
 	             size: 40
 	         },
-	         skill: {
-	        	 color: {background:'rgb(255,255,102)', border:'rgb(255,255,102)'},
+	         highlighted_skill: {
+	        	 color: {background:'rgba(255,255,102, 1)', border:'rgb(255,255,102)'},
+	        	 shape: 'elipse',
+	        	 size: 40
+	         },
+	         transparent_person: {
+	        	 color: {background: 'rgba(0,0,0, 0.3)',border:'rgb(0,0,0)'},
+	        	 shape: 'elipse',
+	        	 size: 40
+	         },
+	         transparent_skill: {
+	        	 color: {background:'rgba(255,255,102, 0.3)', border:'rgb(255,255,102)'},
 	        	 shape: 'elipse',
 	        	 size: 40
 	         },

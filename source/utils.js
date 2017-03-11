@@ -206,12 +206,16 @@ function drawGraph(){
 	 * Update the graph with the current person representation
 	 */
 	container = document.getElementById('mynetwork');
-	graph = createGraph(network, container)
+	graph = createGraph(network, container, selected_nodes)
 	
-	graph.on("click", function (params) {
+	var drawTimeout;
+	
+	graph.on("doubleClick", function (params) {
+		clearTimeout(drawTimeout);
+		
 		  clicked_node = params['nodes']
 		  clicked_edge = params['edges']
-		  
+		  selected_nodes = [clicked_node]
 		  if (clicked_node.length > 0){
 			  handleNodeSeletion(clicked_node)
 		  }
@@ -222,8 +226,21 @@ function drawGraph(){
 			  showEditPersonForm(false);
 			  showAddInteraction(false);
 		  }
+		  
 			  
 	  });
+	graph.on("click", function (params) {
+		clearTimeout(drawTimeout);
+		clicked_node = params['nodes']
+		clicked_edge = params['edges']
+		
+		console.log('On click. Selected:' + clicked_node + typeof clicked_node[0]);
+		selected_nodes= clicked_node
+		
+		drawTimeout = setTimeout(drawGraph, 300)
+		console.log('Schedulled: ' + drawTimeout)
+		
+	});
 }
 
 

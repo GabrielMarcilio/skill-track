@@ -9,7 +9,7 @@ describe("Testing Skill Network", function() {
     
     it("Testing Create Nodes", function(){
     	
-    	var nodes = createNodes(this.network);
+    	var nodes = createNodes(this.network, []);
     	
     	var all_interests = this.network.getInterests()
     	
