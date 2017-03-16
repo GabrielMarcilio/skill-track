@@ -1,25 +1,52 @@
 
-function createNodes(skill_network, highlighted_nodes){
-	var node_data = [];
+function setHighlightedNodes(skill_network, graph, highlighted_nodes){
 	
+	var all_nodes = graph.body.data.nodes
+	var all_ids = all_nodes.getIds()
 	var extended_selected = getExtendendSelectedNodes(skill_network, highlighted_nodes)
+	
+	var group, current_node; 
+	
+	for(var i=0; i<all_ids.length; i++){
+		var node_id = all_ids[i];
+		var selected = extended_selected.indexOf(node_id) >=0
+		
+		current_node = all_nodes.get(node_id);
+		if(current_node.is_person){
+			if(extended_selected.length == 0 || selected ){
+				group = 'highlighted_person';
+			}
+			else{
+				group = 'transparent_person';
+			}
+		}
+		else{
+			if(extended_selected.length == 0 || selected){
+				group = 'highlighted_skill';
+			}
+			else{
+				group = 'transparent_skill';
+			}
+		}
+	    current_node.group = group;
+	    all_nodes.update(current_node);
+	}
+}
+
+
+function createNodes(skill_network){
+	var node_data = [];
 	
 	// Creating the nodes associated with persons
 	for(person_id in skill_network.persons) {
 		person = skill_network.persons[person_id];
 		
-		var node_group = 'transparent_person';
-		
-		if(extended_selected.length == 0 || extended_selected.indexOf(person_id) >=0){
-			 node_group = 'highlighted_person';
-		}
-		
 		node_data.push(
 			{
 				id:person_id,
 				label: person.name,
-				group: node_group,
-				font:{color:'white'}
+				font:{color:'white'},
+				is_person:true
 			}
 		);
 	}
@@ -28,15 +55,11 @@ function createNodes(skill_network, highlighted_nodes){
 	network_skills = skill_network.getInterests()
 	for(var i=0; i<network_skills.length; i++){
 		skill = network_skills[i];
-		var skill_group = 'transparent_skill';
-		if(extended_selected.length == 0 || extended_selected.indexOf(skill) >=0){
-			skill_group = 'highlighted_skill';
-		}
 		node_data.push(
 			{
 				id:skill,
 				label: skill,
-				group: skill_group
+				is_person:false
 			}
 		);
 	}
@@ -134,8 +157,8 @@ function createEdges(skill_network){
 function createGraph(skill_network, container, highlight){
 	
 	highlight = typeof highlight !== 'undefined' ? highlight : [];
-	var edges = createEdges(skill_network, highlight);
-	var nodes = createNodes(skill_network, highlight);
+	var edges = createEdges(skill_network);
+	var nodes = createNodes(skill_network);
 	
 	var data = {
 	    nodes: nodes,
@@ -158,12 +181,12 @@ function createGraph(skill_network, container, highlight){
 	        	 size: 40
 	         },
 	         transparent_person: {
-	        	 color: {background: 'rgba(0,0,0, 0.3)',border:'rgb(0,0,0)'},
+	        	 color: {background: 'rgba(0,0,0, 0.2)',border:'rgb(0,0,0)'},
 	        	 shape: 'elipse',
 	        	 size: 40
 	         },
 	         transparent_skill: {
-	        	 color: {background:'rgba(255,255,102, 0.3)', border:'rgb(255,255,102)'},
+	        	 color: {background:'rgba(255,255,102, 0.2)', border:'rgb(255,255,102)'},
 	        	 shape: 'elipse',
 	        	 size: 40
 	         },
@@ -175,7 +198,9 @@ function createGraph(skill_network, container, highlight){
 			 }
 		 }
 	}
-	return new vis.Network(container, data, options);
+	graph = new vis.Network(container, data, options);
+	setHighlightedNodes(skill_network, graph, highlight)
+	return graph;
 }
 
 

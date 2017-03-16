@@ -229,17 +229,13 @@ function drawGraph(){
 		  
 			  
 	  });
+
 	graph.on("click", function (params) {
 		clearTimeout(drawTimeout);
 		clicked_node = params['nodes']
 		clicked_edge = params['edges']
 		
-		console.log('On click. Selected:' + clicked_node + typeof clicked_node[0]);
-		selected_nodes= clicked_node
-		
-		drawTimeout = setTimeout(drawGraph, 300)
-		console.log('Schedulled: ' + drawTimeout)
-		
+		setHighlightedNodes(network, graph, clicked_node)
 	});
 }
 
