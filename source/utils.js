@@ -180,6 +180,7 @@ function addPerson(){
 
 function handleNodeSeletion(clicked_node){
 	var clicked_person = network.getPersonByID(clicked_node) !== undefined;
+	console.log('Clicked person? ' + clicked_person + ' (' + clicked_node + ')')
 	if(clicked_person){
 		showNodeToEdit(clicked_node, network);
 	}
@@ -208,15 +209,14 @@ function drawGraph(){
 	container = document.getElementById('mynetwork');
 	graph = createGraph(network, container, selected_nodes)
 	
-	var drawTimeout;
-	
 	graph.on("doubleClick", function (params) {
-		clearTimeout(drawTimeout);
 		
 		  clicked_node = params['nodes']
 		  clicked_edge = params['edges']
 		  selected_nodes = [clicked_node]
+		  console.log('Double click nodes: ' + clicked_node)
 		  if (clicked_node.length > 0){
+			  console.log('Handling node selection')
 			  handleNodeSeletion(clicked_node)
 		  }
 		  else if(clicked_edge.length > 0){
@@ -231,7 +231,6 @@ function drawGraph(){
 	  });
 
 	graph.on("click", function (params) {
-		clearTimeout(drawTimeout);
 		clicked_node = params['nodes']
 		clicked_edge = params['edges']
 		
