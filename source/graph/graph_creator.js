@@ -59,6 +59,7 @@ function createNodes(skill_network){
 			{
 				id:skill,
 				label: skill,
+				font:{color:'white'},
 				is_person:false
 			}
 		);
@@ -176,7 +177,7 @@ function createGraph(skill_network, container, highlight){
 	             size: 40
 	         },
 	         highlighted_skill: {
-	        	 color: {background:'rgba(255,255,102, 1)', border:'rgb(255,255,102)'},
+	        	 color: {background:'rgba(0,80, 0, 1)', border:'rgb(255,255,102)'},
 	        	 shape: 'elipse',
 	        	 size: 40
 	         },
@@ -186,7 +187,7 @@ function createGraph(skill_network, container, highlight){
 	        	 size: 40
 	         },
 	         transparent_skill: {
-	        	 color: {background:'rgba(255,255,102, 0.2)', border:'rgb(255,255,102)'},
+	        	 color: {background:'rgba(0, 80, 0, 0.2)', border:'rgb(255,255,102)'},
 	        	 shape: 'elipse',
 	        	 size: 40
 	         },
