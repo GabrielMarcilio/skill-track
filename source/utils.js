@@ -209,8 +209,10 @@ function drawGraph(){
 	container = document.getElementById('mynetwork');
 	graph = createGraph(network, container, selected_nodes)
 	
+	var drawTimeout;
+	
 	graph.on("doubleClick", function (params) {
-		
+		  clearTimeout(drawTimeout);
 		  clicked_node = params['nodes']
 		  clicked_edge = params['edges']
 		  selected_nodes = [clicked_node]
@@ -230,12 +232,13 @@ function drawGraph(){
 			  
 	  });
 
-//	graph.on("click", function (params) {
-//		clicked_node = params['nodes']
-//		clicked_edge = params['edges']
-//		
-//		setHighlightedNodes(network, graph, clicked_node)
-//	});
+	graph.on("click", function (params) {
+		clearTimeout(drawTimeout);
+		clicked_node = params['nodes']
+		clicked_edge = params['edges']
+		
+		drawTimeout = setTimeout(setHighlightedNodes, 300, network, graph, clicked_node)
+	});
 }
 
 
