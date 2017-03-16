@@ -230,12 +230,12 @@ function drawGraph(){
 			  
 	  });
 
-	graph.on("click", function (params) {
-		clicked_node = params['nodes']
-		clicked_edge = params['edges']
-		
-		setHighlightedNodes(network, graph, clicked_node)
-	});
+//	graph.on("click", function (params) {
+//		clicked_node = params['nodes']
+//		clicked_edge = params['edges']
+//		
+//		setHighlightedNodes(network, graph, clicked_node)
+//	});
 }
 
 
