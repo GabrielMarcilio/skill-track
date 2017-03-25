@@ -41,12 +41,14 @@ function createNodes(skill_network){
 	for(person_id in skill_network.persons) {
 		person = skill_network.persons[person_id];
 		
+		class_label = 'Turma ' + person.class_id
 		node_data.push(
 			{
 				id:person_id,
 				label: person.name,
 				font:{color:'white'},
-				is_person:true
+				is_person:true,
+				title: '<center><font size="4">'+ person.name + '</font><font size="1" ><br> '+ class_label + '</font></center>'
 			}
 		);
 	}
@@ -182,12 +184,12 @@ function createGraph(skill_network, container, highlight){
 	        	 size: 40
 	         },
 	         transparent_person: {
-	        	 color: {background: 'rgba(0,0,0, 0.2)',border:'rgb(0,0,0)'},
+	        	 color: {background: 'rgba(0,0,0, 0.20)',border:'rgb(0,0,0)'},
 	        	 shape: 'elipse',
 	        	 size: 40
 	         },
 	         transparent_skill: {
-	        	 color: {background:'rgba(0, 80, 0, 0.2)', border:'rgb(255,255,102)'},
+	        	 color: {background:'rgba(0, 80, 0, 0.20)', border:'rgb(255,255,102)'},
 	        	 shape: 'elipse',
 	        	 size: 40
 	         },

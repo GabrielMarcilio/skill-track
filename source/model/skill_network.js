@@ -1,5 +1,5 @@
 
-function Person(name, email, id, skills, passions){
+function Person(name, email, id, skills, passions, class_id){
 	/**
 	 * Represents a person within the network.
 	 * 
@@ -10,10 +10,12 @@ function Person(name, email, id, skills, passions){
 	 * @param{string} id - Uniquely identifies a person.
 	 * @param{array} skills - Person skills.
 	 * @param{array} passions - Person passions.
+	 * @param{int} class_id - This person class (semester) id.
 	 */
 	this.name = name;
 	this.email = email;
 	this.id = id;
+	this.class_id = class_id
 	
 	if (skills == undefined){
 		this.skills = []; 
@@ -55,7 +57,8 @@ Person.prototype = {
 			'email':this.email, 
 			'skills':skills_text, 
 			'passions':passions_text,
-			'id':this.id
+			'id':this.id,
+			'class_id':this.class_id,
 		}
     	
     	return person_json
@@ -71,6 +74,7 @@ Person.prototype = {
     	
 		this.skills = skills_array;
 		this.passions = passions_array;
+		this.class_id = memento.class_id;
     }
 }
 

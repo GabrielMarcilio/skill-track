@@ -261,7 +261,6 @@ function addPersonInDatabase(person){
 		"/storePerson",
 		{'person':person_memento},
 	    function(data, status){
-//	        alert("Store person result: " + data + "\nStatus: " + status);
     });
     	
 }

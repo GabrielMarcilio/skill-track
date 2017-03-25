@@ -73,12 +73,19 @@ module.exports = function(passport, sql_info) {
     		else{
     			var password_to_store = password.hashCode()
     			
+    			// A class id should be given
+    			var class_id = req.body.class_id
+    			if(class_id === undefined){
+    				return done(null, false, req.flash('signup_message', 'Turma inválida'))
+    			}
+    			
     			var new_user = {
     				'name':req.body.name,
     				'email':email,
     				'password':password_to_store,
     				'skills':'',
     				'passions':'',
+    				'class_id':class_id
     			}
     			sql.writePersons(con, [new_user], sql_info.database, function(err, result){
     				if(err){

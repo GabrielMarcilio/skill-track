@@ -88,11 +88,11 @@ function writePersons(connection, persons, database, callback){
 	
 	for(var i=0; i<persons.length; i++){
     	current = persons[i]
-    	var current_row = [current.name, current.email, current.skills, current.passions, current.password];
+    	var current_row = [current.name, current.email, current.skills, current.passions, current.password, current.class_id];
     	values.push(current_row);
 	}
     
-	var query = 'INSERT INTO ' + database + '.persons (name, email, skills, passions, password) VALUES ?'
+	var query = 'INSERT INTO ' + database + '.persons (name, email, skills, passions, password, class_id) VALUES ?'
     connection.query(query, [values], callback);
 	
 }

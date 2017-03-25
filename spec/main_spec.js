@@ -48,7 +48,7 @@ describe("Test app services", function() {
 		
 		supertest(app.server)
 	      .post('/signUp')
-	      .send({'name': name, 'email':email, 'password':password, 'password_confirm':password})
+	      .send({'name': name, 'email':email, 'password':password, 'password_confirm':password, 'class_id': 2})
 	      .end(function(err, res){
 	    	  
 	    	  // At this point we expect one person to be added in the persons table
@@ -63,6 +63,7 @@ describe("Test app services", function() {
 						expect(created_person.email).toBe('mario@nintendo.com');
 						expect(created_person.skills).toBe('');
 						expect(created_person.passions).toBe('');
+						expect(created_person.class_id).toBe(2);
 						
 						var expected_password = 'Its me! Mario!'.hashCode().toString()
 						expect(created_person.password).toBe(expected_password);
@@ -79,7 +80,8 @@ describe("Test app services", function() {
 			'email': 'mario@nintendo.com',
 			'password': password.hashCode(),
 			'skills': 'Jumping,Running',
-			'passions': 'Pasta,Juventus'
+			'passions': 'Pasta,Juventus',
+			'class_id': 1
 			
 		}
 		var connection = this.connection;
@@ -102,7 +104,8 @@ describe("Test app services", function() {
 			'email': 'mario@nintendo.com',
 			'password': password.hashCode(),
 			'skills': 'Jumping,Running',
-			'passions': 'Pasta,Juventus'
+			'passions': 'Pasta,Juventus',
+			'class_id': 3
 					
 		}
 		var connection = this.connection;
